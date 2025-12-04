@@ -24,7 +24,8 @@ class MobiFlightVariableRequests:
         self.CLIENT_DATA_AREA_LVARS = 0
         self.CLIENT_DATA_AREA_CMD = 1
         self.DATA_STRING_SIZE = 512
-        
+        # inside __init__ of MobiFlightVariableRequests
+        self.on_variable_changed = lambda name,value: None  # default no-op hook
         # Thread safety
         self.lock = threading.RLock()
         self.command_semaphore = threading.Semaphore(5)  # Limit concurrent commands
