@@ -1,0 +1,1906 @@
+{
+    "A32NX_IS_READY": {
+        "type": "Bool",
+        "description": "Indicates that the JavaScript part is ready"
+    },
+    "A32NX_IS_STATIONARY": {
+        "type": "Bool",
+        "description": "Aircraft is stationary in relation to the speed of the first surface directly underneath it. (stationary on a carrier that is moving would be considered stationary)"
+    },
+    "A32NX_GND_EQP_IS_VISIBLE": {
+        "type": "Bool",
+        "description": "Indicates if any GND equipment is visible or not"
+    },
+    "A32NX_START_STATE": {
+        "type": "Enum",
+        "description": "Indicates the state in which MSFS started State | Value --| --Hangar | 1 Apron | 2 Taxi | 3 Runway | 4 Climb | 5 Cruise | 6 Approach | 7 Final | 8"
+    },
+    "A32NX_NO_SMOKING_MEMO": {
+        "type": "Boolean that determines whether the NO SMOKING memo should be visible on the upper ECAM",
+        "description": "Also is used for knowing when to play the no smoking chime sound"
+    },
+    "A32NX_BRAKE_TEMPERATURE_1": {
+        "type": "celsius",
+        "description": "represents the brake temperature of the rear wheels"
+    },
+    "A32NX_BRAKE_TEMPERATURE_2": {
+        "type": "celsius",
+        "description": "represents the brake temperature of the rear wheels"
+    },
+    "A32NX_BRAKE_TEMPERATURE_3": {
+        "type": "celsius",
+        "description": "represents the brake temperature of the rear wheels"
+    },
+    "A32NX_BRAKE_TEMPERATURE_4": {
+        "type": "celsius",
+        "description": "represents the brake temperature of the rear wheels"
+    },
+    "A32NX_REPORTED_BRAKE_TEMPERATURE_1": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "represents the reported brake temperature of the main wheels reported by the BSCU. It can be different from the brake temperature when the brake fan has been used, because the brake fan will cool the sensor more than the brakes (which have much more energy to dissipate) therefore giving potentially erroneous readings that the pilots must take into account"
+    },
+    "A32NX_REPORTED_BRAKE_TEMPERATURE_2": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "represents the reported brake temperature of the main wheels reported by the BSCU. It can be different from the brake temperature when the brake fan has been used, because the brake fan will cool the sensor more than the brakes (which have much more energy to dissipate) therefore giving potentially erroneous readings that the pilots must take into account"
+    },
+    "A32NX_REPORTED_BRAKE_TEMPERATURE_3": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "represents the reported brake temperature of the main wheels reported by the BSCU. It can be different from the brake temperature when the brake fan has been used, because the brake fan will cool the sensor more than the brakes (which have much more energy to dissipate) therefore giving potentially erroneous readings that the pilots must take into account"
+    },
+    "A32NX_REPORTED_BRAKE_TEMPERATURE_4": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "represents the reported brake temperature of the main wheels reported by the BSCU. It can be different from the brake temperature when the brake fan has been used, because the brake fan will cool the sensor more than the brakes (which have much more energy to dissipate) therefore giving potentially erroneous readings that the pilots must take into account"
+    },
+    "A32NX_BRAKE_FAN_RUNNING": {
+        "type": "boolean",
+        "description": "whether or not the brake fan is running (brake fan button pressed AND left main landing gear down and locked, reported by BSCU)"
+    },
+    "A32NX_BRAKE_FAN_side_RUNNING": {
+        "type": "boolean",
+        "description": "wether or not a brake fan on the corresponding side is running {side} LEFT RIGHT"
+    },
+    "A32NX_BRAKE_FAN_BTN_PRESSED": {
+        "type": "boolean",
+        "description": "whether or not the brake fan button is pressed"
+    },
+    "A32NX_BRAKES_HOT": {
+        "type": "boolean",
+        "description": "whether one of the brakes are hot (>300\u00c2\u00b0C)"
+    },
+    "A32NX_KNOB_OVHD_AIRCOND_XBLEED_Position": {
+        "type": "Position (0-2)",
+        "description": "0 is SHUT, 1 is AUTO, 2 is OPEN"
+    },
+    "A32NX_KNOB_OVHD_AIRCOND_PACKFLOW_Position": {
+        "type": "Position (0-2)",
+        "description": "0 is LO, 1 is NORM, 2 is HI"
+    },
+    "A32NX_AIRCOND_RAMAIR_TOGGLE": {
+        "type": "Bool",
+        "description": "True if ram air is on"
+    },
+    "A32NX_CALLS_EMER_ON": {
+        "type": "Bool",
+        "description": "True if emergency cabin call is on"
+    },
+    "A32NX_OVHD_COCKPITDOORVIDEO_TOGGLE": {
+        "type": "Bool",
+        "description": "True if cockpit door video system is on  PUSH_DOORPANEL_VIDEO Bool True if pedestal door video button is being held"
+    },
+    "A32NX_OVHD_HYD_name_PUMP_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "True if engine {name} hyd pump fault {name} ENG_1 ENG_2"
+    },
+    "A32NX_OVHD_HYD_name_PUMP_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if {name} hyd pump is on {name} ENG_1 ENG_2"
+    },
+    "A32NX_OVHD_HYD_name_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "True if elec {name} hyd pump fault {name} EPUMPB EPUMPY"
+    },
+    "A32NX_OVHD_HYD_name_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if elec {name} hyd pump is on/auto {name} EPUMPB EPUMPY"
+    },
+    "A32NX_OVHD_HYD_PTU_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "True if PTU fault"
+    },
+    "A32NX_OVHD_HYD_PTU_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if PTU system on/auto"
+    },
+    "A32NX_ENGMANSTART1_TOGGLE": {
+        "type": "Bool",
+        "description": "True if manual engine 1 start on"
+    },
+    "A32NX_ENGMANSTART2_TOGGLE": {
+        "type": "Bool",
+        "description": "True if manual engine 2 start on"
+    },
+    "A32NX_VENTILATION_BLOWER_FAULT": {
+        "type": "Bool",
+        "description": "True if ventilation blower fault"
+    },
+    "A32NX_VENTILATION_BLOWER_TOGGLE": {
+        "type": "Bool",
+        "description": "True if ventilation blower on"
+    },
+    "A32NX_VENTILATION_EXTRACT_FAULT": {
+        "type": "Bool",
+        "description": "True if ventilation extractor fault"
+    },
+    "A32NX_VENTILATION_EXTRACT_TOGGLE": {
+        "type": "Bool",
+        "description": "True if ventilation extractor on"
+    },
+    "A32NX_PITOT_HEAT_AUTO": {
+        "type": "Bool",
+        "description": "True if pitot heating auto"
+    },
+    "A32NX_EVAC_COMMAND_FAULT": {
+        "type": "Bool",
+        "description": "True if evac command fault"
+    },
+    "A32NX_EVAC_COMMAND_TOGGLE": {
+        "type": "Bool",
+        "description": "True if evac command button is on  PUSH_OVHD_EVAC_HORN Bool True if evac horn cutout button is being pressed"
+    },
+    "A32NX_EVAC_CAPT_TOGGLE": {
+        "type": "Bool",
+        "description": "True if evac switch set to CAPT"
+    },
+    "A32NX_EIS_DMC_SWITCHING_KNOB": {
+        "type": "EIS DMC",
+        "description": "Position (0-2) 0 is CAPT, 1 is NORM, 2 is F/O"
+    },
+    "A32NX_DMC_DISPLAYTEST:1": {
+        "type": "Enum",
+        "description": "Provides the display test status (can be set in the CFDS) for the respective DMC {1,2,3} Value | Meaning --| --0 | Inactive 1 | Maintenance Mode active 2 | Engineering display test in progress"
+    },
+    "A32NX_DMC_DISPLAYTEST:2": {
+        "type": "Enum",
+        "description": "Provides the display test status (can be set in the CFDS) for the respective DMC {1,2,3} Value | Meaning --| --0 | Inactive 1 | Maintenance Mode active 2 | Engineering display test in progress"
+    },
+    "A32NX_DMC_DISPLAYTEST:3": {
+        "type": "Enum",
+        "description": "Provides the display test status (can be set in the CFDS) for the respective DMC {1,2,3} Value | Meaning --| --0 | Inactive 1 | Maintenance Mode active 2 | Engineering display test in progress"
+    },
+    "A32NX_ECAM_ND_XFR_SWITCHING_KNOB": {
+        "type": "ECAM/ND XFR",
+        "description": "Position (0-2) 0 is CAPT, 1 is NORM, 2 is F/O"
+    },
+    "A32NX_METRIC_ALT_TOGGLE": {
+        "type": "Bool",
+        "description": "True if PFD metric altitude enabled"
+    },
+    "A32NX_OVHD_HYD_EPUMPY_OVRD_PB_IS_ON": {
+        "type": "Bool",
+        "description": "True if \"BLUE PUMP OVRD\" switch is off"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_G_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT G\" switch is on"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_G_LOCK": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT G\" switch lock is down"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_B_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT B\" switch is on"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_B_LOCK": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT B\" switch lock is down"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_Y_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT Y\" switch is on"
+    },
+    "A32NX_OVHD_HYD_LEAK_MEASUREMENT_Y_LOCK": {
+        "type": "Bool",
+        "description": "True if \"HYD LEAK MEASUREMENT Y\" switch lock is down"
+    },
+    "A32NX_DESTINATION_QNH": {
+        "type": "Millibar",
+        "description": "Destination QNH as entered by the pilot in the MCDU during descent"
+    },
+    "A32NX_DEPARTURE_ELEVATION": {
+        "type": "Feet",
+        "description": "Departure runway elevation as calculated by the FMC"
+    },
+    "A32NX_FWC_FLIGHT_PHASE": {
+        "type": "Enum",
+        "description": "Contains the numeric flight phase as determined by the FWC Input for: systems.wasm | Value  | Flight Phase     | |--------|------------------| | 0      |                  | | 1      | ELEC PWR         | | 2      | 1ST ENG STARTED  | | 3      | 1ST ENG TO PWR   | | 4      | 80 kt            | | 5      | LIFTOFF          | | 6      | 1500ft (in clb)  | | 7      | 800 ft (in desc) | | 8      | TOUCHDOWN        | | 9      | 80 kt            | | 10     | 2nd ENG SHUTDOWN | | &gt; 1 | 5 MIN AFTER      |"
+    },
+    "A32NX_FWC_SKIP_STARTUP": {
+        "type": "Bool",
+        "description": "Set to true in a non-cold and dark flight phase to skip the initial memorization step"
+    },
+    "A32NX_FWC_TOMEMO": {
+        "type": "Bool",
+        "description": "True when the FWC decides that the takeoff memo should be shown"
+    },
+    "A32NX_FWC_LDGMEMO": {
+        "type": "Bool",
+        "description": "True when the FWC decides that the landing memo should be shown"
+    },
+    "A32NX_FWC_INHIBOVRD": {
+        "type": "Bool",
+        "description": "True when the FWC decides that flight phase inhibits should be overridden (and ignored)"
+    },
+    "A32NX_SPEEDS_VS": {
+        "type": "Number",
+        "description": "Current config stall speed is mach corrected"
+    },
+    "A32NX_SPEEDS_VLS": {
+        "type": "Number",
+        "description": "Current config minimum selectable speed is mach corrected"
+    },
+    "A32NX_SPEEDS_F": {
+        "type": "Number",
+        "description": "F-Speed (approach)"
+    },
+    "A32NX_SPEEDS_S": {
+        "type": "Number",
+        "description": "S-Speed (approach)"
+    },
+    "A32NX_SPEEDS_GD": {
+        "type": "Number",
+        "description": "Green Dot speed (clean config or O) is mach corrected"
+    },
+    "A32NX_SPEEDS_LANDING_CONF3": {
+        "type": "Bool",
+        "description": "True if FLAPS 3 is selected in perf page"
+    },
+    "A32NX_SPEEDS_TO_CONF": {
+        "type": "Number",
+        "description": "Flaps config for TakeOff, 1, 2 or 3"
+    },
+    "A32NX_SPEEDS_VLS_APP": {
+        "type": "Number",
+        "description": "vls calculated for config full whether A32NX_VSPEEDS_LANDING_CONF3 or not is mach corrected"
+    },
+    "A32NX_SPEEDS_VAPP": {
+        "type": "Number",
+        "description": "vapp calculated for config full whether A32NX_VSPEEDS_LANDING_CONF3 or not is mach corrected"
+    },
+    "A32NX_APU_EGT_CAUTION": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "The APU's exhaust gas temperature caution level, to be indicated in amber in the cockpit"
+    },
+    "A32NX_APU_EGT_WARNING": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "The APU's exhaust gas temperature warning level, to be indicated in red in the cockpit"
+    },
+    "A32NX_APU_EGT": {
+        "type": "`Arinc429Word<Celsius>`",
+        "description": "The APU's exhaust gas temperature, when < -273.15 the ECB isn't supplying information, for example due to being unpowered."
+    },
+    "A32NX_APU_N": {
+        "type": "`Arinc429Word<Percent>`",
+        "description": "The APU's rotations per minute in percentage of the maximum RPM"
+    },
+    "A32NX_APU_N_RAW": {
+        "type": "Percent",
+        "description": "The APU's rotations per minute in percentage of the maximum RPM This raw value should only be used for sounds and effects."
+    },
+    "A32NX_APU_BLEED_AIR_VALVE_OPEN": {
+        "type": "Bool",
+        "description": "Indicates if the APU bleed air valve is open"
+    },
+    "A32NX_APU_LOW_FUEL_PRESSURE_FAULT": {
+        "type": "`Arinc429Word<Bool>`",
+        "description": ""
+    },
+    "A32NX_APU_IS_AUTO_SHUTDOWN": {
+        "type": "Bool",
+        "description": "Indicates if the APU automatically shut down (for a reason other than fire)"
+    },
+    "A32NX_APU_IS_EMERGENCY_SHUTDOWN": {
+        "type": "Bool",
+        "description": "Indicates if the APU automatically shut down due to fire"
+    },
+    "A32NX_ECAM_INOP_SYS_APU": {
+        "type": "Bool",
+        "description": "Indicates if the APU is inoperable"
+    },
+    "A32NX_APU_FLAP_OPEN_PERCENTAGE": {
+        "type": "Percent",
+        "description": "Indicates the percentage the APU air intake flap is open"
+    },
+    "A32NX_APU_FLAP_FULLY_OPEN": {
+        "type": "`Arinc429Word<Bool>`",
+        "description": ""
+    },
+    "A32NX_FIRE_BUTTON_APU": {
+        "type": "Bool",
+        "description": "Indicates if the APU fire button is RELEASED"
+    },
+    "A32NX_RMP_L_TOGGLE_SWITCH": {
+        "type": "Boolean",
+        "description": "Whether the left radio management panel toggle switch is on or off."
+    },
+    "A32NX_RMP_R_TOGGLE_SWITCH": {
+        "type": "Boolean",
+        "description": "Whether the right radio management panel toggle switch is on or off."
+    },
+    "A32NX_RMP_L_SELECTED_MODE": {
+        "type": "Number",
+        "description": "The current mode of the left radio management panel."
+    },
+    "A32NX_RMP_R_SELECTED_MODE": {
+        "type": "Number",
+        "description": "The current mode of the right radio management panel."
+    },
+    "A32NX_RMP_L_NAV_BUTTON_SELECTED": {
+        "type": "Bool",
+        "description": "Whether the NAV push button on the corresponding RMP is pushed or not."
+    },
+    "A32NX_RMP_R_NAV_BUTTON_SELECTED": {
+        "type": "Bool",
+        "description": "Whether the NAV push button on the corresponding RMP is pushed or not."
+    },
+    "A32NX_RMP_L_VHF2_STANDBY": {
+        "type": "Hz",
+        "description": "The VHF 2 standby frequency for the left RMP."
+    },
+    "A32NX_RMP_L_VHF3_STANDBY": {
+        "type": "Hz",
+        "description": "The VHF 3 standby frequency for the left RMP."
+    },
+    "A32NX_RMP_R_VHF1_STANDBY": {
+        "type": "Hz",
+        "description": "The VHF 1 standby frequency for the right RMP."
+    },
+    "A32NX_RMP_R_VHF3_STANDBY": {
+        "type": "Hz",
+        "description": "The VHF 3 standby frequency for the right RMP."
+    },
+    "A32NX_RMP_L_SAVED_ACTIVE_FREQUENCY_VOR": {
+        "type": "Hz",
+        "description": "The VOR active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_ACTIVE_FREQUENCY_VOR": {
+        "type": "Hz",
+        "description": "The VOR active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_ACTIVE_FREQUENCY_ILS": {
+        "type": "Hz",
+        "description": "The ILS active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_ACTIVE_FREQUENCY_ILS": {
+        "type": "Hz",
+        "description": "The ILS active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_ACTIVE_FREQUENCY_ADF": {
+        "type": "Hz",
+        "description": "The ADF active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_ACTIVE_FREQUENCY_ADF": {
+        "type": "Hz",
+        "description": "The ADF active frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_STANDBY_FREQUENCY_VOR": {
+        "type": "Hz",
+        "description": "The VOR standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_STANDBY_FREQUENCY_VOR": {
+        "type": "Hz",
+        "description": "The VOR standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_STANDBY_FREQUENCY_ILS": {
+        "type": "Hz",
+        "description": "The ILS standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_STANDBY_FREQUENCY_ILS": {
+        "type": "Hz",
+        "description": "The ILS standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_STANDBY_FREQUENCY_ADF": {
+        "type": "Hz",
+        "description": "The ADF standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_R_SAVED_STANDBY_FREQUENCY_ADF": {
+        "type": "Hz",
+        "description": "The ADF standby frequency that is saved for display for the left/right RMP."
+    },
+    "A32NX_RMP_L_SAVED_COURSE_VOR": {
+        "type": "Number",
+        "description": "The VOR course tuned via the left/right RMP"
+    },
+    "A32NX_RMP_R_SAVED_COURSE_VOR": {
+        "type": "Number",
+        "description": "The VOR course tuned via the left/right RMP"
+    },
+    "A32NX_RMP_L_SAVED_COURSE_ILS": {
+        "type": "Number",
+        "description": "The ILS course tuned via the left/right RMP"
+    },
+    "A32NX_RMP_R_SAVED_COURSE_ILS": {
+        "type": "Number",
+        "description": "The ILS course tuned via the left/right RMP"
+    },
+    "A32NX_TO_CONFIG_FLAPS": {
+        "type": "Enum",
+        "description": "The pilot-entered FLAPS value in the PERF TAKE OFF page. 0 is a valid entry, -1 if not entered"
+    },
+    "A32NX_TO_CONFIG_THS_ENTERED": {
+        "type": "** Deprecated, see `A32NX_FM{number}_TO_PITCH_TRIM`",
+        "description": "Bool True if the pilot has entered a THS value in the PERF TAKEO FF takeoff"
+    },
+    "A32NX_TO_CONFIG_THS": {
+        "type": "** Deprecated, see `A32NX_FM{number}_TO_PITCH_TRIM`",
+        "description": "Degrees The pilot-entered THS value in the PERF TAKE OFF page. 0 is a valid entry."
+    },
+    "A32NX_SLIDES_ARMED": {
+        "type": "Boolean",
+        "description": "Indicates whether the door slides are armed or not"
+    },
+    "A32NX_RAIN_REPELLENT_RIGHT_ON": {
+        "type": "Bool",
+        "description": "True if rain repellent is activated on the right windshield."
+    },
+    "A32NX_RAIN_REPELLENT_LEFT_ON": {
+        "type": "Bool",
+        "description": "True if rain repellent is activated on the left windshield."
+    },
+    "A32NX_RCDR_TEST": {
+        "type": "Bool",
+        "description": "True if RCDR being tested."
+    },
+    "A32NX_RADAR_MULTISCAN_AUTO": {
+        "type": "Bool",
+        "description": "True if multiscan switch is set to AUTO."
+    },
+    "A32NX_RADAR_GCS_AUTO": {
+        "type": "Bool",
+        "description": "True if GCS switch is set to AUTO."
+    },
+    "A32NX_OXYGEN_MASKS_DEPLOYED": {
+        "type": "Bool",
+        "description": "True if cabin oxygen masks have been deployed."
+    },
+    "A32NX_RCDR_GROUND_CONTROL_ON": {
+        "type": "Bool",
+        "description": "True if ground control is on."
+    },
+    "A32NX_EMERELECPWR_GEN_TEST": {
+        "type": "Bool",
+        "description": "True if emergency generator is being tested."
+    },
+    "A32NX_OXYGEN_PASSENGER_LIGHT_ON": {
+        "type": "Bool",
+        "description": "True if cabin oxygen mask doors open."
+    },
+    "A32NX_OXYGEN_TMR_RESET": {
+        "type": "Bool",
+        "description": "True if oxygen timer is being reset."
+    },
+    "A32NX_OXYGEN_TMR_RESET_FAULT": {
+        "type": "Bool",
+        "description": "True if fault with oxygen timer."
+    },
+    "A32NX_APU_AUTOEXITING_RESET": {
+        "type": "Bool",
+        "description": "True if APU autoexiting is being reset."
+    },
+    "A32NX_ELT_TEST_RESET": {
+        "type": "Bool",
+        "description": "True if ELT is being tested/reset."
+    },
+    "A32NX_ELT_ON": {
+        "type": "Bool",
+        "description": "True if ELT is on."
+    },
+    "A32NX_DLS_ON": {
+        "type": "Bool",
+        "description": "True if data loading selector is on."
+    },
+    "A32NX_CREW_HEAD_SET": {
+        "type": "Bool",
+        "description": "True if CVR crew head set is being pressed."
+    },
+    "A32NX_SVGEINT_OVRD_ON": {
+        "type": "Bool",
+        "description": "True if SVGE INT OVRD is on."
+    },
+    "A32NX_AVIONICS_COMPLT_ON": {
+        "type": "Bool",
+        "description": "True if avionics comp lt is on."
+    },
+    "A32NX_CARGOSMOKE_FWD_DISCHARGED": {
+        "type": "Bool",
+        "description": "True if cargosmoke one bottle is discharged"
+    },
+    "A32NX_CARGOSMOKE_AFT_DISCHARGED": {
+        "type": "Bool",
+        "description": "True if cargosmoke two bottle is discharged"
+    },
+    "A32NX_AIDS_PRINT_ON": {
+        "type": "Bool",
+        "description": "True if AIDS print is on."
+    },
+    "A32NX_DFDR_EVENT_ON": {
+        "type": "Bool",
+        "description": "True if DFDR event is on."
+    },
+    "A32NX_APU_AUTOEXITING_TEST_ON": {
+        "type": "Bool",
+        "description": "True if APU AUTOEXITING is being tested."
+    },
+    "A32NX_APU_AUTOEXITING_TEST_OK": {
+        "type": "Bool",
+        "description": "True if APU AUTOEXITING TEST returns OK."
+    },
+    "A32NX_OVHD_name_PB_IS_AVAILABLE": {
+        "type": "Bool",
+        "description": "True when the push button's AVAIL light should illuminate {name} APU_START"
+    },
+    "A32NX_OVHD_name_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "Indicates if the push button's FAULT light should illuminate {name} APU_MASTER_SW ELEC_BAT_1 ELEC_BAT_2 ELEC_IDG_1 ELEC_IDG_2 ELEC_ENG_GEN_1 ELEC_ENG_GEN_2 ELEC_AC_ESS_FEED ELEC_GALY_AND_CAB PNEU_APU_BLEED EMER_ELEC_GEN_1_LINE: a FAULT indicates SMOKE should illuminate."
+    },
+    "A32NX_OVHD_EMER_ELEC_RAT_AND_EMER_GEN_HAS_FAULT": {
+        "type": "Bool",
+        "description": "Indicates if the RAT & EMER GEN FAULT light should illuminate"
+    },
+    "A32NX_OVHD_EMER_ELEC_RAT_AND_EMER_GEN_IS_PRESSED": {
+        "type": "Bool",
+        "description": "True if Ram Air Turbine has been manually deployed."
+    },
+    "A32NX_OVHD_name_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True when the push button is AUTO {name} ELEC_BAT_1 ELEC_BAT_2 ELEC_BUS_TIE_PB ELEC_GALY_AND_CAB"
+    },
+    "A32NX_OVHD_name_PB_IS_RELEASED": {
+        "type": "Bool",
+        "description": "True when the push button is RELEASED {name} ELEC_IDG_1 ELEC_IDG_2"
+    },
+    "A32NX_OVHD_name_PB_IS_DISC": {
+        "type": "Bool",
+        "description": "True when the idg is disconnected {name} ELEC_IDG_1 ELEC_IDG_2"
+    },
+    "A32NX_OVHD_ELEC_AC_ESS_FEED_PB_IS_NORMAL": {
+        "type": "Bool",
+        "description": "True when the AC ESS FEED push button is NORMAL"
+    },
+    "A32NX_OVHD_name_PB_IS_ON": {
+        "type": "Bool",
+        "description": "True when the push button is ON {name} APU_START APU_MASTER_SW ELEC_COMMERCIAL PNEU_APU_BLEED EMER_ELEC_GEN_1_LINE"
+    },
+    "A32NX_ELEC_CONTACTOR_name_IS_CLOSED": {
+        "type": "Bool",
+        "description": "True when the contactor is CLOSED {name} 1PC1: DC BAT BUS feed contactor between DC BUS 1 and DC BAT BUS 1PC2: DC BAT BUS feed contactor between DC BUS 2 and DC BAT BUS 2XB1: Contactor between battery 1 and the static inverter 2XB2: Contactor between battery 2 and the DC ESS BUS 3XC1: AC ESS feed contactor between AC BUS 1 and AC ESS BUS 3XC2: AC ESS feed contactor between AC BUS 2 and AC ESS BUS 3PE: Transformer rectifier ESS contactor between TR ESS and DC ESS BUS 2XE: Emergency generator contactor 3XG: External power contactor 3XS: APU generator contactor 4PC: Contactor between DC BAT BUS and DC ESS BUS 5PU1: Transformer rectifier 1 contactor between TR1 and DC BUS 1 5PU2: Transformer rectifier 2 contactor between TR2 and DC BUS 2 6PB1: Battery 1 contactor 6PB2: Battery 2 contactor 8PH: DC ESS SHED contactor 8XH: AC ESS SHED contactor 9XU1: Engine generator line contactor 1 9XU2: Engine generator line contactor 2 11XU1: AC BUS tie 1 contactor 11XU2: AC BUS tie 2 contactor 15XE1: Contactor between AC ESS BUS and TR ESS + EMER GEN 15XE2: Contactor between the static inverter and AC ESS BUS 10KA_AND_5KA: The two contactors leading to the APU start motor 14PU: Contactor from AC BUS 2 to TR2 and AC GND/FLT SVC BUS. 12XN: Contactor from EXT PWR to TR2 and AC GND/FLT SVC BUS. 3PX: Contactor from TR2 to DC GND/FLT SVC BUS. 8PN: Contactor from DC BUS 2 to DC GND/FLT SVC BUS."
+    },
+    "A32NX_ELEC_CONTACTOR_name_SHOW_ARROW_WHEN_CLOSED": {
+        "type": "Bool",
+        "description": "True when the arrow from the battery to the battery bus or vice versa needs to be displayed when the contactor is closed. {name} 6PB1: Battery 1 contactor 6PB2: Battery 2 contactor"
+    },
+    "A32NX_ELEC_name_BUS_IS_POWERED": {
+        "type": "Bool",
+        "description": "True when the given bus is powered {name} AC_1 AC_2 AC_ESS AC_ESS_SHED AC_STAT_INV AC_GND_FLT_SVC DC_1 DC_2 DC_ESS DC_ESS_SHED DC_BAT DC_HOT_1 DC_HOT_2 DC_GND_FLT_SVC"
+    },
+    "A32NX_ELEC_name_POTENTIAL": {
+        "type": "Volts",
+        "description": "The electric potential of the given element {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2 EXT_PWR STAT_INV EMER_GEN TR_1 TR_2 TR_3: TR ESS BAT_1 BAT_2"
+    },
+    "A32NX_ELEC_name_POTENTIAL_NORMAL": {
+        "type": "Bool",
+        "description": "Indicates if the potential is within the normal range {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2 EXT_PWR STAT_INV EMER_GEN TR_1 TR_2 TR_3: TR ESS BAT_1 BAT_2"
+    },
+    "A32NX_ELEC_name_FREQUENCY:": {
+        "type": "Hertz",
+        "description": "The frequency of the alternating current of the given element {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2 EXT_PWR STAT_INV EMER_GEN"
+    },
+    "A32NX_ELEC_name_FREQUENCY_NORMAL": {
+        "type": "Hertz",
+        "description": "Indicates if the frequency is within the normal range {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2 EXT_PWR STAT_INV EMER_GEN"
+    },
+    "A32NX_ELEC_name_LOAD": {
+        "type": "Percent",
+        "description": "The load the generator is providing compared to its maximum {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2"
+    },
+    "A32NX_ELEC_name_LOAD_NORMAL": {
+        "type": "Percent",
+        "description": "Indicates if the load is within the normal range {name} APU_GEN_1 ENG_GEN_1 ENG_GEN_2"
+    },
+    "A32NX_ELEC_name_CURRENT": {
+        "type": "Ampere",
+        "description": "The electric current flowing through the given element {name} TR_1 TR_2 TR_3: TR ESS BAT_1: Battery 1 (negative when discharging, positive when charging) BAT_2: Battery 2 (negative when discharging, positive when charging)"
+    },
+    "A32NX_ELEC_name_CURRENT_NORMAL": {
+        "type": "Ampere",
+        "description": "Indicates if the current is within the normal range {name} TR_1 TR_2 TR_3: TR ESS BAT_1: Battery 1 BAT_2: Battery 2"
+    },
+    "A32NX_HYD_loop_name_SYSTEM_1_SECTION_PRESSURE": {
+        "type": "Psi",
+        "description": "Current pressure in the system section of the {loop_name} hydraulic circuit {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_SYSTEM_1_SECTION_PRESSURE_SWITCH": {
+        "type": "Boolean",
+        "description": "Current pressure switch state in {loop_name} hydraulic circuit downstream of leak valve {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_PUMP_1_SECTION_PRESSURE": {
+        "type": "Psi",
+        "description": "Current pressure in the pump section of the {loop_name} hydraulic circuit {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_PUMP_1_SECTION_PRESSURE_SWITCH": {
+        "type": "Boolean",
+        "description": "Current pressure switch state in {loop_name} pump section {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_RESERVOIR_LEVEL": {
+        "type": "Gallon",
+        "description": "Current gaugeable fluid level in the {loop_name} hydraulic circuit reservoir {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_RESERVOIR_LEVEL_IS_LOW": {
+        "type": "Boolean",
+        "description": "Low level switch of {loop_name} hydraulic circuit reservoir indicates low state {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_RESERVOIR_AIR_PRESSURE_IS_LOW": {
+        "type": "Boolean",
+        "description": "Low air pressure switch of {loop_name} hydraulic circuit reservoir indicates low state {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_RESERVOIR_OVHT": {
+        "type": "Boolean",
+        "description": "Reservoir of {loop_name} hydraulic circuit is overheating {loop_name} GREEN BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_EDPUMP_ACTIVE": {
+        "type": "Bool",
+        "description": "Engine driven pump of {loop_name} hydraulic circuit is active {loop_name} GREEN YELLOW"
+    },
+    "A32NX_HYD_loop_name_EDPUMP_LOW_PRESS": {
+        "type": "Bool",
+        "description": "Engine driven pump of {loop_name} hydraulic circuit is active but pressure is too low {loop_name} GREEN YELLOW"
+    },
+    "A32NX_HYD_loop_name_EPUMP_ACTIVE": {
+        "type": "Bool",
+        "description": "Electric pump of {loop_name} hydraulic circuit is active {loop_name} BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_EPUMP_RPM": {
+        "type": "Rpm",
+        "description": "Current {loop_name} electric pump speed {loop_name} BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_EPUMP_CAVITATION": {
+        "type": "Percent over 100",
+        "description": "Current {loop_name} electric pump cavitation efficiency. 0 running dry to 1 full efficiency {loop_name} BLUE YELLOW"
+    },
+    "A32NX_HYD_PTU_ON_ECAM_MEMO": {
+        "type": "Bool",
+        "description": "HYD PTU memo indication should show on ecam if true"
+    },
+    "A32NX_HYD_NW_STRG_DISC_ECAM_MEMO": {
+        "type": "Bool",
+        "description": "NW STRG DISC memo indication should show on ecam if true"
+    },
+    "A32NX_NOSE_WHEEL_POSITION": {
+        "type": "Percent over 100",
+        "description": "Position of nose steering wheel animation [0;1] 0 left, 0.5 middle"
+    },
+    "A32NX_TILLER_HANDLE_POSITION": {
+        "type": "Percent over 100",
+        "description": "Position of tiller steering handle animation [-1;1] -1 left, 0 middle, 1 right"
+    },
+    "A32NX_REALISTIC_TILLER_ENABLED": {
+        "type": "Bool",
+        "description": "0 for legacy mode (steering with rudder). 1 for realistic mode with tiller axis Tiller axis to be binded on \"ENGINE 4 MIXTURE AXIS\""
+    },
+    "A32NX_FO_SYNC_EFIS_ENABLED": {
+        "type": "Bool",
+        "description": "1 to sync the status of FD and LS buttons, and audio panel controls, between CPT and FO sides"
+    },
+    "A32NX_HYD_loop_name_EPUMP_LOW_PRESS": {
+        "type": "Bool",
+        "description": "Electric pump of {loop_name} hydraulic circuit is active but pressure is too low {loop_name} BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_EPUMP_OVHT": {
+        "type": "Bool",
+        "description": "Electric pump of {loop_name} hydraulic circuit is overheating {loop_name} BLUE YELLOW"
+    },
+    "A32NX_HYD_loop_name_PUMP_1_FIRE_VALVE_OPENED": {
+        "type": "Bool",
+        "description": "Engine driven pump of {loop_name} hydraulic circuit can receive hydraulic fluid {loop_name} GREEN YELLOW"
+    },
+    "A32NX_HYD_PTU_VALVE_OPENED": {
+        "type": "Bool",
+        "description": "Power Transfer Unit can receive fluid from yellow and green circuits"
+    },
+    "A32NX_HYD_PTU_SHAFT_RPM": {
+        "type": "Revolutions per minute",
+        "description": "Power Transfer Unit shaft rpm"
+    },
+    "A32NX_HYD_PTU_BARK_STRENGTH": {
+        "type": "Number",
+        "description": "0 no PTU. 1 to 5 indicates barking sound power level."
+    },
+    "A32NX_HYD_PTU_CONTINUOUS_MODE": {
+        "type": "Bool",
+        "description": "Power Transfer Unit is rotating continuously"
+    },
+    "A32NX_HYD_PTU_DEV_DEACTIVATION_DELTA": {
+        "type": "Psi",
+        "description": "Write to this simvar to force a deactivation delta pressure for Power Transfer Unit"
+    },
+    "A32NX_HYD_PTU_DEV_EFFICIENCY": {
+        "type": "Number",
+        "description": "Write to this simvar to force an efficiency value for Power Transfer Unit"
+    },
+    "A32NX_OVHD_HYD_RAT_MAN_ON_IS_PRESSED": {
+        "type": "Bool",
+        "description": "Deploys the RAT manually"
+    },
+    "A32NX_RAT_STOW_POSITION": {
+        "type": "Percent over 100",
+        "description": "RAT position, from fully stowed (0) to fully deployed (1)"
+    },
+    "A32NX_RAT_RPM": {
+        "type": "Rpm",
+        "description": "RAT propeller current RPM"
+    },
+    "A32NX_RAT_ANGULAR_POSITION": {
+        "type": "Degrees",
+        "description": "RAT propeller angular position"
+    },
+    "A32NX_RAT_PROPELLER_ANGLE": {
+        "type": "Percent over 100",
+        "description": "RAT propeller pitch angle (0 to 1 normalized)"
+    },
+    "A32NX_HYD_BRAKE_NORM_brake_side_PRESS": {
+        "type": "Psi",
+        "description": "Current pressure in brake slave circuit on green brake circuit {brake_side} LEFT RIGHT"
+    },
+    "A32NX_HYD_BRAKE_ALTN_brake_side_PRESS": {
+        "type": "Psi",
+        "description": "Current pressure in brake slave circuit on yellow alternate brake circuit {brake_side} LEFT RIGHT"
+    },
+    "A32NX_HYD_BRAKE_ALTN_ACC_PRESS": {
+        "type": "Psi",
+        "description": "Current pressure in brake accumulator on yellow alternate brake circuit"
+    },
+    "A32NX_HYD_EMERGENCY_GEN_RPM": {
+        "type": "Rpm",
+        "description": "Hydraulic emergency generator current rpm"
+    },
+    "A32NX_FWD_DOOR_CARGO_POSITION": {
+        "type": "Percent",
+        "description": "Real position of the forward cargo door"
+    },
+    "A32NX_FWD_DOOR_CARGO_LOCKED": {
+        "type": "Bool",
+        "description": "Forward cargo door is locked in closed position"
+    },
+    "A32NX_PARK_BRAKE_LEVER_POS": {
+        "type": "Bool",
+        "description": "Current position of the parking brake lever"
+    },
+    "A32NX_brake_side_BRAKE_PEDAL_INPUT": {
+        "type": "Percent",
+        "description": "Current position of the toe brake pedal animation {brake_side} LEFT RIGHT"
+    },
+    "A32NX_AUTOBRAKES_ARMED_MODE": {
+        "type": "Number",
+        "description": "Current autobrake mode 0: Autobrake not armed 1: Autobrake in LOW 2: Autobrake in MED 3: Autobrake in MAX"
+    },
+    "A32NX_AUTOBRAKES_ARMED_MODE_SET": {
+        "type": "Number",
+        "description": "Requests an autobrake mode -1: (technical state not requesting anything) 0: Disarm Autobrake 1: Set Autobrake to LOW 2: Set Autobrake to MED 3: Set Autobrake to MAX (if allowed)"
+    },
+    "A32NX_AUTOBRAKES_ACTIVE": {
+        "type": "Bool",
+        "description": "Autobrakes are braking"
+    },
+    "A32NX_AUTOBRAKES_DECEL_LIGHT": {
+        "type": "Bool",
+        "description": "Autobrakes are braking and reached the deceleration target"
+    },
+    "A32NX_OVHD_AUTOBRK_LOW_ON_IS_PRESSED": {
+        "type": "Bool",
+        "description": "Auto brake panel push button for LOW mode is pressed"
+    },
+    "A32NX_OVHD_AUTOBRK_MED_ON_IS_PRESSED": {
+        "type": "Bool",
+        "description": "Auto brake panel push button for MEDIUM mode is pressed"
+    },
+    "A32NX_OVHD_AUTOBRK_MAX_ON_IS_PRESSED": {
+        "type": "Bool",
+        "description": "Auto brake panel push button for MAX mode is pressed"
+    },
+    "A32NX_FM_LS_COURSE": {
+        "type": "** DEPRECATED ** Do not use.",
+        "description": "Number<Degrees | -1> Landing system course. Values, in priority order: Pilot entered course Database course Course received from LOC when LOC available -1 when invalid"
+    },
+    "A32NX_FMGC_FLIGHT_PHASE": {
+        "type": "Enum",
+        "description": "Holds the FMGCs current flight phase Use FMGC_FLIGHT_PHASES to check for phases (import NXFMGCFlightPhases from A32NX_Utils) Value | Meaning --| --PREFLIGHT | 0 TAKEOFF | 1 CLIMB | 2 CRUISE | 3 DESCENT | 4 APPROACH | 5 GOAROUND | 6 DONE | 7"
+    },
+    "A32NX_FLAPS_HANDLE_INDEX": {
+        "type": "Number",
+        "description": "Indicates the physical flaps handle position Value | Meaning --| --0 | 0 1 | 1 / 1+F 2 | 2 3 | 3 4 | 4"
+    },
+    "A32NX_FLAPS_HANDLE_PERCENT": {
+        "type": "Number",
+        "description": "Indicates the position of the flaps handler in percent Value | Position --| --0 | Retracted 1 | Full extension"
+    },
+    "A32NX_LEFT_FLAPS_POSITION_PERCENT": {
+        "type": "Percent",
+        "description": "Indicates the angle of the left flaps out of 40 degrees"
+    },
+    "A32NX_RIGHT_FLAPS_POSITION_PERCENT": {
+        "type": "Percent",
+        "description": "Indicates the angle of the right flaps out of 40 degrees"
+    },
+    "A32NX_LEFT_SLATS_POSITION_PERCENT": {
+        "type": "Percent",
+        "description": "Indicates the angle of the left slats out of 27 degrees"
+    },
+    "A32NX_RIGHT_SLATS_POSITION_PERCENT": {
+        "type": "Percent",
+        "description": "Indicates the angle of the right slats out of 27 degrees"
+    },
+    "A32NX_LEFT_FLAPS_ANGLE": {
+        "type": "Degrees",
+        "description": "The actual angle of the left flaps"
+    },
+    "A32NX_RIGHT_FLAPS_ANGLE": {
+        "type": "Degrees",
+        "description": "The actual angle of the right flaps"
+    },
+    "A32NX_LEFT_SLATS_ANGLE": {
+        "type": "Degrees",
+        "description": "The actual angle of the left slats"
+    },
+    "A32NX_RIGHT_SLATS_ANGLE": {
+        "type": "Degrees",
+        "description": "The actual angle of the right slats"
+    },
+    "A32NX_FLAPS_IPPU_ANGLE": {
+        "type": "Degrees",
+        "description": "The angle of the flaps IPPU synchro"
+    },
+    "A32NX_FLAPS_FPPU_ANGLE": {
+        "type": "Degrees",
+        "description": "The angle of the flaps FPPU synchro"
+    },
+    "A32NX_SLATS_IPPU_ANGLE": {
+        "type": "Degrees",
+        "description": "The angle of the slats IPPU synchro"
+    },
+    "A32NX_SLATS_FPPU_ANGLE": {
+        "type": "Degrees",
+        "description": "The angle of the slats FPPU synchro"
+    },
+    "A32NX_IS_FLAPS_MOVING": {
+        "type": "Boolean",
+        "description": "The flap surface is moving"
+    },
+    "A32NX_IS_SLAPS_MOVING": {
+        "type": "Boolean",
+        "description": "The slat surface is moving"
+    },
+    "A32NX_FLAPS_CONF_INDEX": {
+        "type": "Number",
+        "description": "Indicates the desired flap configuration index according to the table DO NOT USE IN SYSTEMS, USE SFCC INSTEAD Value | Meaning --| --0 | Conf0 1 | Conf1 2 | Conf1F 3 | Conf2 4 | Conf3 5 | ConfFull"
+    },
+    "A32NX_SPOILERS_ARMED": {
+        "type": "Bool",
+        "description": "Indicates if the ground spoiler handle is physically in the armed position. DO NOT USE IN SYSTEMS, USE FCDC INSTEAD Value | Meaning --| --0 | disarmed 1 | armed"
+    },
+    "A32NX_SPOILERS_HANDLE_POSITION": {
+        "type": "Number",
+        "description": "Indicates the physical handler position without arm/disarm. DO NOT USE IN SYSTEMS, USE FCDC INSTEAD Value | Position --| --0 | Retracted 1 | Full extension"
+    },
+    "A32NX_PERFORMANCE_WARNING_ACTIVE": {
+        "type": "Bool",
+        "description": "Indicates if performance warning is active Value | Meaning --| --0 | inactive 1 | active"
+    },
+    "A32NX_CHRONO_ELAPSED_TIME": {
+        "type": "Number",
+        "description": "Clock instrument CHR display time elapsed Value | Meaning --| --0 or greater | Seconds elapsed -1 | Empty value"
+    },
+    "A32NX_CHRONO_ET_ELAPSED_TIME": {
+        "type": "Number",
+        "description": "Clock instrument ET display time elapsed Value | Meaning --| --0 or greater | Seconds elapsed -1 | Empty value"
+    },
+    "A32NX_LIGHTING_PRESET_LOAD": {
+        "type": "Number",
+        "description": "ID for preset When set to >0 the corresponding preset will be loaded if defined Will be reset to 0 after loading is done"
+    },
+    "A32NX_LIGHTING_PRESET_SAVE": {
+        "type": "Number",
+        "description": "ID for preset When set to >0 the corresponding preset will be overwritten and saved to an ini file Will be reset to 0 after saving is done"
+    },
+    "A32NX_AIRCRAFT_PRESET_LOAD": {
+        "type": "Number",
+        "description": "ID for preset (1..5) When set to >0 the corresponding preset will be loaded if defined Will be reset to 0 after loading is done When set to 0 during loading will stop and cancel the loading process | Value | Meaning            | |-------|--------------------| | 1     | Cold & Dark        | | 2     | Powered            | | 3     | Ready for Pushback | | 4     | Ready for Taxi     | | 5     | Ready for Takeoff  |"
+    },
+    "A32NX_AIRCRAFT_PRESET_LOAD_PROGRESS": {
+        "type": "Number (0.0..1.0)",
+        "description": "While loading a preset this will contain the percentage of the total progress of loading"
+    },
+    "A32NX_AIRCRAFT_PRESET_LOAD_EXPEDITE": {
+        "type": "Bool",
+        "description": "When set to true the loading process will be expedited and the loading will be done as fast as possible"
+    },
+    "A32NX_PUSHBACK_SYSTEM_ENABLED": {
+        "type": "Boolean",
+        "description": "Read/Write Whether the pushback system is enabled Further conditions are \"Pushback Tug Attached\" and \"Aircraft On Ground\" otherwise the system has no impact on the aircraft"
+    },
+    "A32NX_PUSHBACK_SPD_FACTOR": {
+        "type": "Number",
+        "description": "Read/Write Determines the speed of the pushback tug from -100% to 100% {number} -1.0 1.0"
+    },
+    "A32NX_PUSHBACK_HDG_FACTOR": {
+        "type": "Number",
+        "description": "Read/Write Determines the heading of the pushback tug from max left (-1.0) to right (1.0) {number} -1.0 1.0  ## Non-Systems Related  `L:FBW_BUILD_EDITION` Enum Read-Only Current aircraft build edition (same meaning as package.json edition property). Description | Value -----------| Unknown      | 0 Stable       | 1 Development  | 2 Experimental | 3  `L:FBW_PILOT_SEAT` Enum Which seat the user/pilot occupies in the flight deck. | Value | Description | |-------|-------------| | 0     | Left Seat   | | 1     | Right Seat  |  `L:A32NX_EXT_PWR_AVAIL:{number}` Bool If ground power is avail or not {number} 1  # Deprecated"
+    },
+    "A32NX_DEVELOPER_STATE": {
+        "type": "Bool",
+        "description": "Persistent Enables developer-specific options like direct payload adjustments"
+    },
+    "A32NX_FWC_RADIO_AUTO_CALL_OUT_PINS": {
+        "type": "Flags",
+        "description": "Radio altitude automatic call out pin programs | Bit   | Meaning                   | |-------|---------------------------| | 0     | Two Thousand Five Hundred | | 1     | Twenty Five Hundred       | | 2     | Two Thousand              | | 3     | One Thousand              | | 4     | Five Hundred              | | 5     | Four Hundred              | | 6     | Three Hundred             | | 7     | Two Hundred               | | 8     | One Hundred               | | 9     | Fifty                     | | 10    | Forty                     | | 11    | Thirty                    | | 12    | Twenty                    | | 13    | Ten                       | | 14    | Five                      |"
+    },
+    "A32NX_LANDING_ID_POSITION": {
+        "type": "Percent",
+        "description": "Current position of the landing light animation {ID} 2 | LEFT 3 | RIGHT"
+    },
+    "A32NX_AIRLINER_CRUISE_ALTITUDE": {
+        "type": "Number (feet)",
+        "description": "Current cruise altitude of the aircraft note: this LVar was named incorrectly before missing the prefix:`AIRLINER_CRUISE_ALTITUDE`"
+    },
+    "A32NX_AIRLINER_TO_FLEX_TEMP": {
+        "type": "Number (degrees Celsius)",
+        "description": "Current takeoff flex temperature of the aircraft note: this LVar was named incorrectly before missing the prefix:`AIRLINER_TO_FLEX_TEMP`  ## Model/XML Interface  These variables are the interface between the 3D model and the systems/code."
+    },
+    "A32NX_OVHD_INTLT_ANN": {
+        "type": "Enum",
+        "description": "ANN LT TEST Switch On the Overhead Panel (25VU) Value | Meaning --| --0 | TEST 1 | BRT 2 | DIM"
+    },
+    "A32NX_MCDU_side_BRIGHTNESS": {
+        "type": "Boolean",
+        "description": "MCDU display emissive brightness. Non-linear to account for MSFS emissive behaviour, and max brightness can change from time to time with sim updates. {side} L R  ## EIS Display System"
+    },
+    "A32NX_FCU_EFIS_side_NAVAID_1|2_MODE": {
+        "type": "Enum",
+        "description": "Provides the selected NAVAID knob posiiton. For use systems, use the FCU discrete words instead. Value | Meaning --| --0 | Off 1 | ADF 2 | VOR {side} L R"
+    },
+    "A32NX_FCU_EFIS_side_EFIS_MODE": {
+        "type": "EFIS Mode knob position on related side",
+        "description": "{side} = L or R Enum Mode      | Value --      | --ROSE ILS  | 0 ROSE VOR  | 1 ROSE NAV  | 2 ARC       | 3 PLAN      | 4"
+    },
+    "A32NX_FCU_EFIS_side_EFIS_RANGE": {
+        "type": "EFIS Range knob position on related side",
+        "description": "{side} = L or R Enum Range | Value --  | --10    | 0 20    | 1 40    | 2 80    | 3 160   | 4 320   | 5"
+    },
+    "A32NX_FCU_EFIS_side_FILTER_LIGHT_ON": {
+        "type": "Bool",
+        "description": "If the related EFIS filter is selected, this Lvar is true. For use systems, use the FCU discrete words instead. {FILTER} None Constraints VOR/DMEs Waypoints NDBs Airports {side} L R"
+    },
+    "A32NX_EFIS_side_ND_FM_MESSAGE_FLAGS": {
+        "type": "Flag",
+        "description": "Provides a bitfield of the active FM messages to the NDs Bit | Meaning --| --0 | SelectTrueRef 1 | CheckNorthRef 2 | NavAccuracyDowngrade 3 | NavAccuracyUpgradeNoGps 4 | SpecifiedVorDmeUnavailble 5 | NavAccuracyUpgradeGps 6 | GpsPrimary 7 | MapPartlyDisplayed 8 | SetOffsideRangeMode 9 | OffsideFmControl 10 | OffsideFmWxrControl 11 | OffsideWxrControl 12 | GpsPrimaryLost 13 | RtaMissed 14 | BackupNav {side} L R"
+    },
+    "A32NX_EFIS_side_TO_WPT_BEARING": {
+        "type": "Degrees",
+        "description": "Provides the bearing to the active leg termination {side} L R"
+    },
+    "A32NX_EFIS_side_TO_WPT_DISTANCE": {
+        "type": "Nautical miles & > 0",
+        "description": "Provides the straight distance to the active leg termination {side} L R"
+    },
+    "A32NX_EFIS_side_TO_WPT_ETA": {
+        "type": "Seconds",
+        "description": "Provides the number of seconds to the active leg termination (to be converted to UTC by DMC) {side} L R"
+    },
+    "A32NX_EFIS_side_MRP_LAT": {
+        "type": "Arinc429<Degrees>",
+        "description": "Provides the latitude of the map reference point in the FMS to show on the ND {side} L R"
+    },
+    "A32NX_EFIS_side_MRP_LONG": {
+        "type": "Arinc429<Degrees>",
+        "description": "Provides the longitude of the map reference point in the FMS to show on the ND {side} L R"
+    },
+    "A32NX_PFD_MSG_SET_HOLD_SPEED": {
+        "type": "Bool",
+        "description": "Indicates if the SET HOLD SPEED message is shown on the PFD"
+    },
+    "A32NX_PFD_MSG_TD_REACHED": {
+        "type": "Bool",
+        "description": "Indicates if the T/D REACHED message is shown on the PFD"
+    },
+    "A32NX_PFD_MSG_CHECK_SPEED_MODE": {
+        "type": "Bool",
+        "description": "Indicates if the CHECK SPEED MODE message is shown on the PFD"
+    },
+    "A32NX_PFD_LINEAR_DEVIATION_ACTIVE": {
+        "type": "Bool",
+        "description": "Indicates if the linear deviation is shown on the PFD"
+    },
+    "A32NX_PFD_TARGET_ALTITUDE": {
+        "type": "Feet",
+        "description": "Indicates the current target altitude in the DES mode. This is an indicated altitude and not a pressure altitude This is used to compute a linear deviation"
+    },
+    "A32NX_PFD_VERTICAL_PROFILE_LATCHED": {
+        "type": "Boolean",
+        "description": "Indicates whether to show the latch symbol on the PFD with the deviation indicator"
+    },
+    "A32NX_PFD_SHOW_SPEED_MARGINS": {
+        "type": "Boolean",
+        "description": "Indicates whether speed margins are shown on the PFD in DES mode. Only for FMS -> FG communication"
+    },
+    "A32NX_PFD_UPPER_SPEED_MARGIN": {
+        "type": "Knots",
+        "description": "Indicates the speed for the upper speed margin limit in DES mode. Only for FMS -> FG communication"
+    },
+    "A32NX_PFD_LOWER_SPEED_MARGIN": {
+        "type": "Knots",
+        "description": "Indicates the speed for the lower speed margin limit in DES mode. Only for FMS -> FG communication"
+    },
+    "A32NX_ISIS_LS_ACTIVE": {
+        "type": "Bool",
+        "description": "Indicates whether LS scales are shown on the ISIS Toggled by `H:A32NX_ISIS_LS_PRESSED`"
+    },
+    "A32NX_ISIS_BUGS_ACTIVE": {
+        "type": "Bool",
+        "description": "Indicates whether bugs page is shown on the ISIS Toggled by `H:A32NX_ISIS_BUGS_PRESSED`"
+    },
+    "A32NX_BOARDING_STARTED_BY_USR": {
+        "type": "Bool",
+        "description": "Indicates current pax/cargo loading state"
+    },
+    "A32NX_AIRFRAME_ZFW_DESIRED": {
+        "type": "Kg",
+        "description": "Indicates the desired ZFW when boarding"
+    },
+    "A32NX_AIRFRAME_ZFW_CG_PERCENT_MAC_DESIRED": {
+        "type": "% MAC",
+        "description": "Indicates the desired ZFW CoG when boarding"
+    },
+    "A32NX_PAX_station": {
+        "type": "Bitwise Field",
+        "description": "Indicates the current pax in the selected rows (max 53 bits) {station} A B C D"
+    },
+    "A32NX_PAX_station_DESIRED": {
+        "type": "Bitwise Field",
+        "description": "Indicates the target layout of passengers in the station (max 53) {station} A B C D"
+    },
+    "A32NX_PAX": {
+        "type": "Bitwise Field",
+        "description": "Indicates the current layout of passengers in the station (max 53) {station} A B C D"
+    },
+    "A32NX_CARGO_station_DESIRED": {
+        "type": "Number (Kilograms)",
+        "description": "Indicates the targeted weight of the station in kilograms {station} FWD_BAGGAGE AFT_CONTAINER AFT_BAGGAGE AFT_BULK_LOOSE"
+    },
+    "A32NX_CARGO": {
+        "type": "Number (Kilograms)",
+        "description": "Indicates the current weight of the station in kilograms {station} FWD_BAGGAGE AFT_CONTAINER AFT_BAGGAGE AFT_BULK_LOOSE"
+    },
+    "A32NX_MCDU_side_ANNUNC_annunciator": {
+        "type": "Boolean",
+        "description": "Indicates whether the annunciator light on the MCDU is lit {side} L R {annunciator} FAIL FMGC MCDU_MENU FM1 IND RDY BLANK FM2  ## ADIRS  In the variables below, {number} should be replaced with one item in the set: { 1, 2, 3 }, unless declared otherwise."
+    },
+    "A32NX_CONFIG_ADIRS_IR_ALIGN_TIME": {
+        "type": "Enum",
+        "description": "Input for: systems.wasm The configured Inertial Reference system align time. Description | Value --| --Real (affected by latitude) | 0 Instant (0 s) | 1 Fast (90 s) | 2"
+    },
+    "A32NX_OVHD_ADIRS_ON_BAT_IS_ILLUMINATED": {
+        "type": "Bool",
+        "description": "Whether the ON BAT indication should illuminate."
+    },
+    "A32NX_ATT_HDG_SWITCHING_KNOB": {
+        "type": "ATT HDG",
+        "description": "Position (0-2) 0 is CAPT, 1 is NORM, 2 is F/O"
+    },
+    "A32NX_AIR_DATA_SWITCHING_KNOB": {
+        "type": "AIR DATA",
+        "description": "Position (0-2) 0 is CAPT, 1 is NORM, 2 is F/O"
+    },
+    "A32NX_ADIRS_REMAINING_IR_ALIGNMENT_TIME": {
+        "type": "Deprecated: use A32NX_ADIRS_IR_{number}_MAINT_WORD instead.",
+        "description": "Seconds The remaining alignment duration. Zero seconds when the system is aligned or the system is not aligning."
+    },
+    "A32NX_PUSH_TRUE_REF": {
+        "type": "Bool",
+        "description": "True reference pushbutton status  ## Radio Receivers"
+    },
+    "A32NX_RADIO_RECEIVER_USAGE_ENABLED": {
+        "type": "Bool",
+        "description": "Whether or not the calculated ILS signals shall be used"
+    },
+    "A32NX_RADIO_RECEIVER_LOC_IS_VALID": {
+        "type": "Bool",
+        "description": "Indicates if the localizer signal is valid"
+    },
+    "A32NX_RADIO_RECEIVER_LOC_DISTANCE": {
+        "type": "Number in nautical miles",
+        "description": "Indicates the distance from the localizer"
+    },
+    "A32NX_RADIO_RECEIVER_LOC_DEVIATION": {
+        "type": "Number in degrees",
+        "description": "If A32NX_RADIO_RECEIVER_USAGE_ENABLED == 0 it contains the deviation from the sim If A32NX_RADIO_RECEIVER_USAGE_ENABLED == 1 it contains calculated LOC deviation"
+    },
+    "A32NX_RADIO_RECEIVER_GS_IS_VALID": {
+        "type": "Bool",
+        "description": "Indicates if the glide slope signal is valid"
+    },
+    "A32NX_RADIO_RECEIVER_GS_DEVIATION": {
+        "type": "Number in degrees",
+        "description": "Deviation from glide slope If A32NX_RADIO_RECEIVER_USAGE_ENABLED == 0 it contains the deviation from the sim If A32NX_RADIO_RECEIVER_USAGE_ENABLED == 1 it contains calculated LOC deviation  ## Flight Management System"
+    },
+    "A32NX_FM_ENABLE_APPROACH_PHASE": {
+        "type": "Bool",
+        "description": "Indicates whether the FMS should switch to APPROACH phase. **WARNING:** This is temporary and internal. Do not use."
+    },
+    "A32NX_FMGC_side_LDEV_REQUEST": {
+        "type": "Bool",
+        "description": "Indicates whether the FMGC is requesting L/DEV to be displayed on the PFD {side} L R"
+    },
+    "A32NX_FMGC_L_RNP": {
+        "type": "Number (nautical miles)",
+        "description": "The active Required Navigation Performance {side} L R  `A32NX_FM{number}_BACKBEAM_SELECTED` Bool Indicates to the FG that a localiser back beam is tuned."
+    },
+    "A32NX_FM_LATERAL_FLIGHTPLAN_AVAIL": {
+        "type": "Boolean",
+        "description": "Indicates to the FG if the FM lateral flight plan is valid, for lateral managed modes (NAV). Internal to FM/FG communication."
+    },
+    "A32NX_FG_PHI_LIMIT": {
+        "type": "Number in Degrees",
+        "description": "Indicates the current bank limit requested by the FM Always positive"
+    },
+    "A32NX_FG_CROSS_TRACK_ERROR": {
+        "type": "Number in nm",
+        "description": "Used for laternal guidance in mode NAV Error from desired path, -ve to the right of track"
+    },
+    "A32NX_FG_TRACK_ANGLE_ERROR": {
+        "type": "Number in degrees",
+        "description": "Used for laternal guidance in mode NAV Error from desired heading or track, -ve when clockwise of desired track"
+    },
+    "A32NX_FG_PHI_COMMAND": {
+        "type": "Number in degrees",
+        "description": "Used for laternal guidance in mode NAV Bank angle command"
+    },
+    "A32NX_FM_VERTICAL_PROFILE_AVAIL": {
+        "type": "Boolean",
+        "description": "Indicates to the FG if the FM vertical flight profile is valid, for vertical managed modes. Internal to FM/FG communication"
+    },
+    "A32NX_FG_REQUESTED_VERTICAL_MODE": {
+        "type": "Enum",
+        "description": "Indicates the requested vertical mode in DES Possible values: Mode | Value --| --NONE | 0 SPEED_THRUST | 1 VPATH_THRUST | 2 VPATH_SPEED | 3 FPA_SPEED | 4 VS_SPEED | 5"
+    },
+    "A32NX_FG_ALTITUDE_CONSTRAINT": {
+        "type": "Number in ft",
+        "description": "Used for managed climb/descend Indicates an altitude constraint to follow Internal to FM/FG communication, other avionics should use the FG bus var"
+    },
+    "A32NX_FG_TARGET_ALTITUDE": {
+        "type": "Number in ft",
+        "description": "Used for vertical guidance in mode DES Indicates the target altitude"
+    },
+    "A32NX_FG_TARGET_VERTICAL_SPEED": {
+        "type": "Number in fpm or degrees depending on requested mode",
+        "description": "Used for vertical guidance in mode DES Indicates the target vertical speed"
+    },
+    "A32NX_FG_RNAV_APP_SELECTED": {
+        "type": "Boolean",
+        "description": "Used for FINAL mode selection Indicates if an RNAV approach is selected. If it is true, pressing the APPR button results in the FINAL mode being armed, instead of G/S and LOC"
+    },
+    "A32NX_FG_FINAL_CAN_ENGAGE": {
+        "type": "Boolean",
+        "description": "Indicates if the FINAL vertical mode can engage FINAL mode will engage if : This Simvar is true NAV mode is engaged FINAL mode is armed"
+    },
+    "A32NX_SpeedPreselVal": {
+        "type": "Number",
+        "description": "Indicates the preselected speed value, -1 if no value is preselected Internal to FM/FG communication, other avionics should use the FG bus var"
+    },
+    "A32NX_MachPreselVal": {
+        "type": "Number",
+        "description": "Indicates the preselect mach value, -1 if no value is preselected Internal to FM/FG communication, other avionics should use the FG bus var  ## Autothrust System"
+    },
+    "A32NX_3D_THROTTLE_LEVER_POSITION_index": {
+        "type": "Number",
+        "description": "Anmiation position of the throttles in 3D model Position | Value --| --FULL REVERSE | 0 IDLE | 25 CLB | 50 FLX/MCT | 75 TOGA | 100"
+    },
+    "A32NX_AUTOTHRUST_DISABLED": {
+        "type": "Bool",
+        "description": "Indicates if ATHR was disabled by pressing ATHR disconnect buttons longer than 15s"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_TYPE": {
+        "type": "Enum",
+        "description": "Indicates the type of current thrust limit Mode | Value --| --NONE | 0 CLB | 1 MCT | 2 FLEX | 3 TOGA | 4 REVERSE | 5"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_REV": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1 for REV"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_IDLE": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1 for IDLE"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_CLB": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1 for CLB"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_MCT": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1 for MCT"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_FLX": {
+        "type": "Number (% N1)",
+        "description": "If FLX is not active the value 0 is provided Indicates the thrust limit N1 for FLX"
+    },
+    "A32NX_AUTOTHRUST_THRUST_LIMIT_TOGA": {
+        "type": "Number (% N1)",
+        "description": "Indicates the thrust limit N1 for TOGA"
+    },
+    "A32NX_AUTOTHRUST_DISCONNECT": {
+        "type": "Bool",
+        "description": "Indicates if the red disconnect button is pressed on the thrust lever State | Value --| --NOT PRESSED | 0 PRESSED | 1  ## Throttle Mapping System"
+    },
+    "A32NX_LOGGING_THROTTLES_ENABLED": {
+        "type": "Bool",
+        "description": "Indicates if logging of throttle events is enabled"
+    },
+    "A32NX_THROTTLE_MAPPING_INCREMENT_NORMAL": {
+        "type": "Number",
+        "description": "Indicates the increment being used for normal key events"
+    },
+    "A32NX_THROTTLE_MAPPING_INCREMENT_SMALL": {
+        "type": "Number",
+        "description": "Indicates the increment being used for small key events  ## Engine and FADEC System"
+    },
+    "A32NX_ENGINE_CYCLE_TIME": {
+        "type": "Number (seconds)",
+        "description": "Sum of Engine 1 & 2 cycle times to detect when engines are alive (pause/ slew management)"
+    },
+    "A32NX_ENGINE_IMBALANCE": {
+        "type": "Number (encoded)",
+        "description": "Encoded engine imbalance values. Use the algorithm in the code `LVarEncoder::extract8Int8FromDouble` to decode `fbw-common/src/wasm/cpp-msfs-framework/lib/lvar_encoder.hpp` Parameters for encoding are: 1 = Engine Number of the engine which is imbalanced 2 = Engine EGT imbalance 3 = Engine FF imbalance 4 = Engine N2 imbalance 5 = Engine Oil Quantity imbalance 6 = Engine Oil Pressure imbalance 7 = Engine Oil Idle Pressure imbalance 8 = Engine Oil Temperature imbalance"
+    },
+    "A32NX_ENGINE_IDLE_N1": {
+        "type": "Number (% N1)",
+        "description": "Expected idle N1 as a function of temperature and pressure"
+    },
+    "A32NX_ENGINE_IDLE_N2": {
+        "type": "Number (% N2)",
+        "description": "Expected idle N2 as a function of temperature and pressure"
+    },
+    "A32NX_ENGINE_IDLE_EGT": {
+        "type": "Number (degrees Celsius)",
+        "description": "Expected idle EGT as a function of temperature and pressure"
+    },
+    "A32NX_ENGINE_IDLE_FF": {
+        "type": "Number (Kg/h)",
+        "description": "Expected idle fuel flow as a function of temperature and pressure"
+    },
+    "A32NX_FADEC_IGNITER_A_ACTIVE_ENGindex": {
+        "type": "Boolean",
+        "description": "State of igniter A on engine {index}"
+    },
+    "A32NX_FADEC_IGNITER_B_ACTIVE_ENGindex": {
+        "type": "Boolean",
+        "description": "State of igniter B on engine {index}"
+    },
+    "A32NX_FUEL_LEFT_PRE": {
+        "type": "Number (lbs)",
+        "description": "Previous deltaTime fuel for the main left tank"
+    },
+    "A32NX_FUEL_RIGHT_PRE": {
+        "type": "Number (lbs)",
+        "description": "Previous deltaTime fuel for the main right tank"
+    },
+    "A32NX_FUEL_AUX_LEFT_PRE": {
+        "type": "Number (lbs)",
+        "description": "Previous deltaTime fuel for the aux left tank"
+    },
+    "A32NX_FUEL_AUX_RIGHT_PRE": {
+        "type": "Number (lbs)",
+        "description": "Previous deltaTime fuel for the aux right tank"
+    },
+    "A32NX_FUEL_CENTER_PRE": {
+        "type": "Number (lbs)",
+        "description": "Previous deltaTime fuel for the center tank"
+    },
+    "A32NX_COND_id_TEMP": {
+        "type": "Degree Celsius",
+        "description": "Temperature as measured in each of the cabin zones and cockpit {id} CKPT FWD AFT"
+    },
+    "A32NX_COND_id_DUCT_TEMP": {
+        "type": "Degree Celsius",
+        "description": "Temperature of trim air coming out of the ducts in the cabin and cockpit {id} CKPT FWD AFT"
+    },
+    "A32NX_COND_PACK_FLOW_index": {
+        "type": "Percent",
+        "description": "Percentage flow coming out of each pack {1 or 2} into the cabin (LO: 80%, NORM: 100%, HI: 120%)"
+    },
+    "A32NX_COND_id_TRIM_AIR_VALVE_POSITION": {
+        "type": "Percentage",
+        "description": "Percentage opening of each trim air valve (hot air) {id} CKPT FWD AFT"
+    },
+    "A32NX_OVHD_COND_id_SELECTOR_KNOB": {
+        "type": "Percentage",
+        "description": "Percent rotation of the overhead temperature selectors for each of the cabin zones To transform the value into degree celsius use this formula: this * 0.04 + 18 {id} CKPT FWD AFT"
+    },
+    "A32NX_OVHD_COND_HOT_AIR_PB_IS_ON": {
+        "type": "Bool",
+        "description": "True if the hot air pushbutton is pressed in the on position (no white light)"
+    },
+    "A32NX_OVHD_COND_HOT_AIR_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "True if the hot air trim system has a fault"
+    },
+    "A32NX_PRESS_MAN_EXCESSIVE_CABIN_ALTITUDE": {
+        "type": "Bool",
+        "description": "Analog signal sent by the manual partition of CPC1. True when FWC condition for \"EXCESS CAB ALT\" is met."
+    },
+    "A32NX_PRESS_MAN_CABIN_ALTITUDE": {
+        "type": "Feet",
+        "description": "As above, but analog system transmitted by the manual partition of CPC1"
+    },
+    "A32NX_PRESS_MAN_CABIN_DELTA_PRESSURE": {
+        "type": "PSI",
+        "description": "As above, but analog system transmitted by the manual partition of CPC1"
+    },
+    "A32NX_PRESS_MAN_CABIN_VS": {
+        "type": "FPM",
+        "description": "As above, but analog system transmitted by the manual partition of CPC1"
+    },
+    "A32NX_PRESS_MAN_OUTFLOW_VALVE_OPEN_PERCENTAGE": {
+        "type": "Percent",
+        "description": "As above, but analog system transmitted by the manual partition of CPC1"
+    },
+    "A32NX_PRESS_SAFETY_VALVE_OPEN_PERCENTAGE": {
+        "type": "Percent",
+        "description": "Percent open of the cabin pressure safety valves"
+    },
+    "A32NX_PRESS_EXCESS_CAB_ALT": {
+        "type": "Bool",
+        "description": "**Deprecated in A32NX** True when FWC condition for \"EXCESS CAB ALT\" is met"
+    },
+    "A32NX_PRESS_EXCESS_RESIDUAL_PR": {
+        "type": "Bool",
+        "description": "True when FWC condition for \"EXCES RESIDUAL PR\" is met"
+    },
+    "A32NX_PRESS_LOW_DIFF_PR": {
+        "type": "Bool",
+        "description": "**Deprecated in A32NX** True when FWC condition for \"LO DIFF PR\" is met"
+    },
+    "A32NX_OVHD_PRESS_LDG_ELEV_KNOB": {
+        "type": "Feet",
+        "description": "Manual landing elevation as selected on the overhead LDG ELEV knob"
+    },
+    "A32NX_OVHD_PRESS_MAN_VS_CTL_SWITCH": {
+        "type": "Number",
+        "description": "0 if switch is in up position, 1 if switch is neutral, 2 if switch is down."
+    },
+    "A32NX_OVHD_PRESS_MODE_SEL_PB_IS_AUTO": {
+        "type": "Bool",
+        "description": "True if MODE SEL overhead pushbutton is depressed (in auto mode)"
+    },
+    "A32NX_OVHD_PRESS_MODE_SEL_PB_HAS_FAULT": {
+        "type": "Bool",
+        "description": "True only when both Cabin Pressure Controller systems are faulty."
+    },
+    "A32NX_OVHD_PRESS_DITCHING_PB_IS_ON": {
+        "type": "Bool",
+        "description": "True if DITCHING pushbutton is pressed"
+    },
+    "A32NX_OVHD_VENT_CAB_FANS_PB_IS_ON": {
+        "type": "Bool",
+        "description": "True if CAB FANS pushbutton is in the on position (no white light)  ## Pneumatic"
+    },
+    "A32NX_ASU_TURNED_ON:": {
+        "type": "Turns the Air Starter Unit on or off",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_APU_BLEED_CONTAINER_PRESSURE:": {
+        "type": "Indicates the APU internal bleed pressure.",
+        "description": "PSI absolute"
+    },
+    "A32NX_PNEU_XBLEED_VALVE_FULLY_OPEN:": {
+        "type": "Indicates whether the cross bleed air valve is fully open",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_XBLEED_VALVE_FULLY_CLOSED:": {
+        "type": "Indicates whether the cross bleed air valve is fully closed",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_SYSTEM_ON:": {
+        "type": "Indicates wheter the wing anti ice system is on",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_HAS_FAULT:": {
+        "type": "Indicates wheter the wing anti ice system has a fault",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_SYSTEM_SELECTED:": {
+        "type": "Indicates wheter the wing anti ice p/b is ON",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_GROUND_TIMER:": {
+        "type": "Reports the duration in seconds of the wing anti ice ground relay (4DL)",
+        "description": "Duration"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_1_CONSUMER_PRESSURE:": {
+        "type": "Pressure in the left wing anti ice pipe",
+        "description": "PSI"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_2_CONSUMER_PRESSURE:": {
+        "type": "Pressure in the right wing anti ice pipe",
+        "description": "PSI"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_1_CONSUMER_TEMPERATURE:": {
+        "type": "Temperature in the left wing anti ice pipe",
+        "description": "Degree celsius"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_2_CONSUMER_TEMPERATURE:": {
+        "type": "Temperature in the right wing anti ice pipe",
+        "description": "Degree celsius"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_1_VALVE_CLOSED:": {
+        "type": "Indicates whether the left wing anti ice valve is closed",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_2_VALVE_CLOSED:": {
+        "type": "Indicates whether the right wing anti ice valve is closed",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_1_LOW_PRESSURE:": {
+        "type": "Low Pressure warning in the left wing anti ice valve",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_2_LOW_PRESSURE:": {
+        "type": "Low Pressure warning in the right wing anti ice valve",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_1_HIGH_PRESSURE:": {
+        "type": "High Pressure warning in the left wing anti ice valve",
+        "description": "Bool"
+    },
+    "A32NX_PNEU_WING_ANTI_ICE_2_HIGH_PRESSURE:": {
+        "type": "High Pressure warning in the right wing anti ice valve",
+        "description": "Bool"
+    },
+    "A32NX_BUTTON_OVHD_ANTI_ICE_ENG_1_POSITION:": {
+        "type": "Indicates whether the overhead ENG ANTI ICE button is illuminated for engine 1",
+        "description": "Bool"
+    },
+    "A32NX_BUTTON_OVHD_ANTI_ICE_ENG_2_POSITION:": {
+        "type": "Indicates whether the overhead ENG ANTI ICE button is illuminated for engine 2",
+        "description": "Bool ## Autoflight (ATA 22)  ### Flight Management and Guidance Computer (FMGC, Flight Guidance Section)"
+    },
+    "A32NX_STICK_LOCK_ACTIVE": {
+        "type": "Indicates if the stick lock is active (when AP engaged).",
+        "description": "Currently used only for sounds. Boolean"
+    },
+    "A32NX_AP_INSTINCTIVE_DISCONNECT": {
+        "type": "Indicates if the AP instinctive disconnect signal to the FMGC or FWC is high or low",
+        "description": "Boolean"
+    },
+    "A32NX_ATHR_INSTINCTIVE_DISCONNECT": {
+        "type": "Indicates if the A/THR instinctive disconnect signal to the FMGC or FWC is high or low",
+        "description": "Boolean  ### Flight Management and Guidance Computer (FMGC, Flight Management Section)  `L:A32NX_FM{number}_ACC_ALT` ARINC429<number> (feet MSL) The acceleration altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_DECISION_HEIGHT` ARINC429<number> The decision height for an approach in feet, as entered on the PERF page. Value | Meaning --| --0 or greater | The decision height in feet -1 | The pilot has not entered a decision height -2 | The special value \"NO\" has been explicitly entered as the decision deight {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_DEST_LAT` Destination latitude Arinc429<Angle> {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_DEST_LONG` Destination longitude Arinc429<Angle> {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_DISCRETE_WORD_2` Arinc429<Discrete> {number} 1 captain's side FMGC 2 f/o's side FMGC | Bit |            Description            | |:---:|:---------------------------------:| | 13  | Takeoff flap conf 0               | | 14  | Takeoff flap conf 1               | | 15  | Takeoff flap conf 2               | | 16  | Takeoff flap conf 3               |  `L:A32NX_FM{number}_DISCRETE_WORD_3` Arinc429<Discrete> {number} 1 captain's side FMGC 2 f/o's side FMGC | Bit |            Description            | |:---:|:---------------------------------:| | 16  | V1/Vr/V2 disagree                 | | 17  | Takeoff speeds too low            | | 18  | Takeoff speeds not inserted       |  `L:A32NX_FM{number}_EO_ACC_ALT` ARINC429<number> (feet MSL) The engine out acceleration altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{1 | 2}_FLIGHT_NUMBER_{1 | 2 | 3 | 4}` Arinc429<ISO5> The flight number encoded as 4 ISO5 words, up to 7 chars total.  `L:A32NX_FM{number}_LANDING_ELEVATION` ARINC429<number> (feet MSL) The landing elevation at the active destination {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_MINIMUM_DESCENT_ALTITUDE` ARINC429<number> The minimum descent altitude for a non-precision approach in feet, as entered on the PERF page. {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_MISSED_ACC_ALT` ARINC429<number> (feet MSL) The missed approach acceleration altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_MISSED_EO_ACC_ALT` ARINC429<number> (feet MSL) The missed approach engine out acceleration altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_MISSED_THR_RED_ALT` ARINC429<number> (feet MSL) The missed approach thrust reduction altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_NAV_DISCRETE` Arinc429<Discrete> {number} 1 captain's side FMGC 2 f/o's side FMGC (currently not written) | Bit |     Description     | |:---:|:-------------------:| | 11  | VOR 1 manually tuned | | 12  | VOR 2 manually tuned | | 13  | ADF 1 manually tuned | | 14  | ADF 2 manually tuned | | 15  | MMR 1 manually tuned | | 16  | MMR 2 manually tuned |  `L:A32NX_FM{number}_THR_RED_ALT` ARINC429<number> (feet MSL) The thrust reduction altitude {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_TO_PITCH_TRIM` Takeoff pitch trim set by the pilot on the PERF TO MCDU page Arinc429<Angle> {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_TRANS_ALT` Arinc429<number> The transition altitude at the origin in feet {number} 1 captain's side FMGC 2 f/o's side FMGC  `L:A32NX_FM{number}_TRANS_LVL` Arinc429<number> The transition level the destination as a flight level {number} 1 captain's side FMGC 2 f/o's side FMGC  ### Flight Control Unit (FCU)"
+    },
+    "A32NX_FCU_HEALTHY": {
+        "type": "If the FCU is healthy in one or more channels.",
+        "description": "Boolean  #### FCU EFIS CP"
+    },
+    "A32NX_FCU_EFIS_side_BARO_IS_INHG": {
+        "type": "Baro unit selector position on related side",
+        "description": "{side} = L or R Bool"
+    },
+    "A32NX_FCU_EFIS_side_DISPLAY_BARO_VALUE_MODE": {
+        "type": "Baro value mode for display on related side",
+        "description": "{side} = L or R Number Mode | Value --  | --STD   | 0 HPA   | 1 INHG  | 2"
+    },
+    "A32NX_FCU_EFIS_side_DISPLAY_BARO_VALUE": {
+        "type": "Baro setting for display on related side",
+        "description": "{side} = L or R Number"
+    },
+    "A32NX_FCU_EFIS_side_DISPLAY_BARO_MODE": {
+        "type": "Baro mode for display on related side",
+        "description": "{side} = L or R Number Mode | Value --  | --STD   | 0 QNH   | 1 QFE   | 2"
+    },
+    "A32NX_FCU_EFIS_side_button_LIGHT_ON": {
+        "type": "{button} Button light status on related side",
+        "description": "{side} = L or R {button} = FD, LS, CSTR, WPT, VORD, NDB, ARPT Bool   #### FCU AFS CP"
+    },
+    "A32NX_FCU_ALT_INCREMENT_1000": {
+        "type": "Position of the ALT Increment switch",
+        "description": "Bool"
+    },
+    "A32NX_FCU_button_LIGHT_ON": {
+        "type": "{button} Button light status",
+        "description": "{button} = AP_1, AP_2, ATHR, LOC, EXPED, APPR, ARPT Bool"
+    },
+    "A32NX_FCU_AFS_DISPLAY_TRK_FPA_MODE": {
+        "type": "TRK/FPA mode active for AFS display",
+        "description": "Bool"
+    },
+    "A32NX_FCU_AFS_DISPLAY_MACH_MODE": {
+        "type": "Mach mode active for AFS display",
+        "description": "Bool"
+    },
+    "A32NX_FCU_AFS_DISPLAY_name_VALUE": {
+        "type": "Value of the {name} for display",
+        "description": "{name} = SPD_MACH, HDG_TRK, ALT, VS_FPA Number"
+    },
+    "A32NX_FCU_AFS_DISPLAY_name_DASHES": {
+        "type": "Is {name} dashes for display",
+        "description": "{name} = SPD_MACH, HDG_TRK, VS_FPA Bool"
+    },
+    "A32NX_FCU_AFS_DISPLAY_name_MANAGED": {
+        "type": "Is {name} managed dot active for display",
+        "description": "{name} = SPD_MACH, HDG_TRK, LVL_CH Bool  #### FCU Output Bus"
+    },
+    "A32NX_FCU_SELECTED_HEADING": {
+        "type": "The FCU selected heading. NCD if dashes or TRK/FPA mode.",
+        "description": "Arinc429<Degrees>"
+    },
+    "A32NX_FCU_SELECTED_ALTITUDE": {
+        "type": "The FCU selected altitude.",
+        "description": "Arinc429<Feet>"
+    },
+    "A32NX_FCU_SELECTED_AIRSPEED": {
+        "type": "The FCU selected CAS. NCD if dashes.",
+        "description": "Arinc429<Knots>"
+    },
+    "A32NX_FCU_SELECTED_VERTICAL_SPEED": {
+        "type": "The FCU selected V/S. NCD if dashes or TRK/FPA mode.",
+        "description": "Arinc429<fpm>"
+    },
+    "A32NX_FCU_SELECTED_TRACK": {
+        "type": "The FCU selected track. NCD if dashes or HDG/VS mode.",
+        "description": "Arinc429<Degrees>"
+    },
+    "A32NX_FCU_SELECTED_FPA": {
+        "type": "The FCU selected FPA. NCD if dashes or HDG/VS mode.",
+        "description": "Arinc429<Degrees>"
+    },
+    "A32NX_FCU_ATS_DISCRETE_WORD": {
+        "type": "FCU Autothrust System discrete word. Retransmitted from FMGC that has priority.",
+        "description": "Arinc429<Discrete> See equivalent FMGC word for bits"
+    },
+    "A32NX_FCU_ATS_FMA_DISCRETE_WORD": {
+        "type": "FCU Autothrust System FMA discrete word. Retransmitted from FMGC that has priority.",
+        "description": "Arinc429<Discrete> See equivalent FMGC word for bits"
+    },
+    "A32NX_FCU_side_EIS_DISCRETE_WORD_1": {
+        "type": "FCU {side} EIS Discrete word 1.",
+        "description": "{side} = LEFT, RIGHT Arinc429<Discrete>   | Bit |            Description            | |:---:|:---------------------------------:| | 11  | Baro is inHG                      | |12-24| Spare                             | | 25  | EFIS Range 10                     | | 26  | EFIS Range 20                     | | 27  | EFIS Range 40                     | | 28  | EFIS Range 80                     | | 29  | EFIS Range 160                    | |     | EFIS Range 320 if 25-29 false     |"
+    },
+    "A32NX_FCU_side_EIS_DISCRETE_WORD_2": {
+        "type": "FCU {side} EIS Discrete word 2.",
+        "description": "{side} = LEFT, RIGHT Arinc429<Discrete>   | Bit |            Description            | |:---:|:---------------------------------:| | 11  | EFIS mode PLAN                    | | 12  | EFIS mode ARC                     | | 13  | EFIS mode ROSE NAV                | | 14  | EFIS mode ROSE VOR                | | 15  | EFIS mode ROSE ILS                | | 16  | Spare                             | | 17  | EFIS Filter CSTR                  | | 18  | EFIS Filter WPT                   | | 19  | EFIS Filter VORD                  | | 20  | EFIS Filter NDB                   | | 21  | EFIS Filter ARPT                  | | 22  | LS Button On                      | | 23  | FD Button Off                     | | 24  | NAVAID 1 ADF                      | | 25  | NAVAID 2 ADF                      | | 26  | NAVAID 1 VOR                      | | 27  | NAVAID 2 VOR                      | | 28  | Baro on STD                       | | 29  | Baro on QNH                       |"
+    },
+    "A32NX_FCU_side_EIS_BARO": {
+        "type": "FCU {side} EIS Baro correction in inHg. Remains at previous value if in STD, and",
+        "description": "is at the inHG value corresponding to the selected hPa value if in hPa {side} = LEFT, RIGHT Arinc429<inHg>"
+    },
+    "A32NX_FCU_side_EIS_BARO_HPA": {
+        "type": "FCU {side} EIS Baro correction in hPa. Remains at previous value if in STD, and",
+        "description": "is at the hPa value corresponding to the selected inHG value if in inHG {side} = LEFT, RIGHT Arinc429<hPa>"
+    },
+    "A32NX_FCU_DISCRETE_WORD_1": {
+        "type": "FCU Discrete word 1. All pull/push bits are MTRIG processed for 0.1s to enabled",
+        "description": "async processing in other devices (FGMC, FWC etc.). Value changed bits are MTRIG processed for 0.5s. Arinc429<Discrete>   | Bit |            Description            | |:---:|:---------------------------------:| | 11  | SPD/MACH Pushed                   | | 12  | SPD/MACH Pulled                   | | 13  | ALT Value changed                 | | 14  | VS/FPA Value changed              | | 15  | SPD/MACH Value changed            | | 16  | VS/FPA Pushed                     | | 17  | ALT Pushed                        | | 18  | ALT Pulled                        | | 19  | VS/FPA pulled                     | | 20  | Metric alt active                 | | 21  | SPD/MACH Switching button pushed  | | 22  | EXPED Pushed                      | | 23  | APPR Pushed                       | | 24  | HDG/VS Active                     | | 25  | TRK/FPA Active                    | |26-29| Spare                             |"
+    },
+    "A32NX_FCU_DISCRETE_WORD_2": {
+        "type": "FCU Discrete word 2. All pull/push bits are MTRIG processed for 0.1s to enabled",
+        "description": "async processing in other devices (FGMC, FWC etc.). Value changed bits are MTRIG processed for 0.5s. Arinc429<Discrete>   | Bit |            Description            | |:---:|:---------------------------------:| | 11  | HDG/TRK Pushed                    | | 12  | HDG/TRK Pulled                    | | 13  | LOC Pushed                        | | 14  | HDG/TRK Value changed             | |15-19| Spare                             | | 20  | FMGC 1 selected (has priority)    | | 21  | FMGC 2 selected (has priority)    | |22-23| Spare                             | | 24  | FCU 1 Healthy                     | | 25  | FCU 2 Healthy                     | | 26  | FD 1 Button off                   | | 27  | FD 2 Button off                   | |28-29| Spare                             |  ### Flight Augmentation Computer (FAC)"
+    },
+    "A32NX_FLIGHT_CONTROLS_TRACKING_MODE": {
+        "type": "Bool",
+        "description": "Indicates if tracking mode is active: flight controls are coming from external source (ie: YourControls)"
+    },
+    "A32NX_LOGGING_FLIGHT_CONTROLS_ENABLED": {
+        "type": "Bool",
+        "description": "Indicates if logging of flight control events is enabled"
+    },
+    "A32NX_side_surface_system_SERVO_SOLENOID_ENERGIZED": {
+        "type": "Boolean",
+        "description": "If the servo mode solenoid of the specified servo should be energized. {side} LEFT RIGHT {surface} ELEV AIL {system} GREEN BLUE YELLOW"
+    },
+    "A32NX_side_surface_system_COMMANDED_POSITION": {
+        "type": "Number",
+        "description": "The commanded position of the specified servo, in degrees. {side} LEFT RIGHT {surface} ELEV AIL {system} GREEN BLUE YELLOW"
+    },
+    "A32NX_YAW_DAMPER_system_SERVO_SOLENOID_ENERGIZED": {
+        "type": "Boolean",
+        "description": "If the servo mode solenoid of the specified servo should be energized. {system} GREEN YELLOW"
+    },
+    "A32NX_YAW_DAMPER_system_COMMANDED_POSITION": {
+        "type": "Number",
+        "description": "The commanded position of the specified servo, in degrees. {system} GREEN YELLOW"
+    },
+    "A32NX_HYD_RUDDER_TRIM_FEEDBACK_ANGLE": {
+        "type": "Degree",
+        "description": "Rudder trim unit position feedback"
+    },
+    "A32NX_HYD_RUDDER_LIMITER_FEEDBACK_ANGLE": {
+        "type": "Degree",
+        "description": "Rudder travel limiter unit position feedback"
+    },
+    "A32NX_SIDESTICK_POSITION_X": {
+        "type": "Number",
+        "description": "Provides the direct sidestick position (lateral) Value | Meaning --| ---1 | full left 0 | neutral 1 | full right"
+    },
+    "A32NX_SIDESTICK_POSITION_Y": {
+        "type": "Number",
+        "description": "Provides the direct sidestick position (longitudinal) Value | Meaning --| ---1 | full forward 0 | neutral 1 | full backward"
+    },
+    "A32NX_RUDDER_PEDAL_POSITION": {
+        "type": "Number",
+        "description": "Provides the rudder pedal position Value | Meaning --| ---100 | full left 0 | neutral 100 | full right"
+    },
+    "A32NX_RUDDER_PEDAL_ANIMATION_POSITION": {
+        "type": "Number",
+        "description": "Provides the rudder pedal position including rudder trim for animation Value | Meaning --| ---100 | full left 0 | neutral 100 | full right"
+    },
+    "A32NX_HYD_AILERON_LEFT_DEFLECTION": {
+        "type": "Number",
+        "description": "Provides the final left aileron physical position Value | Meaning --| ---1.0 | full up 0.0 | neutral 1.0 | full down"
+    },
+    "A32NX_HYD_AILERON_RIGHT_DEFLECTION": {
+        "type": "Number",
+        "description": "Provides the final right aileron physical position Value | Meaning --| ---1.0 | full down 0.0 | neutral 1.0 | full up"
+    },
+    "A32NX_HYD_THS_TRIM_MANUAL_OVERRIDE": {
+        "type": "Boolean",
+        "description": "Feedback signal from the trim actuator system. True if pilot is moving or holding trim wheel"
+    },
+    "A32NX_HYD_TRIM_WHEEL_PERCENT": {
+        "type": "Percent",
+        "description": "Trim wheel position in percent  ## Fuel ATA 28"
+    },
+    "A32NX_TOTAL_FUEL_QUANTITY": {
+        "type": "Number in kilogramm",
+        "description": "The total physical quantity of fuel in the tanks"
+    },
+    "A32NX_TOTAL_FUEL_VOLUME": {
+        "type": "Number in Gallons",
+        "description": "The total physical volume of fuel in the tanks  ## Indication and Recording Systems (ATA 31)  ### DMC  Use the `A32NXDisplayManagementPublisher` for these in A32NX code.  #### ARINC429 Output Bus  `L:A32NX_DMC_DISCRETE_WORD_271_LEFT` Left DMC discrete word 5. Raw ARINC word. Note: incomplete. Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 12  | IRS used fail                     | | 26  | Time till NAV used high bit       | | 27  | Time till NAV used middle bit     | | 28  | Time till NAV used low bit        | | 29  | IRS used in align submode         |  `L:A32NX_DMC_DISCRETE_WORD_271_RIGHT` Right DMC discrete word 5. Raw ARINC word. Same as `L:A32NX_DMC_DISCRETE_WORD_271_LEFT`.  `L:A32NX_DMC_IR_1_DISCRETE_WORD_LEFT` Left DMC IRS 1 discrete word. Raw ARINC word. Note: incomplete. | Bit |            Description            | |:---:|:---------------------------------:| | 11  | ALIGNMENT_NOT_READY               | | 12  | REV_ATT_MODE                      | | 13  | NAV_MODE                          | | 14  | VALID_SET_HEADING                 | | 15  | ATTITUDE_INVALID                  | | 16  | DC_FAIL                           | | 17  | ON_DC                             | | 18  | ADR_FAULT                         | | 19  | IR_FAULT                          | | 20  | DC_FAIL_ON_DC                     | | 21  | ALIGN_FAULT                       | | 22  | NO_IRS_INITIAL                    | | 23  | EXCESS_MOTION_ERROR               | | 24  | ADR_IR_FAULT                      | | 25  | EXTREME_LATITUDE                  | | 26  | ALIGN_1_MINUTES                   | | 27  | ALIGN_2_MINUTES                   | | 28  | ALIGN_4_MINUTES                   | | 29  | COMPUTED_LATITUDE_MISCOMPARE      |  `L:A32NX_DMC_IR_2_DISCRETE_WORD_RIGHT` Right DMC IRS 2 discrete word. Raw ARINC word. Same as `L:A32NX_DMC_IR_1_DISCRETE_WORD_LEFT`.  `L:A32NX_DMC_IR_3_DISCRETE_WORD_LEFT` Left DMC IRS 3 discrete word. Raw ARINC word. Same as `L:A32NX_DMC_IR_1_DISCRETE_WORD_LEFT`.  `L:A32NX_DMC_IR_3_DISCRETE_WORD_RIGHT` Right DMC IRS 3 discrete word. Raw ARINC word. Same as `L:A32NX_DMC_IR_1_DISCRETE_WORD_LEFT`.  `L:A32NX_DMC_DISCRETE_WORD_350_LEFT` The left DMC discrete word. Raw ARINC word. | Bit |            Description            | |:---:|:---------------------------------:| | 11  | STD baro mode                     | | 12  | QNH baro mode                     |  `L:A32NX_DMC_DISCRETE_WORD_350_RIGHT` The right DMC discrete word. Raw ARINC word. | Bit |            Description            | |:---:|:---------------------------------:| | 11  | STD baro mode                     | | 12  | QNH baro mode                     |  `L:A32NX_DMC_ALTITUDE_LEFT` The left DMC displayed altitude feedback. Raw ARINC word. Arinc429Word<Feet>  `L:A32NX_DMC_ALTITUDE_RIGHT` The right DMC displayed altitude feedback. Raw ARINC word. Arinc429Word<Feet>  `L:A32NX_DMC_IR_1_PITCH_ANGLE_LEFT` Left DMC copy of IR1 pitch angle. Arinc429Word<Degrees>  `L:A32NX_DMC_IR_2_PITCH_ANGLE_RIGHT` Right DMC copy of IR2 pitch angle. Arinc429Word<Degrees>  `L:A32NX_DMC_IR_3_PITCH_ANGLE_LEFT` Left DMC copy of IR3 pitch angle. Arinc429Word<Degrees>  `L:A32NX_DMC_IR_3_PITCH_ANGLE_RIGHT` Right DMC copy of IR3 pitch angle. Arinc429Word<Degrees>   ### ECP  Use the `A32NXEcpBusPublisher` and `A32NXEcpBusEvents` for these in A32NX code.  #### ARINC429 Output Bus  `L:A32NX_ECP_WARNING_SWITCH_WORD` The ECP warning switch word containg button pressed state. Transmitted to each FWC, DMC, TAWS, FDIMU, and ATSU. Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 11  | CLR 1                             | | 13  | STS                               | | 14  | RCL                               | | 16  | CLR 2                             | | 17  | EMERGENCY CANCEL                  | | 18  | TO CONFIG TEST                    |  `L:A32NX_ECP_SYSTEM_SWITCH_WORD` The ECP system switch word containg button pressed state. Transmitted to each FWC, DMC, TAWS, FDIMU, and ATSU. Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 11  | ENG                               | | 12  | BLEED                             | | 13  | APU                               | | 14  | HYD                               | | 15  | ELEC                              | | 17  | COND                              | | 18  | PRESS                             | | 19  | FUEL                              | | 20  | FLT/CTL                           | | 21  | DOOR                              | | 22  | BRAKES                            | | 23  | ALL                               |  `L:A32NX_ECP_LIGHT_STATUS_WORD` The ECP light status word containg button light state. Transmitted to each FWC, DMC, TAWS, FDIMU, and ATSU. Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 11  | ENG                               | | 12  | BLEED                             | | 13  | APU                               | | 14  | HYD                               | | 15  | ELEC                              | | 16  | STATUS                            | | 17  | COND                              | | 18  | PRESS                             | | 19  | FUEL                              | | 20  | FLT/CTL                           | | 21  | DOOR                              | | 22  | BRAKES                            | | 23  | CLR 1                             | | 24  | CLR 2                             | | 26  | L. TEST                           | | 27  | DIM                               |  #### Hardwired Discretes  `L:A32NX_ECP_DISCRETE_OUT_STS` The hardwired discrete for STS button to each FWC. Boolean  `L:A32NX_ECP_DISCRETE_OUT_RCL` The hardwired discrete for RCL button to each FWC. Boolean  `L:A32NX_ECP_DISCRETE_OUT_CLR` The hardwired discrete for CLR button to each FWC. Boolean  `L:A32NX_ECP_DISCRETE_OUT_EMER_CANC` The hardwired discrete for emergency cancel/audio suppression to each FWC and the TAWS. Boolean  `L:A32NX_ECP_DISCRETE_OUT_ALL` The hardwired discrete for emergency cancel/audio suppression to each DMC. Boolean   ## Landing Gear (ATA 32)"
+    },
+    "A32NX_GEAR_DOOR_gear_POSITION": {
+        "type": "Indicates the gear door position. 1 is fully opened. 0 fully closed and locked.",
+        "description": "Percent over 100 {gear} CENTER CENTER_SMALL LEFT RIGHT"
+    },
+    "A32NX_GEAR_gear_POSITION": {
+        "type": "Indicates the gear position. 1 is fully opened. 0 fully closed and locked.",
+        "description": "Percent over 100 {gear} CENTER LEFT RIGHT"
+    },
+    "A32NX_GRAVITYGEAR_ROTATE_PCT": {
+        "type": "Indicates the position of the gear emergency extension crank handle from 0 to 300 (3 turns)",
+        "description": "Percent"
+    },
+    "A32NX_GEAR_LEVER_POSITION_REQUEST": {
+        "type": "Indicates that the pilot tries to move the gear lever (1=down)",
+        "description": "Boolean"
+    },
+    "A32NX_GEAR_HANDLE_POSITION": {
+        "type": "Indicates the actual position of the gear handle",
+        "description": "Percent over 100"
+    },
+    "A32NX_GEAR_HANDLE_HITS_LOCK_SOUND": {
+        "type": "Indicates that gear lever just hit the baulk lock mechanism",
+        "description": "Boolean  ## ATC (ATA 34)"
+    },
+    "A32NX_TRANSPONDER_MODE": {
+        "type": "The transponder mode selector switch position",
+        "description": "Enum Mode | Value --| --STBY | 0 AUTO | 1 ON | 2"
+    },
+    "A32NX_TRANSPONDER_SYSTEM": {
+        "type": "The transponder system selector switch position",
+        "description": "Enum System | Value --| --Transponder 1 | 0 Transponder 2 | 1"
+    },
+    "A32NX_SWITCH_ATC_ALT": {
+        "type": "The transponder altitude reporting switch position",
+        "description": "Bool"
+    },
+    "A32NX_SWITCH_TCAS_Position": {
+        "type": "Enum",
+        "description": "Read-Only Selected TCAS Mode Description | Value --| --STBY | 0 TA | 1 TA/RA | 2"
+    },
+    "A32NX_SWITCH_TCAS_Traffic_Position": {
+        "type": "Enum",
+        "description": "Read-Only Selected TCAS Display Mode Description | Value --| --THREAT | 0 ALL | 1 ABV | 2 BELOW | 3"
+    },
+    "A32NX_TCAS_MODE": {
+        "type": "Enum",
+        "description": "Read-Only Whether TCAS has been set to standby, TA Only or TA/RA Mode (see ATC panel) Description | Value --| --STBY | 0 TA | 1 TA/RA | 2"
+    },
+    "A32NX_TCAS_SENSITIVITY": {
+        "type": "Number",
+        "description": "Read-Only Current sensitivity level"
+    },
+    "A32NX_TCAS_STATE": {
+        "type": "Enum",
+        "description": "Read-Only Currently active traffic/resolution advisory state Description | Value --| --NONE | 0 TA | 1 RA | 2"
+    },
+    "A32NX_TCAS_RA_CORRECTIVE": {
+        "type": "boolean",
+        "description": "Read-Only Active RA is corrective?"
+    },
+    "A32NX_TCAS_RA_TYPE": {
+        "type": "Enum",
+        "description": "Read-only The type of currently active RA Description | Value --| --None of the following | 0 Crossing | 1 Reversal | 2 Increase | 3 Maintain | 4"
+    },
+    "A32NX_TCAS_RA_RATE_TO_MAINTAIN": {
+        "type": "Feet per minute",
+        "description": "Read-only The rate to maintain (green sector) of the currently active RA. 0 if up/down advisory status is neither Climb nor Descend or no RA is present"
+    },
+    "A32NX_TCAS_RA_UP_ADVISORY_STATUS": {
+        "type": "Enum",
+        "description": "Read-only The up advisory status of the currently active RA Description | Value --| --No Up Advisory       | 0 Climb                | 1 Don't Descend        | 2 Don't Descend > 500  | 3 Don't Descend > 1000 | 4 Don't Descend > 2000 | 5"
+    },
+    "A32NX_TCAS_RA_DOWN_ADVISORY_STATUS": {
+        "type": "Enum",
+        "description": "Read-only The down advisory status of the currently active RA Description | Value --| --No Down Advisory   | 0 Descend            | 1 Don't Climb        | 2 Don't Climb > 500  | 3 Don't Climb > 1000 | 4 Don't Climb > 2000 | 5   ## Radio Altimeter (ATA 34)"
+    },
+    "A32NX_EGPWS_ALERT_1_DISCRETE_WORD_1": {
+        "type": "Data word for GPWS alerts. Used for displaying alerts on the PFD (on the A380) and triggering aural warnings",
+        "description": "Arinc429<Discrete> | Bit |       Description      | |:---:|:----------------------:| | 11  | SINKRATE               | | 12  | PULL UP                | | 13  | TERRAIN                | | 14  | DON'T SINK             | | 15  | TOO LOW GEAR           | | 16  | TOO LOW FLAPS          | | 17  | TOO LOW TERRAIN        | | 18  | GLIDESLOPE             | | 20  | TERRAIN PULL UP        | | 22  | TERRAIN AHEAD PULL UP  | | 27  | TERRAIN AHEAD          |"
+    },
+    "A32NX_EGPWS_ALERT_2_DISCRETE_WORD_1": {
+        "type": "Data word for GPWS alerts. Used for displaying alerts on the PFD (on the A380) and triggering aural warnings",
+        "description": "Arinc429<Discrete> | Bit |       Description      | |:---:|:----------------------:| | 11  | SINKRATE               | | 12  | PULL UP                | | 13  | TERRAIN                | | 14  | DON'T SINK             | | 15  | TOO LOW GEAR           | | 16  | TOO LOW FLAPS          | | 17  | TOO LOW TERRAIN        | | 18  | GLIDESLOPE             | | 20  | TERRAIN PULL UP        | | 22  | TERRAIN AHEAD PULL UP  | | 27  | TERRAIN AHEAD          |"
+    },
+    "A32NX_EGPWS_ALERT_1_DISCRETE_WORD_2": {
+        "type": "Data word for GPWS alerts. Used for displaying alerts on the PFD (on the A380) or on the GPWS visual indicators on the A320",
+        "description": "Arinc429<Discrete> | Bit |          Description         | |:---:|:----------------------------:| | 11  | G/S CANCEL                   | | 12  | GPWS ALERT                   | | 13  | GPWS WARNING                 | | 14  | GPWS INOP                    | | 15  | W/S WARNING                  | | 16  | AUDIO ON                     | | 22  | TERRAIN AWARENESS WARNING    | | 23  | TERRAIN AWARENESS CAUTION    | | 24  | TERRAIN AWARENESS INOP       | | 25  | EXTERNAL FAULT               | | 26  | TERRAIN AWARENESS NOT AVAIL. |"
+    },
+    "A32NX_EGPWS_ALERT_2_DISCRETE_WORD_2": {
+        "type": "Data word for GPWS alerts. Used for displaying alerts on the PFD (on the A380) or on the GPWS visual indicators on the A320",
+        "description": "Arinc429<Discrete> | Bit |          Description         | |:---:|:----------------------------:| | 11  | G/S CANCEL                   | | 12  | GPWS ALERT                   | | 13  | GPWS WARNING                 | | 14  | GPWS INOP                    | | 15  | W/S WARNING                  | | 16  | AUDIO ON                     | | 22  | TERRAIN AWARENESS WARNING    | | 23  | TERRAIN AWARENESS CAUTION    | | 24  | TERRAIN AWARENESS INOP       | | 25  | EXTERNAL FAULT               | | 26  | TERRAIN AWARENESS NOT AVAIL. |"
+    },
+    "A32NX_GPWS_TERR_OFF": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS TERR pushbutton is OFF"
+    },
+    "A32NX_GPWS_SYS_OFF": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS SYS pushbutton is OFF"
+    },
+    "A32NX_GPWS_GS_OFF": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS G/S MODE pushbutton is OFF"
+    },
+    "A32NX_GPWS_FLAP_OFF": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS FLAP MODE pushbutton is OFF"
+    },
+    "A32NX_GPWS_FLAPS3": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS LDG FLAP 3 pushbutton is ON"
+    },
+    "A32NX_GPWS_GROUND_STATE": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS is in ground vs airborne mode"
+    },
+    "A32NX_GPWS_APPROACH_STATE": {
+        "type": "Boolean",
+        "description": "Indicates whether the GPWS is in Approach vs Takeoff mode  ## ROW / ROP / OANS (ATA 34)"
+    },
+    "A32NX_ROW_ROP_WORD_1": {
+        "type": "Data word for ROW and ROP functions. Used for displaying alerts on the PFD.",
+        "description": "Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 11  | ROW/ROP operative                 | | 12  | ROP: Active with autobrake        | | 13  | ROP: Active with manual braking   | | 14  | ROW Wet: Runway too short         | | 15  | ROW Dry: Runway too short         |"
+    },
+    "A32NX_OANS_WORD_1": {
+        "type": "Data word for OANS functions. Used for displaying alerts on the PFD.",
+        "description": "Arinc429<Discrete> | Bit |            Description            | |:---:|:---------------------------------:| | 11  | OANS: Runway ahead                |   ## Electronic Flight Bag (ATA 46)"
+    },
+    "A32NX_EFIS_side_NAVAID_1|2_MODE": {
+        "type": "Enum",
+        "description": "Provides the selected NAVAIDs for display on the EFIS Value | Meaning --| --0 | Off 1 | ADF 2 | VOR {side} L R"
+    },
+    "A32NX_EFIS_side_ND_MODE": {
+        "type": "Enum",
+        "description": "Provides the selected navigation display mode for the EFIS Value | Meaning --| --0 | ROSE ILS 1 | ROSE VOR 2 | ROSE NAV 3 | ARC 4 | PLAN {side} L R"
+    },
+    "A32NX_EFIS_side_ND_RANGE": {
+        "type": "Enum",
+        "description": "Provides the selected navigation display range for the EFIS Value | Meaning --| --0 | 10 1 | 20 2 | 40 3 | 80 4 | 160 5 | 320 {side} L R"
+    },
+    "A32NX_EFIS_side_OPTION": {
+        "type": "Flags",
+        "description": "Provides a bitmask of the selected EFIS option/overlays Value | Meaning --| --0 | None 1 | Constraints 2 | VOR/DMEs 4 | Waypoints 8 | NDBs 16 | Airports {side} L R"
+    },
+    "A32NX_TRK_FPA_MODE_ACTIVE": {
+        "type": "Bool",
+        "description": "True if TRK/FPA mode is active"
+    },
+    "A32NX_AUTOPILOT_HEADING_SELECTED": {
+        "type": "Number (Degrees)",
+        "description": "Indicates the selected heading on the FCU, instantly updated In case of managed heading mode, the value is -1"
+    },
+    "A32NX_FCU_ALT_MANAGED": {
+        "type": "Boolean",
+        "description": "Indicates if managed altitude mode is active (dot) State | Value --| --SELECTED | 0 MANAGED | 1"
+    },
+    "A32NX_FCU_VS_MANAGED": {
+        "type": "Boolean",
+        "description": "Indicates if managed VS/FPA mode is active State | Value --| --SELECTED | 0 MANAGED | 1"
+    },
+    "A32NX_AUTOPILOT_NOSEWHEEL_DEMAND": {
+        "type": "Percent over 100",
+        "description": "Steering demand from autopilot to BSCU [-1;1] -1 left, 0 middle"
+    },
+    "A32NX_FMA_LATERAL_MODE": {
+        "type": "Enum",
+        "description": "Indicates **engaged** lateral mode of the Flight Director / Autopilot Mode | Value --| --NONE | 0 HDG | 10 TRACK | 11 NAV | 20 LOC_CPT | 30 LOC_TRACK | 31 LAND | 32 FLARE | 33 ROLL_OUT | 34 RWY | 40 RWY_TRACK | 41 GA_TRACK | 50"
+    },
+    "A32NX_FMA_LATERAL_ARMED": {
+        "type": "Bitmask",
+        "description": "Indicates **armed** lateral mode of the Flight Director / Autopilot Mode | Bit --| --NAV | 0 LOC | 1"
+    },
+    "A32NX_FMA_VERTICAL_MODE": {
+        "type": "Enum",
+        "description": "Indicates **engaged** vertical mode of the Flight Director / Autopilot Mode | Value --| --NONE | 0 ALT | 10 ALT_CPT | 11 OP_CLB | 12 OP_DES | 13 VS | 14 FPA | 15 ALT_CST | 20 ALT_CST_CPT | 21 CLB | 22 DES | 23 FINAL | 24 GS_CPT | 30 GS_TRACK | 31 LAND | 32 FLARE | 33 ROLL_OUT | 34 SRS | 40 SRS_GA | 41 TCAS | 50"
+    },
+    "A32NX_FMA_VERTICAL_ARMED": {
+        "type": "Bitmask",
+        "description": "Indicates **armed** vertical mode of the Flight Director / Autopilot Mode | Bit --| --ALT | 0 ALT_CST | 1 CLB | 2 DES | 3 GS | 4 FINAL | 5 TCAS | 6"
+    },
+    "A32NX_FMA_EXPEDITE_MODE": {
+        "type": "Boolean",
+        "description": "Indicates if expedite mode is engaged State | Value --| --OFF | 0 ON | 1"
+    },
+    "A32NX_AUTOPILOT_AUTOLAND_WARNING": {
+        "type": "Boolean",
+        "description": "Indicates if Autoland warning light is illuminated Possible values: State | Value --| --OFF | 0 ON | 1"
+    },
+    "A32NX_AUTOPILOT_ACTIVE": {
+        "type": "Boolean",
+        "description": "Indicates if any Autopilot is engaged Possible values: State | Value --| --DISENGAGED | 0 ENGAGED | 1"
+    },
+    "A32NX_AUTOPILOT_H_DOT_RADIO": {
+        "type": "Number (Feet per minute)",
+        "description": "Indicates the current estimated vertical speed relative to the runway Important: the signal is only usable above the runway and is not to be used elsewhere"
+    },
+    "A32NX_AUTOTHRUST_STATUS": {
+        "type": "Enum",
+        "description": "Indicates the current status of the ATHR system Mode | Value --| --DISENGAGED | 0 ENGAGED_ARMED | 1 ENGAGED_ACTIVE | 2"
+    },
+    "A32NX_AUTOTHRUST_MODE": {
+        "type": "Enum",
+        "description": "Indicates the current thrust mode of the ATHR system Mode | Value --| --NONE | 0 A_FLOOR | 13"
+    },
+    "A32NX_AUTOPILOT_SPEED_SELECTED": {
+        "type": "SPEED mode: 100 to 399 (knots)",
+        "description": "MACH mode: 0.10 to 0.99 (M) Indicates the selected speed on the FCU, instantly updated In case of managed speed mode, the value is -1"
+    },
+    "A32NX_AUTOPILOT_FPA_SELECTED": {
+        "type": "Number (Degrees)",
+        "description": "Indicates the selected FPA on the FCU, instantly updated"
+    },
+    "A32NX_AUTOPILOT_VS_SELECTED": {
+        "type": "Number (Feet per minute)",
+        "description": "Indicates the selected V/S on the FCU, instantly updated"
+    },
+    "A32NX_FCU_SPD_MANAGED_DASHES": {
+        "type": "Boolean",
+        "description": "Indicates if managed speed/mach mode is active and a numerical value is not displayed State | Value --| --SELECTED | 0 MANAGED | 1"
+    },
+    "A32NX_FCU_SPD_MANAGED_DOT": {
+        "type": "Boolean",
+        "description": "Indicates if managed speed/mach mode is active State | Value --| --SELECTED | 0 MANAGED | 1"
+    },
+    "A32NX_FCU_HDG_MANAGED_DASHES": {
+        "type": "Boolean",
+        "description": "Indicates if managed heading mode is active and a numerical value is not displayed State | Value --| --SELECTED | 0 MANAGED | 1"
+    },
+    "A32NX_FCU_HDG_MANAGED_DOT": {
+        "type": "Boolean",
+        "description": "Indicates if managed heading mode is active or armed State | Value --| --SELECTED | 0 MANAGED/ARMED | 1"
+    },
+    "A32NX_AUTOTHRUST_MODE_MESSAGE": {
+        "type": "Enum",
+        "description": "Indicates ATHR related message to be displayed on the PFD Mode | Value --| --NONE | 0 LVR_CLB | 3"
+    }
+}

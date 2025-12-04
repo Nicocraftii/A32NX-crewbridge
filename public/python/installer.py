@@ -9,8 +9,8 @@ import threading
 
 CONFIG_FILE = "config.xml"
 WASM_ZIP_URL = "https://github.com/MobiFlight/MobiFlight-WASM-Module/releases/download/1.0.1/mobiflight-event-module.1.0.1.zip"
-LOGO_PATH = "../assets/icon.png"
-ICON_PATH = "../assets/icon.ico"
+LOGO_PATH = "./public/assets/icon.png"
+ICON_PATH = "./public/assets/icon.ico"
 TEMP_FOLDER = Path(tempfile.gettempdir()) / "mobiflight_temp"
 
 # ---------------- Utility Functions ----------------
