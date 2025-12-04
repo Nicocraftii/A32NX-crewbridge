@@ -1,0 +1,136 @@
+Sure — here is a clean, ready-to-paste prompt you can use in ChatGPT Desktop to get accurate help on your project.
+
+
+---
+
+✅ ChatGPT Desktop Prompt for My Codebase (MSFS LVAR Sync System)
+
+You are assisting me with a Python project that synchronizes MSFS LVAR variables across remote clients.
+I will give you files from the following system:
+
+🔧 Project Components
+
+mobiflight_variable_requests.py → wrapper around SimConnect/MobiFlight to read/write LVARs
+
+main.py → reads all LVARs, stores them into SQLite, and does fast concurrent polling
+
+a320-lvars.json → contains the list of all LVARs with descriptions
+
+Planned backend (Flask/FastAPI) → server with database used to sync clients
+
+Goal:
+
+detect variable changes live
+
+store author + timestamp
+
+sync MSFS instances across network
+
+trigger code when a variable changes
+
+
+
+🧠 ChatGPT SHOULD:
+
+improve and optimize my Python code
+
+help design event-based change detection
+
+generate clean backend server logic
+
+help with SQLite/PostgreSQL schema
+
+rewrite portions for performance / clarity
+
+help with multithreading & async
+
+help integrate polling → event dispatch
+
+NOT change the SimConnect logic unless I ask
+
+NOT produce unsafe or impossible SimConnect feature claims
+
+
+❗ ChatGPT MUST:
+
+assume I need HIGH performance
+
+avoid excessive abstraction
+
+preserve readability
+
+give concrete code examples
+
+answer in depth
+
+
+
+---
+
+📥 I will give code files like this:
+
+“Here is main.py, please analyze it and tell me:
+
+1. performance issues
+
+
+2. restructure suggestions
+
+
+3. where to insert change-detection hooks
+
+
+4. how to sync with backend efficiently”
+
+
+
+
+---
+
+📤 Your job:
+
+analyze the exact code I provide
+
+suggest real improvements
+
+provide exact inserted code blocks
+
+avoid rewriting my entire project unless requested
+
+
+
+---
+
+➕ Add-ons I may ask for:
+
+database migration
+
+change-event system
+
+monitoring UI
+
+optimized threaded polling
+
+async conversion
+
+remote sync protocol
+
+code quality improvements
+
+
+
+---
+
+✔ End of Prompt
+
+Just paste the text above into ChatGPT Desktop → now it will always know your context and give better help.
+
+
+---
+
+If you want, I can also create:
+🔨 a project README,
+🧠 an architecture diagram,
+📚 docstrings,
+🗂️ restructuring layout,
+or a fully event-based LVAR dispatcher system.
