@@ -110,8 +110,8 @@
                         </div>
                     </div>
                         <div class="connection-box">
-                            <form id="connect-form" method="post" action="/connect">
-                            <input type="text" name="host" placeholder="Host ip" id="host-ip-input" required>
+                            <form id="connect-form">
+                            <input type="text" name="host" placeholder="Host ip (like this : ip/type[lan,net,tailscale])" id="host-ip-input" required>
                             <input type="text" name="code" id="host-code-input" placeholder="Connection code" required>
                             <button id="connect-btn" type="submit">Connect</button>
                         </form>
@@ -158,7 +158,7 @@
                 </div>
             </div>
 
-            <div class="wizard-content">
+            <div style="box-sizing: content-box; overflow-y : hidden;" class="wizard-content">
                 <!-- Page 1: Welcome -->
                 <div id="page1" class="wizard-page active">
                     <div class="wizard-message">
@@ -178,13 +178,13 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div style="overflow-y: hidden; box-sizing: content-box; " class="form-group">
                         <label for="communityPath">Community Folder Path</label>
                         <div class="path-input-group">
                             <input type="text" id="communityPath"
                                 placeholder="C:\Users\YourName\AppData\Local\Packages\...\Community">
                         </div>
-                        <small class="hint">Usually located in:
+                        <small style="overflow-wrap:anywhere;overflow-y: hidden;" class="hint">Usually located in:
                             %APPDATA%\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community\</small>
                     </div>
                 </div>

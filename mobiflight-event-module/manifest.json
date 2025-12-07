@@ -1,0 +1,15 @@
+{
+  "dependencies": [],
+  "content_type": "MISC",
+  "title": "Event Module",
+  "manufacturer": "",
+  "creator": "MobiFlight",
+  "package_version": "1.0.1",
+  "minimum_game_version": "1.36.2",
+  "release_notes": {
+    "neutral": {
+      "LastUpdate": "",
+      "OlderHistory": ""
+    }
+  }
+}

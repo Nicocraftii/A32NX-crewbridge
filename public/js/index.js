@@ -225,11 +225,11 @@ ipInput.addEventListener("input", (e) => {
     const oldVal = el.value;
     const oldPos = el.selectionStart;
 
-    const newVal = oldVal.replace(/[^0-9.]/g, "");
+    const newVal = oldVal.replace(/[^0-9./a-z]/g, "");
 
     if (newVal !== oldVal) {
         const prefixOld = oldVal.slice(0, oldPos);
-        const allowedBefore = prefixOld.replace(/[^0-9.]/g, "").length;
+        const allowedBefore = prefixOld.replace(/[^0-9./a-z]/g, "").length;
         const newPos = Math.min(allowedBefore, newVal.length);
 
         el.value = newVal;
@@ -461,6 +461,8 @@ async function analyzeCommunityFolder() {
             analysisTitle.textContent = "Installing module...";
             analysisText.textContent = "Running the Python installer script...";
 
+            document.getElementById("finishBtn").classList.add("hidden");
+
             progressFill.style.width = "85%";
             progressText.textContent = "85%";
 
@@ -507,6 +509,7 @@ async function analyzeCommunityFolder() {
                     console.error("Installer failed:");
 
                     showResult(false, "Installation Failed");
+                    toast()
                 }, 1000);
             }
         }
@@ -653,14 +656,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 wizardData.showWizard = !showAgainCheckbox.checked;
                 saveToLocalStorage();
             }
+            
 
             getstarted(); // Close wizard
-            toast(
-                "Setup Complete",
-                "A32NX Crewbridge is ready to use!",
-                2,
-                4000
-            );
         });
     }
 
@@ -705,3 +703,73 @@ document.getElementById("launchWizardBtn").addEventListener("click", () => {
     document.getElementById("settings").style.display = "none";
     getstarted();
 });
+
+function encodeIP(ip) {
+    return btoa(encodeURIComponent(ip).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+}
+function decodeIP(encoded) {
+    return decodeURIComponent(atob(encoded).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+
+if (localStorage.getItem('clientip') === null) {
+    document.querySelectorAll('.localIp').forEach(el => {
+        if (el.textContent === "Connection error") {
+            toast("Connection Error", "Cannot retrieve local IP address. Please check your connection.", 0, 4000);
+            return;
+        }
+        localStorage.setItem('clientip', encodeIP(el.textContent));
+    });
+}
+
+
+document.getElementById('connect-form').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const codeInput = document.getElementById('host-code-input');
+    const code = codeInput.value.trim();
+    
+    if (code.length === 0) {
+        toast("Input Error", "Please enter a host code.", 0, 3000);
+        return;
+    }
+    const ipInput = document.getElementById('host-ip-input');
+    const ip = ipInput.value.trim();
+    
+    if (ip.length === 0) {
+        toast("Input Error", "Please enter a host IP address.", 0, 3000);
+        return;
+    }
+
+    if (!/^(\d{1,3}\.){3}\d{1,3}\/[a-zA-Z0-9]+$/.test(ip)) {
+        toast("Input Error", "Please enter a valid IP address and ip type", 0, 3000);
+        return;
+    }
+
+    if (localStorage.getItem('clientip') === null) {
+        document.querySelectorAll('.localIp').forEach(el => {
+            if (el.textContent === "Connection error") {
+                toast("Connection Error", "Cannot retrieve local IP address. Please check your connection.", 0, 4000);
+                return;
+            }
+            localStorage.setItem('clientip', encodeIP(el.textContent));
+        });
+    }
+    
+    fetch('/connect', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, host: ip, client : localStorage.getItem('clientip') })
+    })
+    .then(response => {
+        if (!response.ok) {
+            const res = response.json();
+        }
+    })
+    .catch(error => {
+        console.error('Error connecting to host:', error);
+        toast("Connection Error", "An error occurred while trying to connect.", 0, 4000);
+    });
+
+})

@@ -100,11 +100,37 @@ app.get("/status", (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post('/connect', (req, res) => {
-    console.log('Received /connect form data:', req.body);
-    res.sendStatus(200);
-});
 
+function encodeIP(ip) {
+    return btoa(encodeURIComponent(ip).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+}
+function decodeIP(encoded) {
+    return decodeURIComponent(atob(encoded).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+
+app.post('/connect', (req, res) => {
+  const { host: ipb, code: code, client : eclient} = req.body;
+  let client = decodeIP(eclient);
+
+  if (!ipb || !code) {
+    return res.status(400).json({
+      success: false,
+      error: 'Missing required fields: ip and code'
+    });
+  }
+  
+  let connectionIpType = ipb.split('/')[1];
+  let ip = ipb.split('/')[0];
+  console.log('Attempting to connect to IP:', ip, 'over', connectionIpType, 'with code:', code, '\n from ',client);
+  
+
+  res.json({
+    success: true,
+    hasModule: true,
+    message: `Connection attempt to ${ip} over ${connectionIpType} with code ${code} initiated.`
+  });
+});
 
 
 
