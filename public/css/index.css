@@ -769,8 +769,9 @@ nav svg {
 }
 
 .wizard-content {
+  box-sizing: border-box;
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
 }
 
@@ -925,7 +926,7 @@ nav svg {
 
 .result-icon {
   text-align: center;
-  margin: 2rem 0;
+  margin: 1vw 0;
 }
 
 .result-icon svg {
