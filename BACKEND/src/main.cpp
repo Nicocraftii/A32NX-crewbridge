@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <Microsoft.FlightSimulator.SimConnect>
+#include <SimConnect.h>
 #include <iostream>
 
 int main() {
