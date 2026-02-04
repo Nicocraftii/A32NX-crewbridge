@@ -1,3 +1,0 @@
-F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/BACKEND/build/CMakeFiles/CrewBridge.dir
-F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/BACKEND/build/CMakeFiles/edit_cache.dir
-F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/BACKEND/build/CMakeFiles/rebuild_cache.dir
