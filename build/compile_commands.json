@@ -1,8 +1,0 @@
-[
-{
-  "directory": "F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/build",
-  "command": "\"C:/Program Files/LLVM/bin/clang++.exe\"  @CMakeFiles/CrewBridge.dir/includes_CXX.rsp -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o CMakeFiles/CrewBridge.dir/src/main.cpp.obj -c F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/BACKEND/src/main.cpp",
-  "file": "F:/DEV/--github--/A32NX-Crewbridge/A32NX-crewbridge/BACKEND/src/main.cpp",
-  "output": "CMakeFiles/CrewBridge.dir/src/main.cpp.obj"
-}
-]

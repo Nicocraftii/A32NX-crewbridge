@@ -5,9 +5,7 @@ import https from 'https';
 import { exec } from "child_process";
 import fs from 'fs/promises';
 import path from 'path';
-
-
-
+ 
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -89,8 +87,6 @@ app.get('/', (req,res) => {
         mfsVersion : mfsVersion,
     });
 });
-
-
 
 
 
@@ -362,4 +358,29 @@ app.post('/run-installer', async (req, res) => {
       error: error.message
     });
   }
+});
+
+
+
+app.post('/lvar/sim', (req, res) => {
+  const { lvar, value } = req.body;
+  console.log(`Received LVAR update: ${lvar} -> ${value}`);
+  res.json({ success: true });
+});
+
+app.post('/lvar/client', async (req, res) => {
+  const { lvar, value, client } = req.body;
+  console.log(`Received LVAR update from client ${client}: ${lvar} -> ${value}`);
+  // if (client == ip) return res.json({ success: true });
+  const response = await fetch('http://localhost:8080/lvar/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ lvar, value })
+  }).catch(error => {
+    console.error('Error sending LVAR update:', error);
+  });
+
+  res.json({ success: true });
 });
