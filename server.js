@@ -12,6 +12,8 @@ const app = express();
 
 let crewConnectAlive = false;
 let serverStatus = false; 
+let clientStatus = false;
+let GLOBALCODE = 'null';
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -367,22 +369,8 @@ app.post('/run-installer', async (req, res) => {
   }
 });
 
-
-
-app.post('/lvar/sim', (req, res) => {
-  const { lvar, value } = req.body;
-  console.log(`Received LVAR update: ${lvar} -> ${value}`);
-  res.json({ success: true });
-});
-
-app.post('/lvar/api', async (req, res) => {
-  const { lvar, value, client } = req.body;
-  console.log(`Received LVAR update from client ${client}: ${lvar} -> ${value}`);
-  res.json({ success: true });
-});
-
-let pingToken = null;
-let lastAck = 0;
+let lastAck = Date.now();
+let pingToken = '';
 
 
 app.get('/ping', (req, res) => {
@@ -418,3 +406,22 @@ app.post('/toggle-server', (req, res) => {
     console.log('Server status toggled. Now:', serverStatus ? 'Running' : 'Stopped');
     res.json({ success: true, serverStatus });
 }); 
+
+app.get('/app-info', (req, res) => {
+  res.json({
+        mode: serverStatus ? 'server' : (clientStatus ? 'client' : 'none'),
+        code: GLOBALCODE,
+        
+    });
+});
+
+app.get('/generate-code', (req, res) => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let randomLetters = '';
+    for (let i = 0; i < 5; i++) {
+        randomLetters += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    GLOBALCODE = code + randomLetters;
+    res.json({ code: code + randomLetters });
+});

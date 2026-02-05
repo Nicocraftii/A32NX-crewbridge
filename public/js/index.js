@@ -759,57 +759,57 @@ let cclastStatus = null
 
 setInterval(async () => {
   try {
-    const res = await fetch('/status/crewconnect');
+    const res = await fetch('/status/crewconnect', { cache: 'no-store' });
     if (!res.ok) throw new Error();
 
     const { running } = await res.json();
-    const els = document.querySelectorAll('.status-cc');
-    if (!els) return;
 
-    els.forEach(el => {
-        if (running) {
-            el.classList.add('connected');
-            el.textContent = 'Running';
-        } else {
-            el.classList.remove('connected');
-            el.textContent = 'Not running';
-        }
-    });
+    if (running !== ccStatus) {
+      if (running) {
+        toast("Crewconnect", "Crewconnect connected.", 2, 3000);
+        document.querySelectorAll('.connection-box button, .server-box button')
+          .forEach(b => b.disabled = false);
+      } else {
+        toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
+        document.querySelectorAll('.connection-box button, .server-box button')
+          .forEach(b => b.disabled = true);
+      }
+    }
 
-    cclastStatus = ccStatus;
     ccStatus = running;
 
+    document.querySelectorAll('.status-cc').forEach(el => {
+      el.classList.toggle('connected', running);
+      el.textContent = running ? 'Running' : 'Not running';
+    });
 
   } catch {
-    const el = document.querySelector('.status-cc');
-    if (!el) return;
-
-    el.classList.remove('connected');
-    el.textContent = 'Not running';
+    if (ccStatus !== false) {
+      toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
+    }
+    ccStatus = false;
   }
-}, 550);
+}, 250);
 
-setInterval(() => {
-
-    if (ccStatus == true && cclastStatus == false) {
-        toast("Crewconnect", "Crewconnect connected.", 2, 3000);
-        document.querySelectorAll('.connection-box button , .server-box button').forEach(obj => {
-            obj.disabled = false;
-        });
-
-    }
-    if (ccStatus == false && cclastStatus == true) {
-        toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
-        document.querySelectorAll('.connection-box button , .server-box button').forEach(obj => {
-            obj.disabled = true;
-        });
-    }
-}, 555);
 
 
 function toggleServerStatus() {
     let st = document.querySelector('.server-box button')
     let cli = document.getElementById('connect-btn')
+
+    let digicode = fetch('/generate-code', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then(res => res.json())
+    .then(data => {
+        if (!st.textContent.includes("Start")) {
+            document.querySelector('.private-code').textContent = " " + data.code;
+        } else {
+            document.querySelector('.private-code').textContent = " Not generated";
+        }
+    })
 
     if (st.textContent.includes("Start")) {
         st.textContent = "Stop Server";
