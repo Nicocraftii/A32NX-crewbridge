@@ -9,6 +9,7 @@
     --grey-50: hsl(240, 9%, 95%);
     --grey-100: hsl(240, 9%, 85%);
     --grey-100ts: hsla(240, 9%, 65%, 0.1);
+    --grey-100ts2: hsla(240, 9%, 65%, 0.6);
     --grey-150ts: hsla(240, 9%, 45%, 0.11);
     --grey-200: hsl(240, 9%, 30%);
     --grey-200ts: hsla(240, 9%, 40%, 0.1);
@@ -317,6 +318,15 @@ nav svg {
     transition: 0.4s ease-in-out;
 }
 
+/*###################### cc #######################*/
+#crew-connect-page {
+    width: 95%;
+    height: 90%;
+    margin: var(--padd-5);
+    padding-top: 2.75rem;
+    transition: 0.4s ease-in-out;
+}
+
 /*###################### DASHBTN (CLIENT/SERVER SWITCH) #######################*/
 #dashbtn {
     position: absolute;
@@ -357,6 +367,10 @@ nav svg {
 
 #dashbtn.active span:first-child {
     color: var(--white)
+}
+
+#status-cc {
+  color: var(--red);
 }
 
 /*###################### CLIENT BOX #######################*/
@@ -475,6 +489,7 @@ nav svg {
     text-align: center;
     width: 100%;
     height: 100%;
+    background-color: var(--white-200);
 }
 
 
@@ -519,13 +534,16 @@ nav svg {
     border-radius: var(--padd-5);
     padding: var(--padd-5);
     margin-top: var(--padd-5);
+    display: flex;
     flex-direction: column;
     gap: var(--padd-5);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     position: relative;
     width: 100%;
+    margin-bottom: 1rem;
 
 }
+
 
 #host-box .title {
     position: absolute;
@@ -620,6 +638,33 @@ nav svg {
     filter: invert(0) !important;
 }
 
+/* Add to your CSS file */
+.terr {
+    background-color: rgba(255, 59, 48, 0.1);
+    border-color: rgba(255, 59, 48, 0.3);
+}
+
+.twarn {
+    background-color: rgba(255, 204, 0, 0.1);
+    border-color: rgba(255, 204, 0, 0.3);
+}
+
+.tinfo {
+    background-color: rgba(0, 122, 255, 0.1);
+    border-color: rgba(0, 122, 255, 0.3);
+}
+
+.darkmode .terr {
+    background-color: rgba(255, 59, 48, 0.15);
+}
+
+.darkmode .twarn {
+    background-color: rgba(255, 204, 0, 0.15);
+}
+
+.darkmode .tinfo {
+    background-color: rgba(0, 122, 255, 0.15);
+}
 
 /*====================== CONNECTION BOX ======================*/
 
@@ -682,7 +727,40 @@ nav svg {
     transform: translateY(1px);
     scale: 1.01;
 }
+.connection-box button:disabled {
+  background: var(--grey-200) !important;
+  color: var(--grey-100);
+  text-decoration: line-through;
+  transition: none !important;
+  transform: none !important;
+  scale: none !important;
+}
 
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+
+.tooltiptext {
+  visibility: hidden;
+  width: 220px;
+  background-color: var(--grey-100ts2);
+  border: 0.6px solid var(--white-100);
+  color: #ffffff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1; 
+  transition: all 0.2 ease-in-out;
+}
+
+.tooltip:disabled:hover .tooltiptext {
+  visibility: visible;
+  transform: translateY(-15px);
+}
 
 /* ===== GET STARTED PANEL ===== */
 #getstarted {
@@ -1193,4 +1271,338 @@ nav svg {
 .darkmode #launchWizardBtn {
     color: var(--black-100);
     background-color: var(--white-200);
+}
+
+/* ===== CREW CONNECT CONSOLE ===== */
+.console-container {
+    background-color: var(--white-200);
+    border: 2px solid var(--grey-100ts);
+    border-radius: var(--padd-5);
+    height: 95%;
+    width: 98%;
+    margin: var(--padd-5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.console-header {
+    background-color: var(--white-300);
+    border-bottom: 2px solid var(--grey-100ts);
+    padding: var(--padd-1) var(--padd-5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.console-header h2 {
+    margin: 0;
+    color: var(--black-200);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.console-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.console-btn {
+    background-color: var(--white-400);
+    border: 1px solid var(--grey-200ts);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    color: var(--black-200);
+    font-family: var(--font);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.console-btn:hover {
+    background-color: var(--grey-150ts);
+    transform: translateY(-1px);
+}
+
+.console-btn:active {
+    transform: translateY(0);
+}
+
+.autoscroll-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--black-300);
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.autoscroll-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    width: 36px;
+    height: 20px;
+    background-color: var(--grey-200);
+    border-radius: 10px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: var(--white);
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+}
+
+.autoscroll-toggle input:checked + .toggle-slider {
+    background-color: var(--blue);
+}
+
+.autoscroll-toggle input:checked + .toggle-slider::before {
+    transform: translateX(16px);
+}
+
+.console-disabled {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 2rem;
+    color: var(--black-300);
+}
+
+.console-disabled svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.console-disabled h3 {
+    margin: 0.5rem 0;
+    color: var(--black-200);
+    font-size: 1.2rem;
+}
+
+.console-disabled p {
+    margin: 0;
+    font-size: 0.95rem;
+    max-width: 300px;
+    line-height: 1.4;
+}
+
+.console-content {
+    flex: 1;
+    overflow: hidden;
+    display: none;
+}
+
+.console-output {
+    height: 100%;
+    overflow-y: auto;
+    padding: var(--padd-1);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    background-color: var(--white-100);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.console-message {
+    margin-bottom: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    border-left: 3px solid transparent;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.console-message.info {
+    border-left-color: var(--blue);
+    background-color: rgba(var(--blue), 0.05);
+}
+
+.console-message.warning {
+    border-left-color: orange;
+    background-color: rgba(255, 165, 0, 0.05);
+}
+
+.console-message.error {
+    border-left-color: var(--red);
+    background-color: rgba(var(--red), 0.05);
+}
+
+.console-message.sim {
+    border-left-color: var(--green);
+    background-color: rgba(var(--green), 0.05);
+}
+
+.console-message.client {
+    border-left-color: var(--black-300);
+    background-color: rgba(var(--black-300), 0.05);
+}
+
+.message-timestamp {
+    color: var(--grey-200);
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+.message-level {
+    font-weight: bold;
+    margin-right: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+}
+
+.message-level.info {
+    color: var(--blue);
+    background-color: rgba(var(--blue), 0.1);
+}
+
+.message-level.warning {
+    color: orange;
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+.message-level.error {
+    color: var(--red);
+    background-color: rgba(var(--red), 0.1);
+}
+
+.message-content {
+    color: var(--black-200);
+    word-break: break-word;
+}
+
+.console-footer {
+    background-color: var(--white-300);
+    border-top: 2px solid var(--grey-100ts);
+    padding: 0.5rem var(--padd-5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--black-300);
+}
+
+.console-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.console-filter select {
+    background-color: var(--white);
+    border: 1px solid var(--grey-200ts);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    color: var(--black-200);
+    font-family: var(--font);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.console-filter select:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+/* Dark mode adjustments */
+.darkmode .console-output {
+    background-color: var(--white);
+}
+
+.darkmode .console-message.info {
+    background-color: rgba(var(--blue), 0.1);
+}
+
+.darkmode .console-message.warning {
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+.darkmode .console-message.error {
+    background-color: rgba(var(--red), 0.1);
+}
+
+.darkmode .console-filter select {
+    background-color: var(--white-200);
+    color: var(--black-100);
+}
+
+/*################### CC BUTTONS ##################*/
+
+/* Add to your CSS file */
+.crew-connect-toggle {
+    background: linear-gradient(135deg, var(--green), hsl(120, 60%, 40%)) !important;
+    color: white !important;
+    border-color: var(--green) !important;
+}
+
+.crew-connect-toggle.running {
+    background: linear-gradient(135deg, var(--red), hsl(0, 70%, 40%)) !important;
+    border-color: var(--red) !important;
+}
+
+.crew-connect-toggle svg.stop-icon {
+    transform: rotate(90deg);
+}
+
+.autostart-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--black-300);
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    margin-left: 0.5rem;
+}
+
+.autostart-toggle input[type="checkbox"] {
+    display: none;
+}
+
+/* Status indicator */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background-color: var(--red);
+}
+
+.status-indicator.running {
+    background-color: var(--green);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }

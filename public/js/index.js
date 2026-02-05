@@ -773,3 +773,388 @@ document.getElementById('connect-form').addEventListener('submit', (ev) => {
     });
 
 })
+
+//////////////////////////////// CONSOLE ////////////////////////////////////
+
+class CrewConnectConsole {
+    constructor() {
+        this.messages = [];
+        this.maxMessages = 1000;
+        this.eventSource = null;
+        this.isConnected = false;
+        this.autoScroll = true;
+        this.filter = 'all';
+        this.messageCount = 0;
+        this.autoStartEnabled = false;
+        
+        this.initializeElements();
+        this.setupEventListeners();
+        this.loadSettings();
+        this.checkStatus();
+    }
+    
+    initializeElements() {
+        // Console elements
+        this.consoleOutput = document.getElementById('consoleOutput');
+        this.consoleContent = document.getElementById('consoleContent');
+        this.consoleDisabled = document.getElementById('consoleDisabledMessage');
+        this.clearBtn = document.getElementById('clearConsole');
+        this.autoScrollCheckbox = document.getElementById('autoScroll');
+        this.logFilter = document.getElementById('logFilter');
+        this.messageCountElement = document.getElementById('messageCount');
+        this.lastUpdateElement = document.getElementById('lastUpdate');
+        
+        // Crew Connect control elements
+        this.toggleBtn = document.getElementById('toggleCrewConnect');
+        this.toggleIcon = document.getElementById('toggleIcon');
+        this.toggleText = document.getElementById('crewConnectToggleText');
+        this.autoStartCheckbox = document.getElementById('autoStartCrewConnect');
+        
+        // Create status indicator
+        this.statusIndicator = document.createElement('span');
+        this.statusIndicator.className = 'status-indicator';
+        if (this.toggleBtn) {
+            this.toggleBtn.insertBefore(this.statusIndicator, this.toggleBtn.firstChild);
+        }
+    }
+    
+    setupEventListeners() {
+        if (this.clearBtn) {
+            this.clearBtn.addEventListener('click', () => this.clearMessages());
+        }
+        
+        if (this.autoScrollCheckbox) {
+            this.autoScrollCheckbox.addEventListener('change', (e) => {
+                this.autoScroll = e.target.checked;
+            });
+        }
+        
+        if (this.logFilter) {
+            this.logFilter.addEventListener('change', (e) => {
+                this.filter = e.target.value;
+                this.renderMessages();
+            });
+        }
+
+        if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggleCrewConnect());
+        }
+        
+        if (this.autoStartCheckbox) {
+            this.autoStartCheckbox.addEventListener('change', (e) => {
+                this.setAutoStart(e.target.checked);
+            });
+        }
+    }
+    
+    loadSettings() {
+        // Load auto-start setting from localStorage
+        const saved = localStorage.getItem('crewConnectAutoStart');
+        this.autoStartEnabled = saved === 'true';
+        if (this.autoStartCheckbox) {
+            this.autoStartCheckbox.checked = this.autoStartEnabled;
+        }
+    }
+
+    async checkStatus() {
+        try {
+            console.log('Checking Crew Connect status...');
+            
+            // Check if Crew Connect is running
+            const response = await fetch('/api/crew-connect/status');
+            console.log('Status response:', response.status);
+            
+            const data = await response.json();
+            console.log('Status data:', data);
+            
+            if (data.running !== this.isConnected) {
+                if (data.running) {
+                    console.log('Enabling console...');
+                    this.enableConsole();
+                } else {
+                    console.log('Disabling console...');
+                    this.disableConsole();
+                }
+            }
+
+            this.updateToggleButton(data.running);
+            if (this.statusIndicator) {
+                this.statusIndicator.className = data.running ? 'status-indicator running' : 'status-indicator';
+            }
+            
+            // Update auto-start checkbox if different
+            if (data.autoStart !== undefined && data.autoStart !== this.autoStartEnabled) {
+                this.autoStartEnabled = data.autoStart;
+                if (this.autoStartCheckbox) {
+                    this.autoStartCheckbox.checked = data.autoStart;
+                }
+            }
+
+        } catch (error) {
+            console.error('Error checking Crew Connect status:', error);
+            console.error('Full error:', error);
+            this.disableConsole();
+        }
+    }
+    enableConsole() {
+        this.isConnected = true;
+        if (this.consoleContent) this.consoleContent.style.display = 'block';
+        if (this.consoleDisabled) this.consoleDisabled.style.display = 'none';
+        
+        this.updateToggleButton(true);
+        
+        // Add a welcome message
+        this.addMessage({
+            level: 'info',
+            message: 'Crew Connect console connected',
+            timestamp: new Date().toISOString(),
+            source: 'system'
+        });
+        
+        // Connect to stream
+        this.connectToStream();
+    }
+    
+    disableConsole() {
+        this.isConnected = false;
+        if (this.consoleContent) this.consoleContent.style.display = 'none';
+        if (this.consoleDisabled) this.consoleDisabled.style.display = 'flex';
+        this.updateToggleButton(false);
+        
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+        }
+    }
+    
+    connectToStream() {
+        if (this.eventSource) {
+            this.eventSource.close();
+        }
+        
+        this.eventSource = new EventSource('/console/stream');
+        
+        this.eventSource.onmessage = (event) => {
+            if (event.data === ': keepalive') return;
+            
+            try {
+                const logEntry = JSON.parse(event.data);
+                this.addMessage(logEntry);
+            } catch (error) {
+                console.error('Error parsing console message:', error);
+            }
+        };
+        
+        this.eventSource.onerror = (error) => {
+            console.error('Console stream error:', error);
+            this.eventSource.close();
+            
+            // Try to reconnect after 3 seconds
+            setTimeout(() => {
+                if (this.isConnected) {
+                    this.connectToStream();
+                }
+            }, 3000);
+        };
+    }
+    
+    async toggleCrewConnect() {
+        const endpoint = this.isConnected ? '/api/crew-connect/stop' : '/api/crew-connect/start';
+        
+        // Disable button during operation
+        if (this.toggleBtn) this.toggleBtn.disabled = true;
+        
+        try {
+            const response = await fetch(endpoint, { method: 'POST' });
+            const data = await response.json();
+            
+            if (data.success) {
+                if (this.isConnected) {
+                    toast("Success", "Crew Connect stopped successfully", 2, 3000);
+                    this.disableConsole();
+                } else {
+                    toast("Success", "Crew Connect started successfully", 2, 3000);
+                    this.enableConsole();
+                }
+                
+                // Update status
+                this.updateToggleButton(!this.isConnected);
+            } else {
+                toast("Error", data.error || "Failed to toggle Crew Connect", 0, 4000);
+            }
+        } catch (error) {
+            console.error('Error toggling Crew Connect:', error);
+            toast("Error", "Failed to connect to server", 0, 4000);
+        } finally {
+            // Re-enable button after delay
+            setTimeout(() => {
+                if (this.toggleBtn) this.toggleBtn.disabled = false;
+            }, 1000);
+        }
+    }
+
+    async setAutoStart(enabled) {
+        this.autoStartEnabled = enabled;
+        localStorage.setItem('crewConnectAutoStart', enabled);
+        
+        try {
+            const response = await fetch('/api/crew-connect/auto-start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ enabled })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                toast("Settings", `Auto-start ${enabled ? 'enabled' : 'disabled'}`, 2, 3000);
+                this.addMessage({
+                    level: 'info',
+                    message: `Auto-start ${enabled ? 'enabled' : 'disabled'}`,
+                    timestamp: new Date().toISOString(),
+                    source: 'system'
+                });
+            }
+        } catch (error) {
+            console.error('Error setting auto-start:', error);
+            toast("Error", "Failed to update auto-start setting", 0, 4000);
+        }
+    }
+    
+    updateToggleButton(isRunning) {
+        if (!this.toggleBtn || !this.toggleText || !this.toggleIcon) return;
+        
+        if (isRunning) {
+            this.toggleBtn.classList.add('running');
+            this.toggleText.textContent = 'Stop Crew Connect';
+            this.toggleIcon.innerHTML = '<rect x="6" y="6" width="12" height="12" rx="1" fill="currentColor"/>';
+            this.toggleIcon.classList.add('stop-icon');
+            if (this.statusIndicator) {
+                this.statusIndicator.className = 'status-indicator running';
+            }
+        } else {
+            this.toggleBtn.classList.remove('running');
+            this.toggleText.textContent = 'Start Crew Connect';
+            this.toggleIcon.innerHTML = '<path d="M8 5v14l11-7z" fill="currentColor"/>';
+            this.toggleIcon.classList.remove('stop-icon');
+            if (this.statusIndicator) {
+                this.statusIndicator.className = 'status-indicator';
+            }
+        }
+    }
+
+    addMessage(entry) {
+        this.messages.push({
+            ...entry,
+            id: entry.id || Date.now() + Math.random().toString(36).substr(2, 9)
+        });
+        
+        // Limit message count
+        if (this.messages.length > this.maxMessages) {
+            this.messages.shift();
+        }
+        
+        this.messageCount++;
+        this.updateStats();
+        this.renderMessages();
+        
+        // Auto-scroll if enabled
+        if (this.autoScroll && this.consoleOutput) {
+            setTimeout(() => {
+                this.consoleOutput.scrollTop = this.consoleOutput.scrollHeight;
+            }, 10);
+        }
+    }
+    
+    renderMessages() {
+        if (!this.consoleOutput) return;
+        
+        const filteredMessages = this.filter === 'all' 
+            ? this.messages 
+            : this.messages.filter(msg => 
+                this.filter === 'info' || this.filter === 'warning' || this.filter === 'error'
+                    ? msg.level === this.filter
+                    : msg.source === this.filter
+            );
+        
+        this.consoleOutput.innerHTML = filteredMessages.map(msg => `
+            <div class="console-message ${msg.level} ${msg.source}">
+                <span class="message-timestamp">${this.formatTime(msg.timestamp)}</span>
+                <span class="message-level ${msg.level}">${msg.level}</span>
+                <span class="message-content">${this.escapeHtml(msg.message)}</span>
+            </div>
+        `).join('');
+    }
+    
+    clearMessages() {
+        this.messages = [];
+        this.messageCount = 0;
+        this.updateStats();
+        this.renderMessages();
+    }
+    
+    updateStats() {
+        if (this.messageCountElement) {
+            this.messageCountElement.textContent = `${this.messageCount} messages`;
+        }
+        if (this.lastUpdateElement) {
+            this.lastUpdateElement.textContent = `Last update: ${this.formatTime(new Date().toISOString(), true)}`;
+        }
+    }
+    
+    formatTime(timestamp, short = false) {
+        const date = new Date(timestamp);
+        if (short) {
+            return date.toLocaleTimeString();
+        }
+        return date.toLocaleString();
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+// Initialize console when Crew Connect page is shown
+let consoleInstance = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if we're on the Crew Connect page initially
+    if (document.getElementById('crew-connect-page')?.style.display !== 'none') {
+        consoleInstance = new CrewConnectConsole();
+    }
+});
+
+// Simple click handler for the Crew Connect tab
+document.getElementById('b2')?.addEventListener('click', () => {
+    setTimeout(() => {
+        if (!consoleInstance) {
+            consoleInstance = new CrewConnectConsole();
+        }
+    }, 100);
+});
+
+// Auto-start Crew Connect if setting is enabled
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize console for Crew Connect page
+    const autoStart = localStorage.getItem('crewConnectAutoStart') === 'true';
+    console.log('Auto-start on load:', autoStart);
+    
+    // Test if API is accessible
+    fetch('/api/test')
+        .then(res => res.json())
+        .then(data => console.log('Server test:', data))
+        .catch(err => console.error('Server test failed:', err));
+    
+    if (autoStart) {
+        console.log('Auto-start is enabled, will attempt to start Crew Connect');
+        // Wait for console to initialize, then auto-start
+        setTimeout(() => {
+            if (consoleInstance && !consoleInstance.isConnected) {
+                console.log('Attempting auto-start...');
+                consoleInstance.toggleCrewConnect();
+            }
+        }, 2000);
+    }
+});                 
