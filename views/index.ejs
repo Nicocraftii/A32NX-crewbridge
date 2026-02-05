@@ -15,36 +15,7 @@
                 <img src="/assets/logo.png">
             </div>
 
-
             <div class="nav-top">
-
-                <div class=" nav btn active" id="b1" onclick="document.getElementById('dashboard').style.display = 'block'; document.getElementById('crew-connect-page').style.display = 'none'; document.getElementById('b1').classList.add('active'); document.getElementById('b2').classList.remove('active')">
-                    <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                        <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
-                            <g transform="translate(-26, -15)">
-                                <g transform="translate(26, 15)">
-                                    <rect fill="#FFFFFF" fill-opacity="0.01" width="24" height="24"></rect>
-                                    <polygon points="4.5 9 4.5 21 19.5 21 19.5 9 12 3"></polygon>
-                                    <polygon stroke="#212121" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        points="4.5 21 4.5 9 2 11 12 3 22 11 19.5 9 19.5 21"></polygon>
-                                    <polygon stroke="#212121" stroke-linejoin="round" stroke-width="1.5"
-                                        points="9.5 14.5 9.5 21 14.5 21 14.5 14.5"></polygon>
-                                    <line stroke="#212121" stroke-linecap="round" stroke-width="1.5"
-                                        x1="4.5" y1="21" x2="19.5" y2="21"></line>
-                                </g>
-                            </g>
-                        </g>
-                    </svg>
-                    <a>Home</a>
-                </div>
-
-                <div class=" nav btn" id="b2" onclick="document.getElementById('dashboard').style.display = 'none'; document.getElementById('crew-connect-page').style.display = 'block'; document.getElementById('b1').classList.remove('active'); document.getElementById('b2').classList.add('active')">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M10 17L8 15L10 13M14 13L16 15L14 17M13 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 5 5.0799 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.0799 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V9M13 3L19 9M13 3V8C13 8.55228 13.4477 9 14 9H19"
-                            stroke="#000" stroke-width="1.248" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <a>Crew Connect</a>
-                </div>
 
             </div>
 
@@ -104,7 +75,7 @@
                             <div class="info-coll2">
                                 <p>Status : <span id="clientst" class="status">Not connected</span></p>
                                 <p>Connected to : <span id="host-target">None</span></p>
-                                <p>Crew-connect status : <span id="status-cc">Not running</span></p>
+                                <p>Crew-connect status : <span class="status-cc <%= crewConnectRunning ? 'connected' : '' %>"><%= crewConnectRunning ? 'Running' : 'Not running' %></span></p>
                             </div>
                         </div>
                     </div>
@@ -112,7 +83,7 @@
                             <form id="connect-form">
                             <input type="text" name="host" placeholder="Host ip (like this : ip/type[lan,net,tailscale])" id="host-ip-input" required>
                             <input type="text" name="code" id="host-code-input" placeholder="Connection code" required>
-                            <button id="connect-btn" type="submit">Connect</button>
+                            <button id="connect-btn" type="submit" disabled>Connect</button>
                         </form>
                     </div>
                 </div>
@@ -131,78 +102,16 @@
                             </div>
                             <div class="info-coll2">
                                 <p>Status : <span id="serverst" class="status">Not running</span></p>
-                                <p>Connected to : <span id="host-target">None</span></p>
-                                <p>Crew-connect status : <span id="status-cc">Not running</span></p>
+                                <p>Crew-connect status : <span class="status-cc <%= crewConnectRunning ? 'connected' : '' %>"><%= crewConnectRunning ? 'Running' : 'Not running' %></span></p>
                             </div>
                         </div>
                     </div>
-                    <div class="connection-box">
-                        <button class="start-button btn tooltip" disabled>Start Server<span class="tooltiptext">CrewConnect is not running</span></button>
+                    <div class="server-box">
+                        <p class="party-code"><strong>Private code:</strong><span class="private-code"> Not generated</span></p>
+                        <button onclick="toggleServerStatus()" class="start-button btn" disabled><% if (serverStatus) { %>Stop Server<% } else { %>Start Server<% } %></button>
                     </div>
-                </div>
-            </div>
-            <!------------------------------------------------------------------------->
-            <div id="crew-connect-page" style="display: none;">
-                <div class="console-container">
-                    <div class="console-header">
-                        <h2>Crew Connect Console</h2>
-                        <div class="console-controls">
-                            <button id="toggleCrewConnect" class="console-btn crew-connect-toggle">
-                                <svg id="toggleIcon" width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7z" fill="currentColor"/>
-                                </svg>
-                                <span id="crewConnectToggleText">Start Crew Connect</span>
-                            </button>
-                            
-                            <label class="autostart-toggle">
-                                <input type="checkbox" id="autoStartCrewConnect">
-                                <span class="toggle-slider"></span>
-                                Auto-start
-                            </label>
-                            
-                            <button id="clearConsole" class="console-btn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                    <path d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z" fill="currentColor"/>
-                                </svg>
-                                Clear
-                            </button>
-                            
-                            <label class="autoscroll-toggle">
-                                <input type="checkbox" id="autoScroll" checked>
-                                <span class="toggle-slider"></span>
-                                Auto-scroll
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="consoleDisabledMessage" class="console-disabled">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                            <!-- Your disabled icon -->
-                        </svg>
-                        <h3>Crew Connect is not running</h3>
-                        <p>Start Crew Connect to see LVAR updates and console messages.</p>
-                    </div>
-                    
-                    <div id="consoleContent" class="console-content">
-                        <div id="consoleOutput" class="console-output"></div>
-                    </div>
-                    
-                    <div class="console-footer">
-                        <div class="console-stats">
-                            <span id="messageCount">0 messages</span>
-                            <span id="lastUpdate">Never updated</span>
-                        </div>
-                        <div class="console-filter">
-                            <select id="logFilter">
-                                <option value="all">All Messages</option>
-                                <option value="info">Info</option>
-                                <option value="warning">Warning</option>
-                                <option value="error">Error</option>
-                                <option value="sim">Sim LVARs</option>
-                                <option value="client">Client LVARs</option>
-                            </select>
-                        </div>
-                    </div>
+
+
                 </div>
             </div>
         </div>

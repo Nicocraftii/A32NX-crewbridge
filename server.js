@@ -6,8 +6,12 @@ import { exec,spawn } from "child_process";
 import fs from 'fs/promises';
 import path from 'path';
 import EventEmitter from 'events';
+import { stat } from 'fs';
 
 const app = express();
+
+let crewConnectAlive = false;
+let serverStatus = false; 
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -86,6 +90,8 @@ app.get('/', (req,res) => {
         hostname,
         localip: currentStatus.ip,
         mfsVersion : mfsVersion,
+        crewConnectRunning: crewConnectAlive,
+        serverStatus: serverStatus,
     });
 });
 
@@ -369,275 +375,46 @@ app.post('/lvar/sim', (req, res) => {
   res.json({ success: true });
 });
 
-app.post('/lvar/client', async (req, res) => {
+app.post('/lvar/api', async (req, res) => {
   const { lvar, value, client } = req.body;
   console.log(`Received LVAR update from client ${client}: ${lvar} -> ${value}`);
-  // if (client == ip) return res.json({ success: true });
-  const response = await fetch('http://localhost:8080/lvar/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ lvar, value })
-  }).catch(error => {
-    console.error('Error sending LVAR update:', error);
-  });
-
   res.json({ success: true });
 });
 
+let pingToken = null;
+let lastAck = 0;
 
-//////////////////////////////  CONSOLE ///////////////////:
 
-const consoleEmitter = new EventEmitter();
-const consoleHistory = [];
-const MAX_CONSOLE_ENTRIES = 1000;
+app.get('/ping', (req, res) => {
+  pingToken = Date.now().toString();
+  res.json({ token: pingToken });
+});
 
-// Add route to send console messages
-app.post('/console/log', (req, res) => {
-  const { level, message, timestamp, source } = req.body;
-  
-  const logEntry = {
-    level: level || 'info',
-    message: message || '',
-    timestamp: timestamp || new Date().toISOString(),
-    source: source || 'server',
-    id: Date.now() + Math.random().toString(36).substr(2, 9)
-  };
-  
-  // Add to history (limit size)
-  consoleHistory.push(logEntry);
-  if (consoleHistory.length > MAX_CONSOLE_ENTRIES) {
-    consoleHistory.shift();
+app.post('/pong', (req, res) => {
+  const { token, code } = req.body;
+
+  if (token === pingToken && code === 657) {
+    lastAck = Date.now();
+    crewConnectAlive = true;
+    return res.json({ success: true });
   }
-  
-  // Emit to all connected clients
-  consoleEmitter.emit('log', logEntry);
-  
-  res.json({ success: true });
+
+  res.status(400).json({ success: false });
 });
 
-// SSE endpoint for console updates
-app.get('/console/stream', (req, res) => {
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'Access-Control-Allow-Origin': '*'
-  });
-  
-  // Send existing history
-  consoleHistory.forEach(entry => {
-    res.write(`data: ${JSON.stringify(entry)}\n\n`);
-  });
-  
-  // Send keep-alive every 30 seconds
-  const keepAlive = setInterval(() => {
-    res.write(': keepalive\n\n');
-  }, 30000);
-  
-  // Listen for new logs
-  const logHandler = (entry) => {
-    res.write(`data: ${JSON.stringify(entry)}\n\n`);
-  };
-  
-  consoleEmitter.on('log', logHandler);
-  
-  // Clean up on client disconnect
-  req.on('close', () => {
-    clearInterval(keepAlive);
-    consoleEmitter.removeListener('log', logHandler);
-  });
+setInterval(() => {
+  if (Date.now() - lastAck > 6000) {
+    crewConnectAlive = false;
+  }
+}, 1000);
+
+app.get('/status/crewconnect', (req, res) => {
+  res.json({ running: crewConnectAlive });
 });
 
-// Get all LVARs from sim
-app.get('/lvars/sim', (req, res) => {
-  // This would normally fetch from your simulation
-  // For now, we'll return dummy data
-  const mockLvars = [
-    { name: 'AP_MASTER_SWITCH', value: 1, timestamp: new Date().toISOString() },
-    { name: 'ENGINE_1_N1', value: 87.5, timestamp: new Date().toISOString() },
-    { name: 'FLIGHT_CONTROLS', value: 0, timestamp: new Date().toISOString() },
-    { name: 'ALTITUDE', value: 35000, timestamp: new Date().toISOString() },
-    { name: 'AIRSPEED', value: 250, timestamp: new Date().toISOString() }
-  ];
-  
-  res.json({ success: true, lvars: mockLvars });
-});
 
-// Update the LVAR endpoint to also log to console
-app.post('/lvar/sim', (req, res) => {
-  const { lvar, value } = req.body;
-  
-  // Log to console
-  consoleEmitter.emit('log', {
-    level: 'info',
-    message: `LVAR Update: ${lvar} → ${value}`,
-    timestamp: new Date().toISOString(),
-    source: 'sim',
-    id: Date.now() + Math.random().toString(36).substr(2, 9)
-  });
-  
-  console.log(`Received LVAR update: ${lvar} -> ${value}`);
-  res.json({ success: true });
-});
-
-app.post('/lvar/client', async (req, res) => {
-  const { lvar, value, client } = req.body;
-  
-  // Log to console
-  consoleEmitter.emit('log', {
-    level: 'info',
-    message: `LVAR from ${client}: ${lvar} → ${value}`,
-    timestamp: new Date().toISOString(),
-    source: 'client',
-    id: Date.now() + Math.random().toString(36).substr(2, 9)
-  });
-  
-  console.log(`Received LVAR update from client ${client}: ${lvar} -> ${value}`);
-  
-  const response = await fetch('http://localhost:8080/lvar/send', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ lvar, value })
-  }).catch(error => {
-    console.error('Error sending LVAR update:', error);
-    
-    consoleEmitter.emit('log', {
-      level: 'error',
-      message: `Failed to forward LVAR to sim: ${error.message}`,
-      timestamp: new Date().toISOString(),
-      source: 'server',
-      id: Date.now() + Math.random().toString(36).substr(2, 9)
-    });
-  });
-
-  res.json({ success: true });
-});
-
-let crewConnectProcess = null;
-let crewConnectRunning = false;
-let crewConnectAutoStart = false;
-let serverStartTime = Date.now();
-
-function startCrewConnectProcess() {
-    return new Promise((resolve, reject) => {
-        if (crewConnectProcess) {
-            console.log('Crew Connect is already running');
-            reject(new Error('Crew Connect is already running'));
-            return;
-        }
-
-        const activateScript = path.resolve('./crew-connect/.venv/Scripts/activate.bat');
-        const mainScript = path.resolve('./crew-connect/main.py');
-        
-        console.log('Looking for activate script at:', activateScript);
-        console.log('Looking for main script at:', mainScript);
-        
-        // Check if files exist
-        fs.access(activateScript).then(() => {
-            console.log('Activate script exists');
-        }).catch(err => {
-            console.error('Activate script NOT FOUND:', err);
-            reject(new Error(`Activate script not found at: ${activateScript}`));
-            return;
-        });
-        
-        fs.access(mainScript).then(() => {
-            console.log('Main script exists');
-        }).catch(err => {
-            console.error('Main script NOT FOUND:', err);
-            reject(new Error(`Main script not found at: ${mainScript}`));
-            return;
-        });
-        
-        // ... rest of the function
-    });
-}
-
-// Function to stop Crew Connect process
-function stopCrewConnectProcess() {
-    return new Promise((resolve, reject) => {
-        if (!crewConnectProcess) {
-            reject(new Error('Crew Connect is not running'));
-            return;
-        }
-
-        crewConnectProcess.kill('SIGTERM');
-        
-        setTimeout(() => {
-            if (crewConnectProcess && !crewConnectProcess.killed) {
-                crewConnectProcess.kill('SIGKILL');
-            }
-            
-            crewConnectRunning = false;
-            crewConnectProcess = null;
-            
-            consoleEmitter.emit('log', {
-                level: 'info',
-                message: 'Crew Connect stopped',
-                timestamp: new Date().toISOString(),
-                source: 'system'
-            });
-            
-            resolve({ success: true, message: 'Crew Connect stopped' });
-        }, 1000);
-    });
-}
-
-// Add API endpoints for controlling Crew Connect
-app.get('/api/crew-connect/status', (req, res) => {
-    res.json({
-        running: crewConnectRunning,
-        pid: crewConnectProcess?.pid,
-        autoStart: crewConnectAutoStart,
-        uptime: serverStartTime ? Date.now() - serverStartTime : 0
-    });
-});
-
-app.post('/api/crew-connect/start', async (req, res) => {
-    try {
-        const result = await startCrewConnectProcess();
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-app.post('/api/crew-connect/stop', async (req, res) => {
-    try {
-        const result = await stopCrewConnectProcess();
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-app.post('/api/crew-connect/auto-start', (req, res) => {
-    const { enabled } = req.body;
-    crewConnectAutoStart = Boolean(enabled);
-    
-    // Save to config or localStorage equivalent
-    console.log(`Auto-start set to: ${crewConnectAutoStart}`);
-    
-    res.json({
-        success: true,
-        autoStart: crewConnectAutoStart
-    });
-});
-
-// Auto-start Crew Connect on server start if enabled
-if (process.env.CREW_CONNECT_AUTO_START === 'true') {
-    crewConnectAutoStart = true;
-    setTimeout(() => {
-        startCrewConnectProcess();
-    }, 3000);
-}
+app.post('/toggle-server', (req, res) => {
+    serverStatus = !serverStatus;
+    console.log('Server status toggled. Now:', serverStatus ? 'Running' : 'Stopped');
+    res.json({ success: true, serverStatus });
+}); 
