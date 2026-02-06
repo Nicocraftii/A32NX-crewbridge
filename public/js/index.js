@@ -825,8 +825,8 @@ document.getElementById('connect-form').addEventListener('submit', (ev) => {
         cbtn.textContent = 'Disconnect';
         document.getElementById('host-ip-input').disabled = true;
         document.getElementById('host-code-input').disabled = true;
-         document.getElementById('host-ip-input').style.cursor = "not-allowed";
-        document.getElementById('host-code').style.cursor = "not-allowed";
+        document.getElementById('host-ip-input').style.cursor = "not-allowed";
+        document.getElementById('host-code-input').style.cursor = "not-allowed";
 
         fetch('/connect', {
             method: 'POST',
@@ -849,7 +849,7 @@ document.getElementById('connect-form').addEventListener('submit', (ev) => {
         document.getElementById('host-ip-input').disabled = false;
         document.getElementById('host-code-input').disabled = false;
         document.getElementById('host-ip-input').style.cursor = "default";
-        document.getElementById('host-code').style.cursor = "default";
+        document.getElementById('host-code-input').style.cursor = "default";
         document.getElementById('host-ip-input').value = "";
         document.getElementById('host-code-input').value = "";
         

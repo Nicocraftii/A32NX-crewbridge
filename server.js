@@ -132,7 +132,6 @@ app.post('/connect', (req, res) => {
   
   clientConnexionData = {
     ip: ip,
-    type: connectionIpType,
     code: code,
     client: client
   };
@@ -154,15 +153,6 @@ app.post('/disconnect', (req, res) => {
         message: 'Client disconnected successfully.'
     });
 });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -429,7 +419,9 @@ app.get('/app-info', (req, res) => {
   res.json({
         mode: serverStatus ? 'server' : (clientStatus ? 'client' : 'none'),
         code: GLOBALCODE,
-        
+        targetIP: clientConnexionData['ip'],
+        clientCode : clientConnexionData['code'],
+        clientIP : clientConnexionData['client']
     });
 });
 
