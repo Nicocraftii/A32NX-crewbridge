@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon server.js --port 8080"
+    "dev": "npx nodemon server.js --port 8080",
+    "clin": "npx nodemon server.js --port 8090"
   },
   "keywords": [],
   "author": "",

@@ -14,6 +14,7 @@ let crewConnectAlive = false;
 let serverStatus = false; 
 let clientStatus = false;
 let GLOBALCODE = 'null';
+let clientConnexionData = 'null';
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -115,7 +116,7 @@ function decodeIP(encoded) {
 
 
 app.post('/connect', (req, res) => {
-  const { host: ipb, code: code, client : eclient} = req.body;
+  const { host: ipb, code: code, client: eclient } = req.body;
   let client = decodeIP(eclient);
 
   if (!ipb || !code) {
@@ -129,12 +130,29 @@ app.post('/connect', (req, res) => {
   let ip = ipb.split('/')[0];
   console.log('Attempting to connect to IP:', ip, 'over', connectionIpType, 'with code:', code, '\n from ',client);
   
+  clientConnexionData = {
+    ip: ip,
+    type: connectionIpType,
+    code: code,
+    client: client
+  };
+  
+  clientStatus = true;
 
   res.json({
     success: true,
     hasModule: true,
     message: `Connection attempt to ${ip} over ${connectionIpType} with code ${code} initiated.`
   });
+});
+
+app.post('/disconnect', (req, res) => {
+    clientStatus = false;
+    clientConnexionData = 'null';
+    res.json({
+        success: true,
+        message: 'Client disconnected successfully.'
+    });
 });
 
 
@@ -425,3 +443,10 @@ app.get('/generate-code', (req, res) => {
     GLOBALCODE = code + randomLetters;
     res.json({ code: code + randomLetters });
 });
+
+app.post('/reset', (req, res) => {
+    GLOBALCODE = 'null';
+    serverStatus = false;
+    clientStatus = false;
+    res.json({ success: true });
+})

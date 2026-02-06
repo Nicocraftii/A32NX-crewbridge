@@ -6,17 +6,100 @@ if (darkmode === "enabled") {
     document.body.classList.remove("darkmode");
 }
 
-document.getElementById("modebtn").addEventListener("click", () => {
-    darkmode = localStorage.getItem("darkmode");
-
+// Enhanced dark mode toggle with forced synchronous transitions
+document.getElementById("modebtn").addEventListener("click", function() {
+    const darkmode = localStorage.getItem("darkmode");
+    const body = document.body;
+    
+    // Add a class to force transitions on ALL elements
+    body.classList.add('mode-changing');
+    
+    // Force browser to recalculate styles
+    void body.offsetWidth;
+    
+    // Toggle the mode
     if (darkmode !== "enabled") {
-        document.body.classList.add("darkmode");
+        body.classList.add("darkmode");
         localStorage.setItem("darkmode", "enabled");
     } else {
-        document.body.classList.remove("darkmode");
+        body.classList.remove("darkmode");
         localStorage.setItem("darkmode", "disabled");
     }
+    
+    // Remove the class after transition completes
+    setTimeout(() => {
+        body.classList.remove('mode-changing');
+    }, 400); // Match this to your CSS transition duration
 });
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    const darkmode = localStorage.getItem("darkmode");
+    if (darkmode === "enabled") {
+        document.body.classList.add("darkmode");
+    }
+    
+    // Add transition-ready class after page loads
+    setTimeout(() => {
+        document.body.classList.add('transitions-ready');
+    }, 100);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modeBtn = document.getElementById('modebtn');
+    const darkmode = localStorage.getItem("darkmode");
+    
+    // Apply saved mode
+    if (darkmode === "enabled") {
+        document.body.classList.add("darkmode");
+    }
+    
+    // Add initial pulse animation
+    modeBtn.classList.add('pulse');
+    setTimeout(() => {
+        modeBtn.classList.remove('pulse');
+    }, 2000);
+    
+    // Add smooth transitions to all elements
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            transition: background-color 0.3s ease, 
+                       border-color 0.3s ease, 
+                       color 0.3s ease,
+                       transform 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// Optional: Add keyboard shortcut (Alt+M or Option+M)
+document.addEventListener('keydown', function(e) {
+    if ((e.altKey || e.metaKey) && e.key === 'm') {
+        e.preventDefault();
+        document.getElementById('modebtn').click();
+    }
+});
+
+// Optional: Add system preference detection
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    const darkmode = localStorage.getItem("darkmode");
+    
+    // Only auto-enable dark mode if user hasn't made a choice
+    if (!darkmode) {
+        document.body.classList.add("darkmode");
+        localStorage.setItem("darkmode", "enabled");
+        
+        // Add a subtle indicator that auto-dark mode was applied
+        setTimeout(() => {
+            const modeBtn = document.getElementById('modebtn');
+            modeBtn.classList.add('pulse');
+            setTimeout(() => {
+                modeBtn.classList.remove('pulse');
+            }, 1000);
+        }, 500);
+    }
+}
 
 const settingsBtn = document.querySelector(".nav.btn.b5");
 const settingsPanel = document.getElementById("settings");
@@ -735,23 +818,60 @@ document.getElementById('connect-form').addEventListener('submit', (ev) => {
             localStorage.setItem('clientip', encodeIP(el.textContent));
         });
     }
+
+    let cbtn = document.getElementById('connect-btn');
+
+    if (cbtn.textContent === 'Connect') {
+        cbtn.textContent = 'Disconnect';
+        document.getElementById('host-ip-input').disabled = true;
+        document.getElementById('host-code-input').disabled = true;
+         document.getElementById('host-ip-input').style.cursor = "not-allowed";
+        document.getElementById('host-code').style.cursor = "not-allowed";
+
+        fetch('/connect', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code, host: ip, client : localStorage.getItem('clientip') })
+        })
+        .then(response => {
+            if (!response.ok) {
+                const res = response.json();
+            }
+        })
+        .catch(error => {
+            console.error('Error connecting to host:', error);
+            toast("Connection Error", "An error occurred while trying to connect.", 0, 4000);
+        });
+    } else {
+        cbtn.textContent = 'Connect';
+        document.getElementById('host-ip-input').disabled = false;
+        document.getElementById('host-code-input').disabled = false;
+        document.getElementById('host-ip-input').style.cursor = "default";
+        document.getElementById('host-code').style.cursor = "default";
+        document.getElementById('host-ip-input').value = "";
+        document.getElementById('host-code-input').value = "";
+        
+
+        fetch('/disconnect', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                const res = response.json();
+            }
+            toast("Disconnected", "Successfully disconnected from host.", 2, 3000);
+        })
+        .catch(error => {
+            console.error('Error disconnecting from host:', error);
+            toast("Disconnection Error", "An error occurred while trying to disconnect.", 0, 4000);
+        })
+    }
     
-    fetch('/connect', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code, host: ip, client : localStorage.getItem('clientip') })
-    })
-    .then(response => {
-        if (!response.ok) {
-            const res = response.json();
-        }
-    })
-    .catch(error => {
-        console.error('Error connecting to host:', error);
-        toast("Connection Error", "An error occurred while trying to connect.", 0, 4000);
-    });
 });
 
 let ccStatus = false

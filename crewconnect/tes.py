@@ -7,8 +7,7 @@ import socket
 ###################################### VARIABLES ######################################
 
 
-
-BASE_URL = "http://localhost:8080"
+BASE_URL = "http://localhost:8090"
 SEND_TIMEOUT = 5
 PING_INTERVAL = 2.0
 last_ping_check = 0.0

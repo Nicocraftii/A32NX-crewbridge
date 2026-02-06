@@ -33,6 +33,48 @@
     --padd-1: 0.5rem;
 }
 
+/* Control transitions globally */
+body.mode-changing *,
+body.mode-changing *::before,
+body.mode-changing *::after {
+    transition-duration: 0.4s !important;
+    transition-timing-function: ease !important;
+    transition-delay: 0s !important;
+}
+
+/* Ensure transitions only work AFTER page load to avoid initial flash */
+body:not(.transitions-ready) *,
+body:not(.transitions-ready) *::before,
+body:not(.transitions-ready) *::after {
+    transition: none !important;
+}
+
+/* Specific transitions for special cases */
+#dashbtn .slider {
+    transition: 
+        transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+        background-color 0.4s ease !important;
+}
+
+/* Mode button icons - keep your morph animation but sync timing */
+#modebtn svg:first-child,
+#modebtn svg:last-child {
+    transition: 
+        opacity 0.4s ease,
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Hover effects should be faster than mode changes */
+nav .btn:hover,
+#saveSettings:hover,
+.connection-box button:hover,
+.server-box button:hover,
+#launchWizardBtn:hover {
+    transition: 
+        background-color 0.2s ease,
+        transform 0.2s ease !important;
+}
+
 /*###################### DARK MODE VARIABLES #######################*/
 .darkmode {
     --black: hsl(240, 9%, 95%);
@@ -151,8 +193,8 @@ nav .btn a {
 /*###################### LOGO #######################*/
 #logo {
     width: 100%;
-    margin: 3px;
-    margin-bottom: 10px;
+    margin: 4px;
+    margin-top: 10px;
 }
 
 #logo img {
@@ -173,6 +215,85 @@ nav svg {
 }
 
 /*###################### MODE BUTTON #######################*/
+#modebtn {
+    width: auto;
+    padding: 8px;
+    border-radius: 0.5rem;
+    margin: 0 0.5rem;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 30px 1fr;
+}
+
+#modebtn span {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 30px;
+    height: 24px;
+}
+
+/* Base SVG styles - keep your original */
+#modebtn svg {
+    height: 24px;
+    margin-right: 9px;
+    width: 24px;
+    scale: 1.1;
+}
+
+/* Position both icons absolutely for morph transition */
+#modebtn svg:first-child,
+#modebtn svg:last-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sun icon (for dark mode) - initially hidden */
+#modebtn svg:first-child {
+    opacity: 0;
+    transform: scale(0.9) rotate(-45deg);
+}
+
+/* Moon icon (for light mode) - initially visible */
+#modebtn svg:last-child {
+    opacity: 1;
+    transform: scale(1.1) rotate(0deg);
+}
+
+/* Hover effect - subtle */
+#modebtn:hover svg:first-child,
+#modebtn:hover svg:last-child {
+    transform: scale(1.15) rotate(20deg);
+}
+
+/* Dark mode states */
+.darkmode #modebtn svg:first-child {
+    opacity: 1;
+    transform: scale(1.1) rotate(0deg);
+}
+
+.darkmode #modebtn svg:last-child {
+    opacity: 0;
+    transform: scale(0.9) rotate(45deg);
+}
+
+/* Remove hover effect in dark mode to avoid conflicts */
+.darkmode #modebtn:hover svg:first-child {
+    transform: scale(1.3) rotate(5deg);
+}
+
+/* Keep your global SVG transitions for fill color */
+.darkmode svg {
+    stroke: white;
+    color: white;
+    border-color: white;
+    filter: invert(1);
+}
+
+/* ###################### MODE BUTTON #######################
 #modebtn {
     width: auto ;
     padding:8px;
@@ -195,6 +316,12 @@ nav svg {
     margin-right: 9px;
     width: 24px;
     scale: 1.2;
+    transform: rotateZ(0deg);
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+#modebtn:hover svg {
+  transform: rotateZ(80deg);
 }
 
 #modebtn svg:first-child {
@@ -207,7 +334,7 @@ nav svg {
 
 .darkmode #modebtn svg:last-child {
     display: none;
-}
+} */
 
 /*###################### DARK MODE: ICONS & LOGO #######################*/
 .darkmode svg {
@@ -1348,4 +1475,20 @@ nav svg {
 
 #serverst.connected {
     color: var(--green) !important;
+}
+
+
+
+nav .b5 svg {
+    transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+nav .b5:hover svg {
+    transform: scale(1.05) rotateZ(120deg);
+}
+
+nav .b4 svg {
+    transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+nav .b4:hover svg {
+    transform: scale(1.05) rotateZ(5deg) translateY(-5px);
 }
