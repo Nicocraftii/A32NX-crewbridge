@@ -221,6 +221,13 @@ class MobiFlightVariableRequests:
         while self.changed_vars:
             changed.append(self.changed_vars.popleft())
         return changed
+    
+    def get_changed_dict(self):
+        changed = {}
+        while self.changed_vars:
+            var = self.changed_vars.popleft()
+            changed[var.name] = var.float_value
+        return changed
 
 
     # ───────────────────────── Backend Loop Protection ─────────────────────────

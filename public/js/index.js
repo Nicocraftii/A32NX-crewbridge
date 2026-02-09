@@ -7,16 +7,16 @@ if (darkmode === "enabled") {
 }
 
 // Enhanced dark mode toggle with forced synchronous transitions
-document.getElementById("modebtn").addEventListener("click", function() {
+document.getElementById("modebtn").addEventListener("click", function () {
     const darkmode = localStorage.getItem("darkmode");
     const body = document.body;
-    
+
     // Add a class to force transitions on ALL elements
-    body.classList.add('mode-changing');
-    
+    body.classList.add("mode-changing");
+
     // Force browser to recalculate styles
     void body.offsetWidth;
-    
+
     // Toggle the mode
     if (darkmode !== "enabled") {
         body.classList.add("darkmode");
@@ -25,43 +25,43 @@ document.getElementById("modebtn").addEventListener("click", function() {
         body.classList.remove("darkmode");
         localStorage.setItem("darkmode", "disabled");
     }
-    
+
     // Remove the class after transition completes
     setTimeout(() => {
-        body.classList.remove('mode-changing');
+        body.classList.remove("mode-changing");
     }, 400); // Match this to your CSS transition duration
 });
 
 // Initialize
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
     const darkmode = localStorage.getItem("darkmode");
     if (darkmode === "enabled") {
         document.body.classList.add("darkmode");
     }
-    
+
     // Add transition-ready class after page loads
     setTimeout(() => {
-        document.body.classList.add('transitions-ready');
+        document.body.classList.add("transitions-ready");
     }, 100);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const modeBtn = document.getElementById('modebtn');
+document.addEventListener("DOMContentLoaded", function () {
+    const modeBtn = document.getElementById("modebtn");
     const darkmode = localStorage.getItem("darkmode");
-    
+
     // Apply saved mode
     if (darkmode === "enabled") {
         document.body.classList.add("darkmode");
     }
-    
+
     // Add initial pulse animation
-    modeBtn.classList.add('pulse');
+    modeBtn.classList.add("pulse");
     setTimeout(() => {
-        modeBtn.classList.remove('pulse');
+        modeBtn.classList.remove("pulse");
     }, 2000);
-    
+
     // Add smooth transitions to all elements
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
         * {
             transition: background-color 0.3s ease, 
@@ -74,28 +74,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Optional: Add keyboard shortcut (Alt+M or Option+M)
-document.addEventListener('keydown', function(e) {
-    if ((e.altKey || e.metaKey) && e.key === 'm') {
+document.addEventListener("keydown", function (e) {
+    if ((e.altKey || e.metaKey) && e.key === "m") {
         e.preventDefault();
-        document.getElementById('modebtn').click();
+        document.getElementById("modebtn").click();
     }
 });
 
 // Optional: Add system preference detection
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
     const darkmode = localStorage.getItem("darkmode");
-    
+
     // Only auto-enable dark mode if user hasn't made a choice
     if (!darkmode) {
         document.body.classList.add("darkmode");
         localStorage.setItem("darkmode", "enabled");
-        
+
         // Add a subtle indicator that auto-dark mode was applied
         setTimeout(() => {
-            const modeBtn = document.getElementById('modebtn');
-            modeBtn.classList.add('pulse');
+            const modeBtn = document.getElementById("modebtn");
+            modeBtn.classList.add("pulse");
             setTimeout(() => {
-                modeBtn.classList.remove('pulse');
+                modeBtn.classList.remove("pulse");
             }, 1000);
         }, 500);
     }
@@ -185,7 +188,7 @@ function updateConnectionStatus() {
                     "Connection Error",
                     "Missing internet connection.",
                     0,
-                    5200
+                    5200,
                 );
                 document.getElementById("dashboard").style.opacity = "0";
                 ipElements.forEach((element) => {
@@ -290,8 +293,8 @@ document.getElementById("host-code-input").addEventListener("input", (el) => {
 });
 
 function updateClientInfo() {
-    document.querySelectorAll('.client-mfs-version').forEach(el => {
-        el.textContent = localStorage.getItem('mfsVersion');
+    document.querySelectorAll(".client-mfs-version").forEach((el) => {
+        el.textContent = localStorage.getItem("mfsVersion");
     });
 }
 
@@ -304,11 +307,11 @@ ipInput.addEventListener("input", (e) => {
     const oldVal = el.value;
     const oldPos = el.selectionStart;
 
-    const newVal = oldVal.replace(/[^0-9./a-z]/g, "");
+    const newVal = oldVal.replace(/[^0-9.]/g, "");
 
     if (newVal !== oldVal) {
         const prefixOld = oldVal.slice(0, oldPos);
-        const allowedBefore = prefixOld.replace(/[^0-9./a-z]/g, "").length;
+        const allowedBefore = prefixOld.replace(/[^0-9.]/g, "").length;
         const newPos = Math.min(allowedBefore, newVal.length);
 
         el.value = newVal;
@@ -408,7 +411,7 @@ function showPage(pageIndex) {
             page.classList.remove("active");
         }
         const indicator = document.querySelector(
-            `.step-indicator[data-step="${index + 1}"]`
+            `.step-indicator[data-step="${index + 1}"]`,
         );
         if (indicator) {
             indicator.classList.remove("active");
@@ -422,7 +425,7 @@ function showPage(pageIndex) {
     }
 
     const currentIndicator = document.querySelector(
-        `.step-indicator[data-step="${pageIndex + 1}"]`
+        `.step-indicator[data-step="${pageIndex + 1}"]`,
     );
     if (currentIndicator) {
         currentIndicator.classList.add("active");
@@ -508,7 +511,7 @@ async function analyzeCommunityFolder() {
                 false,
                 "Folder Error",
                 data.error ||
-                    "There was an error checking the folder. Please verify the path."
+                    "There was an error checking the folder. Please verify the path.",
             );
             return;
         }
@@ -529,7 +532,7 @@ async function analyzeCommunityFolder() {
                 showResult(
                     true,
                     "Already Installed!",
-                    "The mobiflight-event-module is already in your community folder. You're ready to use A32NX Crewbridge."
+                    "The mobiflight-event-module is already in your community folder. You're ready to use A32NX Crewbridge.",
                 );
             }, 1000);
         } else {
@@ -564,7 +567,7 @@ async function analyzeCommunityFolder() {
                         true,
                         "Installation Complete!",
                         installResult.message ||
-                            "All required modules have been installed successfully."
+                            "All required modules have been installed successfully.",
                     );
                 }, 1000);
             } else {
@@ -691,7 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Validation Error",
                         "Please select an MSFS version.",
                         0,
-                        3000
+                        3000,
                     );
                     return;
                 }
@@ -701,7 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Validation Error",
                         "Please specify the community folder path.",
                         0,
-                        3000
+                        3000,
                     );
                     return;
                 }
@@ -727,7 +730,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 wizardData.showWizard = !showAgainCheckbox.checked;
                 saveToLocalStorage();
             }
-            
+
             getstarted(); // Close wizard
         });
     }
@@ -771,191 +774,314 @@ document.getElementById("launchWizardBtn").addEventListener("click", () => {
 });
 
 function encodeIP(ip) {
-    return btoa(encodeURIComponent(ip).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+    return btoa(
+        encodeURIComponent(ip).replace(/%([0-9A-F]{2})/g, (match, p1) =>
+            String.fromCharCode("0x" + p1),
+        ),
+    );
 }
 function decodeIP(encoded) {
-    return decodeURIComponent(atob(encoded).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return decodeURIComponent(
+        atob(encoded)
+            .split("")
+            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join(""),
+    );
 }
 
-if (localStorage.getItem('clientip') === null) {
-    document.querySelectorAll('.localIp').forEach(el => {
+if (localStorage.getItem("clientip") === null) {
+    document.querySelectorAll(".localIp").forEach((el) => {
         if (el.textContent === "Connection error") {
-            toast("Connection Error", "Cannot retrieve local IP address. Please check your connection.", 0, 4000);
+            toast(
+                "Connection Error",
+                "Cannot retrieve local IP address. Please check your connection.",
+                0,
+                4000,
+            );
             return;
         }
-        localStorage.setItem('clientip', encodeIP(el.textContent));
+        localStorage.setItem("clientip", encodeIP(el.textContent));
     });
 }
 
-document.getElementById('connect-form').addEventListener('submit', (ev) => {
+document.getElementById("connect-form").addEventListener("submit", (ev) => {
     ev.preventDefault();
-    const codeInput = document.getElementById('host-code-input');
+    const codeInput = document.getElementById("host-code-input");
     const code = codeInput.value.trim();
-    
+
     if (code.length === 0) {
         toast("Input Error", "Please enter a host code.", 0, 3000);
         return;
     }
-    const ipInput = document.getElementById('host-ip-input');
+    const ipInput = document.getElementById("host-ip-input");
     const ip = ipInput.value.trim();
-    
+
     if (ip.length === 0) {
         toast("Input Error", "Please enter a host IP address.", 0, 3000);
         return;
     }
+    const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-    if (!/^(\d{1,3}\.){3}\d{1,3}\/[a-zA-Z0-9]+$/.test(ip)) {
-        toast("Input Error", "Please enter a valid IP address and ip type", 0, 3000);
+    if (!ipv4Regex.test(ip.trim())) {
+        toast("Input Error", "Please enter a valid IPv4 address (example: 192.168.1.100)", 0, 3000);
         return;
     }
 
-    if (localStorage.getItem('clientip') === null) {
-        document.querySelectorAll('.localIp').forEach(el => {
+    if (localStorage.getItem("clientip") === null) {
+        document.querySelectorAll(".localIp").forEach((el) => {
             if (el.textContent === "Connection error") {
-                toast("Connection Error", "Cannot retrieve local IP address. Please check your connection.", 0, 4000);
+                toast(
+                    "Connection Error",
+                    "Cannot retrieve local IP address. Please check your connection.",
+                    0,
+                    4000,
+                );
                 return;
             }
-            localStorage.setItem('clientip', encodeIP(el.textContent));
+            localStorage.setItem("clientip", encodeIP(el.textContent));
         });
     }
 
-    let cbtn = document.getElementById('connect-btn');
+    let cbtn = document.getElementById("connect-btn");
 
-    if (cbtn.textContent === 'Connect') {
-        cbtn.textContent = 'Disconnect';
-        document.getElementById('host-ip-input').disabled = true;
-        document.getElementById('host-code-input').disabled = true;
-        document.getElementById('host-ip-input').style.cursor = "not-allowed";
-        document.getElementById('host-code-input').style.cursor = "not-allowed";
+    if (cbtn.textContent === "Connect") {
+        cbtn.textContent = "Disconnect";
+        document.getElementById("host-ip-input").disabled = true;
+        document.getElementById("host-code-input").disabled = true;
+        document.getElementById("host-ip-input").style.cursor = "not-allowed";
+        document.getElementById("host-code-input").style.cursor = "not-allowed";
 
-        fetch('/connect', {
-            method: 'POST',
+        fetch("/connect", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({ code, host: ip, client : localStorage.getItem('clientip') })
+            body: JSON.stringify({
+                code,
+                host: ip,
+                client: localStorage.getItem("clientip"),
+            }),
         })
-        .then(response => {
-            if (!response.ok) {
-                const res = response.json();
-            }
-        })
-        .catch(error => {
-            console.error('Error connecting to host:', error);
-            toast("Connection Error", "An error occurred while trying to connect.", 0, 4000);
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    const res = response.json();
+                }
+            })
+            .catch((error) => {
+                console.error("Error connecting to host:", error);
+                toast(
+                    "Connection Error",
+                    "An error occurred while trying to connect.",
+                    0,
+                    4000,
+                );
+            });
     } else {
-        cbtn.textContent = 'Connect';
-        document.getElementById('host-ip-input').disabled = false;
-        document.getElementById('host-code-input').disabled = false;
-        document.getElementById('host-ip-input').style.cursor = "default";
-        document.getElementById('host-code-input').style.cursor = "default";
-        document.getElementById('host-ip-input').value = "";
-        document.getElementById('host-code-input').value = "";
-        
+        cbtn.textContent = "Connect";
+        document.getElementById("host-ip-input").disabled = false;
+        document.getElementById("host-code-input").disabled = false;
+        document.getElementById("host-ip-input").style.cursor = "default";
+        document.getElementById("host-code-input").style.cursor = "default";
+        document.getElementById("host-ip-input").value = "";
+        document.getElementById("host-code-input").value = "";
 
-        fetch('/disconnect', {
-            method: 'POST',
+        fetch("/disconnect", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
         })
-        .then(response => {
-            if (!response.ok) {
-                const res = response.json();
-            }
-            toast("Disconnected", "Successfully disconnected from host.", 2, 3000);
-        })
-        .catch(error => {
-            console.error('Error disconnecting from host:', error);
-            toast("Disconnection Error", "An error occurred while trying to disconnect.", 0, 4000);
-        })
+            .then((response) => {
+                if (!response.ok) {
+                    const res = response.json();
+                }
+            })
+            .catch((error) => {
+                console.error("Error disconnecting from host:", error);
+                toast(
+                    "Disconnection Error",
+                    "An error occurred while trying to disconnect.",
+                    0,
+                    4000,
+                );
+            });
     }
-    
 });
 
-let ccStatus = false
-let cclastStatus = null
+let ccStatus = false;
+let cclastStatus = null;
 
 setInterval(async () => {
-  try {
-    const res = await fetch('/status/crewconnect', { cache: 'no-store' });
-    if (!res.ok) throw new Error();
+    try {
+        const res = await fetch("/status/crewconnect", { cache: "no-store" });
+        if (!res.ok) throw new Error();
 
-    const { running } = await res.json();
+        const { running } = await res.json();
 
-    if (running !== ccStatus) {
-      if (running) {
-        toast("Crewconnect", "Crewconnect connected.", 2, 3000);
-        document.querySelectorAll('.connection-box button, .server-box button')
-          .forEach(b => b.disabled = false);
-      } else {
-        toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
-        document.querySelectorAll('.connection-box button, .server-box button')
-          .forEach(b => b.disabled = true);
-      }
+        if (running !== ccStatus) {
+            if (running) {
+                toast("Crewconnect", "Crewconnect connected.", 2, 3000);
+                document
+                    .querySelectorAll(
+                        ".connection-box button, .server-box button",
+                    )
+                    .forEach((b) => (b.disabled = false));
+            } else {
+                toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
+                document
+                    .querySelectorAll(
+                        ".connection-box button, .server-box button",
+                    )
+                    .forEach((b) => (b.disabled = true));
+            }
+        }
+
+        ccStatus = running;
+
+        document.querySelectorAll(".status-cc").forEach((el) => {
+            el.classList.toggle("connected", running);
+            el.textContent = running ? "Running" : "Not running";
+        });
+    } catch {
+        if (ccStatus !== false) {
+            toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
+        }
+        ccStatus = false;
     }
-
-    ccStatus = running;
-
-    document.querySelectorAll('.status-cc').forEach(el => {
-      el.classList.toggle('connected', running);
-      el.textContent = running ? 'Running' : 'Not running';
-    });
-
-  } catch {
-    if (ccStatus !== false) {
-      toast("Crewconnect", "Crewconnect disconnected.", 1, 3000);
-    }
-    ccStatus = false;
-  }
 }, 250);
 
-
-
 function toggleServerStatus() {
-    let st = document.querySelector('.server-box button')
-    let cli = document.getElementById('connect-btn')
+    let st = document.querySelector(".server-box button");
+    let cli = document.getElementById("connect-btn");
 
-    let digicode = fetch('/generate-code', {
-        method: 'GET',
+    let digicode = fetch("/generate-code", {
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
-    }).then(res => res.json())
-    .then(data => {
-        if (!st.textContent.includes("Start")) {
-            document.querySelector('.private-code').textContent = " " + data.code;
-        } else {
-            document.querySelector('.private-code').textContent = " Not generated";
-        }
     })
+        .then((res) => res.json())
+        .then((data) => {
+            if (!st.textContent.includes("Start")) {
+                document.querySelector(".private-code").textContent =
+                    " " + data.code;
+            } else {
+                document.querySelector(".private-code").textContent =
+                    " Not generated";
+            }
+        });
 
     if (st.textContent.includes("Start")) {
         st.textContent = "Stop Server";
         cli.disabled = true;
-    }else{
+    } else {
         st.textContent = "Start Server";
         cli.disabled = false;
     }
 
-    let svrStat =document.getElementById('serverst')
-    svrStat.textContent = st.textContent.includes("Start") ? "Not running" : "Running";
-    svrStat.classList.toggle('connected', st.textContent.includes("Stop"));
-    
-    fetch('/toggle-server', {
-        method: 'POST',
+    let svrStat = document.getElementById("serverst");
+    svrStat.textContent = st.textContent.includes("Start")
+        ? "Not running"
+        : "Running";
+    svrStat.classList.toggle("connected", st.textContent.includes("Stop"));
+
+    fetch("/toggle-server", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
     })
-    .then(response => {
-        if (!response.ok) {
-            const res = response.json();
-        }
-    }) 
-    .catch(error => {
-        console.error('Error toggling server status:', error);
-        toast("Server Error", "An error occurred while trying to toggle the server status.", 0, 4000);
-    });
+        .then((response) => {
+            if (!response.ok) {
+                const res = response.json();
+            }
+        })
+        .catch((error) => {
+            console.error("Error toggling server status:", error);
+            toast(
+                "Server Error",
+                "An error occurred while trying to toggle the server status.",
+                0,
+                4000,
+            );
+        });
 }
+
+function onClientDisconnect() {
+    let cbtn = document.getElementById("connect-btn");
+    cbtn.textContent = "Connect";
+    document.getElementById("host-ip-input").disabled = false;
+    document.getElementById("host-code-input").disabled = false;
+    document.getElementById("host-ip-input").style.cursor = "default";
+    document.getElementById("host-code-input").style.cursor = "default";
+    document.getElementById("host-ip-input").value = "";
+    document.getElementById("host-code-input").value = "";
+
+    fetch("/disconnect", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (!response.ok) {
+                const res = response.json();
+            }
+        })
+        .catch((error) => {
+            console.error("Error disconnecting from host:", error);
+            toast(
+                "Disconnection Error",
+                "An error occurred while trying to disconnect.",
+                0,
+                4000,
+            );
+        });
+}
+
+const POLL_INTERVAL = 2000;
+
+function pollClientStatus() {
+    fetch('/client-status')
+        .then(res => res.json())
+        .then(data => {
+            if (data.connected) {
+                toast("Client Connected", "A client has connected to the server.", 2, 3000);
+                document.getElementById("host-target").textContent = data.serverID
+            }else {
+                document.getElementById("host-target").textContent = "None"
+            }
+
+            if (data.connected && document.getElementById("clientst").textContent !== "Connected") {
+                document.getElementById("clientst").textContent = "Connected";
+                document.getElementById("clientst").classList.add("connected");
+            }else if (!data.connected && document.getElementById("clientst").textContent !== "Not connected") {
+                document.getElementById("clientst").textContent = "Not connected";
+                document.getElementById("clientst").classList.remove("connected");
+            }   
+            if (data.reason == "pswd") {
+                toast(
+                    "Connection Error",
+                    "Incorrect connection code provided by client.",
+                    0,
+                    4000,
+                );
+                onClientDisconnect();
+                fetch('/client-status/reset', { method: 'POST' }).catch(console.error);
+            }
+            if (data.reason == "server") {
+                toast(
+                    "Connection Error",
+                    "Server Closed",
+                    1,
+                    4000,
+                );
+                onClientDisconnect();
+                fetch('/client-status/reset', { method: 'POST' }).catch(console.error);
+            }
+        })
+        .catch(console.error);
+}
+
+// Start polling
+setInterval(pollClientStatus, POLL_INTERVAL);

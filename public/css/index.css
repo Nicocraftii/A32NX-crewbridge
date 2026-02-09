@@ -1314,6 +1314,7 @@ nav svg {
   background: transparent;
 }
 
+
 /* Remove any background from active state */
 .dashbtn.active span:first-child {
   color: var(--white)
@@ -1491,4 +1492,8 @@ nav .b4 svg {
 }
 nav .b4:hover svg {
     transform: scale(1.05) rotateZ(5deg) translateY(-5px);
+}
+
+#clientst.status.connected {
+    color: var(--green) !important;
 }

@@ -14,7 +14,9 @@ let crewConnectAlive = false;
 let serverStatus = false; 
 let clientStatus = false;
 let GLOBALCODE = 'null';
+let disconnectReason = null;
 let clientConnexionData = 'null';
+let SERVER_ID = 'null';
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -126,9 +128,8 @@ app.post('/connect', (req, res) => {
     });
   }
   
-  let connectionIpType = ipb.split('/')[1];
-  let ip = ipb.split('/')[0];
-  console.log('Attempting to connect to IP:', ip, 'over', connectionIpType, 'with code:', code, '\n from ',client);
+  let ip = ipb
+  console.log('Attempting to connect to IP:', ip,'with code:', code, '\n from ',client);
   
   clientConnexionData = {
     ip: ip,
@@ -137,16 +138,20 @@ app.post('/connect', (req, res) => {
   };
   
   clientStatus = true;
+  SERVER_ID = ip;
 
   res.json({
     success: true,
     hasModule: true,
-    message: `Connection attempt to ${ip} over ${connectionIpType} with code ${code} initiated.`
+    message: `Connection attempt to ${ip} with code ${code} initiated.`
   });
 });
 
 app.post('/disconnect', (req, res) => {
+    let reason = req.body.reason || 'No reason provided';
+    disconnectReason = reason;
     clientStatus = false;
+    SERVER_ID = 'null';
     clientConnexionData = 'null';
     res.json({
         success: true,
@@ -439,6 +444,23 @@ app.get('/generate-code', (req, res) => {
 app.post('/reset', (req, res) => {
     GLOBALCODE = 'null';
     serverStatus = false;
+    SERVER_ID = 'null';
+    clientConnexionData = 'null';
     clientStatus = false;
     res.json({ success: true });
 })
+
+app.post('/client-status/reset', (req, res) => {
+    disconnectReason = null;
+    clientStatus = false;
+    clientConnexionData = 'null';
+    res.json({ success: true });
+});
+
+app.get('/client-status', (req, res) => {
+    res.json({
+        connected: clientStatus,
+        reason: disconnectReason,
+        serverID: SERVER_ID,
+    });
+});
