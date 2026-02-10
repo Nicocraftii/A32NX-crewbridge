@@ -77,7 +77,7 @@ def try_accept(server_socket, conn, expected_code):
         conn.settimeout(SOCKET_TIMEOUT)
         print(f"[SERVER] Client connected from {addr}")
 
-        hello = conn.recv(1024).decode().strip()
+        hello = conn.recv(1024 * 2).decode().strip()
         if not hello.startswith("HELLO|"):
             conn.close()
             return None
@@ -114,7 +114,7 @@ def create_client_socket(ip, code):
         s.settimeout(SOCKET_TIMEOUT)
 
         s.sendall(f"HELLO|127.0.0.1|{code}\n".encode())
-        reply = s.recv(1024).decode().strip()
+        reply = s.recv(1024 * 2).decode().strip()
 
         if reply != "OK":
             s.close()
@@ -145,7 +145,7 @@ def send_data(sock, msg):
 
 def receive_data(sock):
     try:
-        data = sock.recv(1024)
+        data = sock.recv(1024 * 2)
         if data == b"":
             return "__DEAD__"     # peer really gone
         return data.decode().strip()
@@ -180,7 +180,15 @@ def action_loop(app_info, server_socket: socket.socket | None, server_conn: sock
                 if server_conn:server_conn.close()
                 server_conn = None
             elif incoming:
-                print("[CLIENT]", incoming)
+                # print with linebreaks
+                print("[SERVER]", incoming.replace(",", ",\n"))
+                # dict_incoming = json.loads(incoming)
+                # for key, value in dict_incoming.items():
+                #     print(f"Setting {key} to {value}")
+                # stop program to debug
+                input("Press Enter to continue...")
+                
+                
 
     elif app_info["mode"] == "client":
         if not client_socket:
@@ -190,7 +198,7 @@ def action_loop(app_info, server_socket: socket.socket | None, server_conn: sock
             changed = vr.get_changed_dict()
             if changed:
                 changed_json = json.dumps(changed)
-                if not send_data(client_socket, f"DATA|{changed_json}"):
+                if not send_data(client_socket, changed_json):
                     print("[CLIENT] Server vanished")
                     client_socket.close()
                     client_socket = None
@@ -222,6 +230,14 @@ def main():
     
     sm = SimConnectMobiFlight()
     vr = MobiFlightVariableRequests(sm)
+    vr.clear_sim_variables()
+    vr.send_command("MF.LVars.List")
+    time.sleep(0.5)
+
+    for lvar in vr._lvar_list:
+        vr.get(f"(L:{lvar})")
+
+    print(f"Subscribed to {len(vr._lvar_list)} LVars")
 
     while True:
         try:
