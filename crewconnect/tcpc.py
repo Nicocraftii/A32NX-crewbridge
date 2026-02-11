@@ -1,9 +1,9 @@
 import time
 import socket
 import requests
+import json
 from simconnect_mobiflight import SimConnectMobiFlight
 from mobiflight_variable_requests import MobiFlightVariableRequests
-import json
 
 ################################ CONFIG ################################
 
@@ -19,7 +19,7 @@ last_ping = 0.0
 last_send = 0.0
 
 #######################################################################
-# HEARTBEAT
+# HEARTBEAT (NODE)
 #######################################################################
 
 def handle_ping():
@@ -77,7 +77,7 @@ def try_accept(server_socket, conn, expected_code):
         conn.settimeout(SOCKET_TIMEOUT)
         print(f"[SERVER] Client connected from {addr}")
 
-        hello = conn.recv(4096).decode().strip()
+        hello = conn.recv(2048).decode().strip()
         if not hello.startswith("HELLO|"):
             conn.close()
             return None
@@ -114,7 +114,7 @@ def create_client_socket(ip, code):
         s.settimeout(SOCKET_TIMEOUT)
 
         s.sendall(f"HELLO|127.0.0.1|{code}\n".encode())
-        reply = s.recv(4096).decode().strip()
+        reply = s.recv(2048).decode().strip()
 
         if reply != "OK":
             s.close()
@@ -133,87 +133,111 @@ def create_client_socket(ip, code):
         return None
 
 #######################################################################
-# NETWORK IO (IDLE SAFE)
+# PROTOCOL HELPERS (LOCK-STEP)
 #######################################################################
 
-def send_data(sock, msg):
+def send_packet(sock, packet):
     try:
-        sock.sendall((msg + "\n").encode())
+        sock.sendall((json.dumps(packet) + "\n").encode())
         return True
     except OSError:
         return False
 
-def receive_data(sock):
+def receive_packet(sock, buffer):
     try:
         data = sock.recv(4096)
         if data == b"":
-            return "__DEAD__"     # peer really gone
-        return data.decode().strip()
+            return "__DEAD__", buffer
+        buffer += data.decode()
     except socket.timeout:
-        return None              # idle client → OK
+        return None, buffer
     except OSError:
-        return "__DEAD__"
+        return "__DEAD__", buffer
+
+    if "\n" not in buffer:
+        return None, buffer
+
+    line, buffer = buffer.split("\n", 1)
+    return json.loads(line), buffer
 
 #######################################################################
-# ACTION LOOP
+# ACTION LOOP (ACK-BASED)
 #######################################################################
 
-def action_loop(app_info, server_socket: socket.socket | None, server_conn: socket.socket | None, client_socket: socket.socket | None, vr: MobiFlightVariableRequests):
+def action_loop(app_info, server_socket, server_conn, client_socket, vr,
+                recv_buffer, waiting_for_ack):
+
     global last_send
     now = time.time()
 
+    ################################################ SERVER MODE ################################################
     if app_info["mode"] == "server":
         server_conn = try_accept(server_socket, server_conn, app_info["code"])
 
         if server_conn:
-            if now - last_send >= SEND_INTERVAL:
-                if not send_data(server_conn, "PING"):
-                    print("[SERVER] Client vanished")
-                    if server_conn:
-                        server_conn.close()
-                    server_conn = None
+            msg, recv_buffer = receive_packet(server_conn, recv_buffer)
+
+            if msg == "__DEAD__":
+                print("[SERVER] Client disconnected")
+                server_conn.close()
+                return None, None, "", False
+
+            if isinstance(msg, dict):
+                if msg["type"] == "DATA":
+                    print("[CLIENT DATA]", msg["payload"])
+                    send_packet(server_conn, {"type": "ACK"})
+
+                elif msg["type"] == "ACK":
+                    waiting_for_ack = False
+
+                elif msg["type"] == "PING":
+                    send_packet(server_conn, {"type": "ACK"})
+
+            if not waiting_for_ack and now - last_send >= SEND_INTERVAL:
+                send_packet(server_conn, {
+                    "type": "PING"
+                })
                 last_send = now
 
-            incoming = receive_data(server_conn) 
-            if incoming == "__DEAD__":
-                print("[SERVER] Client disconnected")
-                if server_conn:server_conn.close()
-                server_conn = None
-            elif incoming:
-                dict_incoming = json.loads(incoming)
-                for key, value in dict_incoming.items():
-                    print(f"Setting {key} to {value}")
-                SystemExit(0)
-                
-
+    ################################################ CLIENT MODE ################################################
     elif app_info["mode"] == "client":
         if not client_socket:
-            return server_conn, client_socket
+            return server_conn, client_socket, recv_buffer, waiting_for_ack
 
-        if now - last_send >= SEND_INTERVAL:
-            changed = vr.get_changed_dict()
-            if changed:
-                changed_json = json.dumps(changed)
-                if not send_data(client_socket, changed_json):
-                    print("[CLIENT] Server vanished")
-                    client_socket.close()
-                    client_socket = None
-            last_send = now
+        msg, recv_buffer = receive_packet(client_socket, recv_buffer)
 
-        incoming = receive_data(client_socket)
-        if incoming == "__DEAD__":
+        if msg == "__DEAD__":
             print("[CLIENT] Server disconnected")
             requests.post(
                 f"{BASE_URL}:{HTTP_PORT}/disconnect",
                 json={"reason": "server"},
                 timeout=1
             )
-            if client_socket:client_socket.close()
-            client_socket = None
-        elif incoming:
-            print("[SERVER]", incoming)
+            client_socket.close()
+            return server_conn, None, "", False
 
-    return server_conn, client_socket
+        if isinstance(msg, dict):
+            if msg["type"] == "DATA":
+                print("[SERVER DATA]", msg["payload"])
+                send_packet(client_socket, {"type": "ACK"})
+
+            elif msg["type"] == "ACK":
+                waiting_for_ack = False
+
+            elif msg["type"] == "PING":
+                send_packet(client_socket, {"type": "ACK"})
+
+        if not waiting_for_ack and now - last_send >= SEND_INTERVAL:
+            changed = vr.get_changed_dict()
+            if changed:
+                if send_packet(client_socket, {
+                    "type": "DATA",
+                    "payload": changed
+                }):
+                    waiting_for_ack = True
+            last_send = now
+
+    return server_conn, client_socket, recv_buffer, waiting_for_ack
 
 #######################################################################
 # MAIN
@@ -223,9 +247,13 @@ def main():
     server_socket = None
     server_conn = None
     client_socket = None
-    
+
+    recv_buffer = ""
+    waiting_for_ack = False
+
     sm = SimConnectMobiFlight()
     vr = MobiFlightVariableRequests(sm)
+
     vr.clear_sim_variables()
     vr.send_command("MF.LVars.List")
     time.sleep(0.5)
@@ -247,6 +275,8 @@ def main():
                     if s:
                         s.close()
                 server_socket = server_conn = client_socket = None
+                recv_buffer = ""
+                waiting_for_ack = False
                 time.sleep(0.5)
                 continue
 
@@ -259,12 +289,14 @@ def main():
                     app_info["clientCode"]
                 )
 
-            server_conn, client_socket = action_loop(
+            server_conn, client_socket, recv_buffer, waiting_for_ack = action_loop(
                 app_info,
                 server_socket,
                 server_conn,
                 client_socket,
-                vr
+                vr,
+                recv_buffer,
+                waiting_for_ack
             )
 
             time.sleep(0.05)
