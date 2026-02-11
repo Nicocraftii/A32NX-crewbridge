@@ -1,14 +1,27 @@
-import express from 'express';
-import WinReg from 'winreg';
-import os, { type } from 'os';
-import https from 'https';
-import { exec,spawn } from "child_process";
-import fs from 'fs/promises';
-import path from 'path';
-import EventEmitter from 'events';
-import { stat } from 'fs';
+const express = require('express');
+const os = require('os');
+const https = require('https');
+const { exec } = require("child_process");
+const fs = require('fs').promises;
+const path = require('path');
 
-const app = express();
+
+let BASE_PATH;
+
+if (process.env.ELECTRON_RUN) {
+    BASE_PATH = process.cwd();
+    console.log('🔧 Electron mode: using CWD');
+} else if (process.pkg) {
+    BASE_PATH = path.dirname(process.execPath);
+} else {
+    BASE_PATH = __dirname;
+}
+
+
+const publicPath = path.join(BASE_PATH, 'public');
+const viewsPath = path.join(BASE_PATH, 'views');
+
+// ============ VARIABLES GLOBALES ============
 
 let crewConnectAlive = false;
 let serverStatus = false; 
@@ -17,10 +30,15 @@ let GLOBALCODE = 'null';
 let disconnectReason = null;
 let clientConnexionData = 'null';
 let SERVER_ID = 'null';
+// ============================================
 
+const app = express();
+
+
+app.use(express.static(publicPath));
+app.set('views', viewsPath);
 app.set('view engine', 'ejs');
-app.set('views', './views');
-app.use(express.static('public'));
+
 
 async function detectLocalIp(type = "lan") {
     const nets = os.networkInterfaces();
@@ -45,7 +63,6 @@ async function detectLocalIp(type = "lan") {
         }
     }
 
-    
     if (type === "net") {
         return new Promise((resolve, reject) => {
             https.get("https://api.ipify.org", (res) => {
@@ -62,14 +79,9 @@ async function detectLocalIp(type = "lan") {
 const portIndex = process.argv.indexOf("--port");
 const port = portIndex !== -1 ? process.argv[portIndex + 1] : 3000;
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
 const hostname = os.hostname();
 const platform = os.platform();
 let mfsVersion = "Unknown";
-
 
 if (platform === "win32") {
     mfsVersion = "not implemented"  
@@ -79,34 +91,51 @@ if (platform === "win32") {
 
 let iptype = 'lan';
 
+// Initialisation synchrone de currentStatus
 let currentStatus = {
-    ip: await detectLocalIp(iptype),
+    ip: "Récupération de l'IP...",
     timestamp: Date.now()
 };
 
-setInterval(async () => {
-    currentStatus.ip = await detectLocalIp(iptype);
+// Mettre à jour l'IP immédiatement
+detectLocalIp(iptype).then(ip => {
+    currentStatus.ip = ip;
     currentStatus.timestamp = Date.now();
+    console.log('✅ IP détectée:', ip);
+}).catch(err => {
+    console.error('❌ Erreur détection IP:', err);
+    currentStatus.ip = "Erreur de connexion";
+});
+
+// Mise à jour périodique
+setInterval(async () => {
+    try {
+        currentStatus.ip = await detectLocalIp(iptype);
+        currentStatus.timestamp = Date.now();
+    } catch (error) {
+        console.error('❌ Erreur mise à jour IP:', error);
+    }
 }, 5000);
 
-
-app.get('/', (req,res) => {
+// ROUTES
+app.get('/', (req, res) => {
     res.render('index', {
         hostname,
         localip: currentStatus.ip,
-        mfsVersion : mfsVersion,
+        mfsVersion: mfsVersion,
         crewConnectRunning: crewConnectAlive,
         serverStatus: serverStatus,
+        isElectron: !!process.env.ELECTRON_RUN
     });
 });
-
-
 
 app.get("/status", (req, res) => {
     res.json(currentStatus);
 });
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 
 
 function encodeIP(ip) {
@@ -129,7 +158,7 @@ app.post('/connect', (req, res) => {
   }
   
   let ip = ipb
-  console.log('Attempting to connect to IP:', ip,'with code:', code, '\n from ',client);
+  // console.log('Attempting to connect to IP:', ip,'with code:', code, '\n from ',client);
   
   clientConnexionData = {
     ip: ip,
@@ -313,7 +342,8 @@ app.post('/run-installer', async (req, res) => {
     }
     
     // Check for Python script
-    const pythonScript = path.resolve('./public/python/installer.py');
+    const pythonScript = path.join(BASE_PATH, 'public', 'python', 'installer.py');
+
     
     try {
       await fs.access(pythonScript);
@@ -326,7 +356,7 @@ app.post('/run-installer', async (req, res) => {
     }
     
     // Check for venv
-    const venvActivate = path.resolve('.venv/Scripts/activate.bat');
+    const venvActivate = path.join(BASE_PATH, '.venv', 'Scripts', 'activate.bat');
     try {
       await fs.access(venvActivate);
     } catch (error) {
@@ -338,10 +368,10 @@ app.post('/run-installer', async (req, res) => {
     }
     
     // Create command - use .bat extension for Windows
-    const command = `"${venvActivate}" && python "${pythonScript}" "${normalizedPath}"`;
+    const command = `"${path.join(BASE_PATH, '.venv', 'Scripts', 'activate.bat')}" && python "${pythonScript}" "${normalizedPath}"`;
     
     
-    exec(command, { shell: 'cmd.exe', cwd: process.cwd() }, (error, stdout, stderr) => {
+    exec(command, { shell: 'cmd.exe', cwd: BASE_PATH }, (error, stdout, stderr) => {
       
       if (error) {
         return res.json({
@@ -416,7 +446,7 @@ app.get('/status/crewconnect', (req, res) => {
 
 app.post('/toggle-server', (req, res) => {
     serverStatus = !serverStatus;
-    console.log('Server status toggled. Now:', serverStatus ? 'Running' : 'Stopped');
+    // console.log('Server status toggled. Now:', serverStatus ? 'Running' : 'Stopped');
     res.json({ success: true, serverStatus });
 }); 
 
@@ -464,3 +494,29 @@ app.get('/client-status', (req, res) => {
         serverID: SERVER_ID,
     });
 });
+
+const server = app.listen(port, () => {
+    console.log(`✅ Server running on port ${port}`);
+    
+    // Notifier Electron que le serveur est prêt
+    if (process.send) {
+        process.send({ type: 'ready', port: port });
+    }
+});
+
+// Gestion de l'arrêt propre
+process.on('SIGTERM', () => {
+    console.log('🛑 Arrêt du serveur...');
+    server.close(() => {
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', () => {
+    console.log('🛑 Arrêt du serveur...');
+    server.close(() => {
+        process.exit(0);
+    });
+});
+
+module.exports = { app, server };

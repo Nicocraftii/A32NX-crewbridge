@@ -1,24 +1,73 @@
 {
-  "name": "a32nx_crewbridge",
+  "name": "a32nx-crewbridge",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A32NX CrewBridge - Communication tool for MSFS",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon server.js --port 8080",
-    "clin": "npx nodemon server.js --port 8090"
+    "start": "electron .",
+    "dev": "nodemon --exec electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --win --x64",
+    "dist:portable": "electron-builder --win --x64 -- portable"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^5.2.1",
+    "express": "^4.18.3",
     "winreg": "^1.2.5"
   },
   "devDependencies": {
-    "@types/express": "^5.0.5",
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2",
     "nodemon": "^3.1.11"
+  },
+  "build": {
+    "appId": "com.a32nx.crewbridge",
+    "productName": "A32NX CrewBridge",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "server.js",
+      "public/**/*",
+      "views/**/*",
+      "mobiflight-event-module/**/*",
+      ".venv/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".venv",
+        "to": ".venv",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "public/python",
+        "to": "public/python",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "public/assets/256icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.exe"
+    }
   }
 }

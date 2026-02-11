@@ -149,6 +149,8 @@ class MobiFlightVariableRequests:
             self.DATA_STRING_DEFINITION_ID,
             self.DATA_STRING_DEFINITION_ID
         )
+        
+        
 
 
     # ───────────────────────── Callback Handler ─────────────────────────
@@ -228,6 +230,14 @@ class MobiFlightVariableRequests:
             var = self.changed_vars.popleft()
             changed[var.name] = var.float_value
         return changed
+
+
+    def set(self, lvar, value):
+        if not self.should_accept_backend_update(lvar, value):
+            return
+
+        cmd = f"MF.SimVars.Set.{lvar}={value}"
+        self.send_command(cmd)
 
 
     # ───────────────────────── Backend Loop Protection ─────────────────────────

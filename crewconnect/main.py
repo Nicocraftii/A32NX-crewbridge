@@ -1,206 +1,357 @@
+import time
+import socket
+import requests
+import json
 from simconnect_mobiflight import SimConnectMobiFlight
 from mobiflight_variable_requests import MobiFlightVariableRequests
-import time
-import requests
-import socket
 
-###################################### VARIABLES ######################################
+################################ CONFIG ################################
 
 BASE_URL = "http://localhost"
-PORT = 8080          # Node HTTP port
-EXCHANGE_PORT = 8081 # TCP exchange port
+HTTP_PORT = 8080
+TCP_PORT = 8081
 
-SEND_TIMEOUT = 5
 PING_INTERVAL = 2.0
-last_ping_check = 0.0
+SEND_INTERVAL = 0.1
+SOCKET_TIMEOUT = 0.2
 
-###################################### HEARTBEAT ######################################
+last_ping = 0.0
+last_send = 0.0
+
+last_from_client = {}
+
+
+#######################################################################
+# HEARTBEAT (NODE)
+#######################################################################
 
 def handle_ping():
-    global last_ping_check
+    global last_ping
     now = time.time()
-
-    if now - last_ping_check < PING_INTERVAL:
+    if now - last_ping < PING_INTERVAL:
         return
-    last_ping_check = now
-
+    last_ping = now
     try:
-        r = requests.get(f"{BASE_URL}:{PORT}/ping", timeout=1)
-        if r.status_code != 200:
-            return
-
-        token = r.json().get("token")
-        if not token:
-            return
-
-        requests.post(
-            f"{BASE_URL}:{PORT}/pong",
-            json={"token": token, "code": 657},
-            timeout=1
-        )
-    except requests.exceptions.RequestException:
+        r = requests.get(f"{BASE_URL}:{HTTP_PORT}/ping", timeout=1)
+        if r.status_code == 200:
+            token = r.json().get("token")
+            if token:
+                requests.post(
+                    f"{BASE_URL}:{HTTP_PORT}/pong",
+                    json={"token": token, "code": 657},
+                    timeout=1
+                )
+    except requests.RequestException:
         pass
 
-###################################### APP INFO ######################################
+#######################################################################
+# APP INFO
+#######################################################################
 
-def getAppInfo():
+def get_app_info():
     handle_ping()
     try:
-        r = requests.get(f"{BASE_URL}:{PORT}/app-info", timeout=1)
+        r = requests.get(f"{BASE_URL}:{HTTP_PORT}/app-info", timeout=1)
         if r.status_code != 200:
             return None
-        data = r.json()
-        if data.get("mode") == "none":
-            data["code"] = "null"
-        return data
-    except requests.exceptions.RequestException:
+        return r.json()
+    except requests.RequestException:
         return None
 
-###################################### WAIT FOR NODE ######################################
+#######################################################################
+# TCP SERVER
+#######################################################################
 
-def wait_for_node():
-    while True:
-        try:
-            with socket.create_connection(("localhost", PORT), timeout=1):
-                print("Connected to Node.js server.")
-                return
-        except (ConnectionRefusedError, socket.timeout):
-            print("Waiting for Node.js server to start...")
-            time.sleep(1)
-
-###################################### SOCKET MANAGEMENT ######################################
-
-def createServerSocket():
+def create_server_socket():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("0.0.0.0", EXCHANGE_PORT))
-    s.listen(1)
-    s.settimeout(0.01)
-    print(f"Server listening on port {EXCHANGE_PORT}")
-    return s, None
-
-def createClientSocket(ip):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(0.01)
-    s.connect((ip, EXCHANGE_PORT))
-    print(f"Client connected to {ip}:{EXCHANGE_PORT}")
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind(("0.0.0.0", TCP_PORT))
+    s.listen(5)
+    s.settimeout(SOCKET_TIMEOUT)
+    print(f"[SERVER] Listening on {TCP_PORT}")
     return s
 
-###################################### NETWORK HELPERS ######################################
+def try_accept(server_socket, conn, expected_code):
+    if conn:
+        return conn
 
-def try_accept(server_socket, server_conn):
-    if server_conn:
-        return server_conn
     try:
         conn, addr = server_socket.accept()
-        conn.settimeout(0.01)
-        print(f"Client connected from {addr}")
+        conn.settimeout(SOCKET_TIMEOUT)
+        print(f"[SERVER] Client connected from {addr}")
+
+        hello = conn.recv(2048).decode().strip()
+        if not hello.startswith("HELLO|"):
+            conn.close()
+            return None
+
+        _, client_ip, client_code = hello.split("|", 2)
+        print(f"[SERVER] HELLO IP={client_ip} CODE={client_code}")
+
+        if str(client_code) != str(expected_code):
+            conn.sendall(b"REFUSED\n")
+            conn.close()
+            requests.post(
+                f"{BASE_URL}:{HTTP_PORT}/disconnect",
+                json={"reason": "pswd"},
+                timeout=1
+            )
+            return None
+
+        conn.sendall(b"OK\n")
+        print("[SERVER] Client authenticated")
         return conn
+
     except socket.timeout:
         return None
 
-def sendData(sock, data):
-    if not sock:
-        return
+#######################################################################
+# TCP CLIENT
+#######################################################################
+
+def create_client_socket(ip, code):
     try:
-        sock.sendall((data + "\n").encode())
-    except (socket.timeout, OSError):
-        pass
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(3)
+        s.connect((ip, TCP_PORT))
+        s.settimeout(SOCKET_TIMEOUT)
 
-def receiveData(sock):
-    if not sock:
+        s.sendall(f"HELLO|{ip}|{code}\n".encode())
+        reply = s.recv(2048).decode().strip()
+
+        if reply != "OK":
+            s.close()
+            requests.post(
+                f"{BASE_URL}:{HTTP_PORT}/disconnect",
+                json={"reason": "pswd"},
+                timeout=1
+            )
+            return None
+
+        print("[CLIENT] Connected & authenticated")
+        return s
+
+    except OSError as e:
+        print("[CLIENT] Connection failed:", e)
         return None
+
+#######################################################################
+# PROTOCOL HELPERS (LOCK-STEP)
+#######################################################################
+
+def send_packet(sock, packet):
     try:
-        data = sock.recv(1024).decode().strip()
-        return data if data else None
-    except (socket.timeout, OSError):
-        return None
+        sock.sendall((json.dumps(packet) + "\n").encode())
+        return True
+    except OSError:
+        return False
 
-###################################### WAIT FOR APP INFO ######################################
+def receive_packet(sock, buffer):
+    try:
+        data = sock.recv(4096)
+        if data == b"":
+            return "__DEAD__", buffer
+        buffer += data.decode()
+    except socket.timeout:
+        return None, buffer
+    except OSError:
+        return "__DEAD__", buffer
 
-def waitForAppInfo():
-    while True:
-        app_info = getAppInfo()
-        if app_info:
-            if app_info.get("mode") in ("client", "server"):
-                if app_info.get("code") != "null":
-                    return app_info
-            if app_info.get("mode") == "none":
-                return "RESET"
+    if "\n" not in buffer:
+        return None, buffer
 
-        handle_ping()
-        time.sleep(0.2)
+    line, buffer = buffer.split("\n", 1)
+    try:
+        return json.loads(line), buffer
+    except json.JSONDecodeError:
+        return None, buffer
 
-###################################### MAIN LOOP ######################################
 
-def loop(server_socket, server_conn, client_socket, vr):
-    app_info = waitForAppInfo()
+#######################################################################
+# ACTION LOOP (ACK-BASED)
+#######################################################################
 
-    if app_info == "RESET":
-        if server_conn:
-            server_conn.close()
-        if server_socket:
-            server_socket.close()
-        if client_socket:
-            client_socket.close()
-        return None, None, None
+def action_loop(app_info, server_socket, server_conn, client_socket, vr,
+                recv_buffer, waiting_for_ack):
 
-    if app_info["mode"] == "server" and not server_socket:
-        server_socket, server_conn = createServerSocket()
+    global last_send
+    global last_from_client
+    now = time.time()
 
-    if app_info["mode"] == "client" and not client_socket:
-        client_socket = createClientSocket(app_info["targetIP"])
-
-    actionLoop(app_info, server_socket, server_conn, client_socket, vr)
-
-    handle_ping()
-    time.sleep(0.05)
-    return server_socket, server_conn, client_socket
-
-###################################### ACTION LOOP ######################################
-
-def actionLoop(app_info, server_socket, server_conn, client_socket, vr):
-
+    ################################################ SERVER MODE ################################################
     if app_info["mode"] == "server":
-        server_conn = try_accept(server_socket, server_conn)
+        server_conn = try_accept(server_socket, server_conn, app_info["code"])
 
         if server_conn:
-            for var in vr.get_changed():
-                sendData(server_conn, f"{var.name}={var.float_value}")
+            msg, recv_buffer = receive_packet(server_conn, recv_buffer)
 
-            incoming = receiveData(server_conn)
-            if incoming:
-                print(f"[CLIENT] {incoming}")
+            if msg == "__DEAD__":
+                print("[SERVER] Client disconnected")
+                last_from_client = {}
+                server_conn.close()
+                return None, None, "", False
 
+            if isinstance(msg, dict):
+                if msg["type"] == "DATA":
+                    newdata = msg["payload"]
+                    last_from_client = newdata.copy()
+                    for id, val in newdata.items():
+                        print(f"{val} > {id}")
+                        vr.set(id, val)
+
+                    send_packet(server_conn, {"type": "ACK"})
+
+                elif msg["type"] == "ACK":
+                    waiting_for_ack = False
+
+                elif msg["type"] == "PING":
+                    send_packet(server_conn, {"type": "ACK"})
+
+
+            if not waiting_for_ack and now - last_send >= SEND_INTERVAL:
+                changed = vr.get_changed_dict()
+                if changed and last_from_client:
+                    for k in list(changed.keys()):
+                        if k in last_from_client:
+                            del changed[k]
+                if changed:
+                    if send_packet(server_conn, {
+                        "type": "DATA",
+                        "payload": changed
+                    }):
+                        waiting_for_ack = True
+                last_send = now
+
+    ################################################ CLIENT MODE ################################################
     elif app_info["mode"] == "client":
-        incoming = receiveData(client_socket)
-        if incoming:
-            print(f"[SERVER] {incoming}")
+        if not client_socket:
+            return server_conn, client_socket, recv_buffer, waiting_for_ack
 
-###################################### ENTRY POINT ######################################
+        msg, recv_buffer = receive_packet(client_socket, recv_buffer)
+
+        if msg == "__DEAD__":
+            print("[CLIENT] Server disconnected")
+            last_from_client = {}
+            requests.post(
+                f"{BASE_URL}:{HTTP_PORT}/disconnect",
+                json={"reason": "server"},
+                timeout=1
+            )
+            client_socket.close()
+            return server_conn, None, "", False
+
+        if isinstance(msg, dict):
+            if msg["type"] == "DATA":
+                newdata = msg["payload"]
+                last_from_client = newdata.copy()
+                for id, val in newdata.items():
+                    print(f"{val} > {id}")
+                    vr.set(id, val)
+
+                send_packet(client_socket, {"type": "ACK"})
+
+            elif msg["type"] == "ACK":
+                waiting_for_ack = False
+
+            elif msg["type"] == "PING":
+                send_packet(client_socket, {"type": "ACK"})
+
+        if not waiting_for_ack and now - last_send >= SEND_INTERVAL:
+            changed = vr.get_changed_dict()
+            if changed and last_from_client:
+                for k in list(changed.keys()):
+                    if k in last_from_client:
+                        del changed[k]
+            if changed:
+                if send_packet(client_socket, {
+                    "type": "DATA",
+                    "payload": changed
+                }):
+                    waiting_for_ack = True
+            last_send = now
+
+    return server_conn, client_socket, recv_buffer, waiting_for_ack
+
+#######################################################################
+# MAIN
+#######################################################################
 
 def main():
-    sm = SimConnectMobiFlight()
-    vr = MobiFlightVariableRequests(sm)
-
-    wait_for_node()
-    requests.post(f"{BASE_URL}:{PORT}/reset", timeout=1)
-
     server_socket = None
     server_conn = None
     client_socket = None
 
+    recv_buffer = ""
+    waiting_for_ack = False
+
+    sm = SimConnectMobiFlight()
+    vr = MobiFlightVariableRequests(sm)
+
+    vr.clear_sim_variables()
+    vr.send_command("MF.LVars.List")
+    time.sleep(0.5)
+
+    for lvar in vr._lvar_list:
+        vr.get(f"(L:{lvar})")
+
+    print(f"Subscribed to {len(vr._lvar_list)} LVars")
+
     while True:
         try:
-            server_socket, server_conn, client_socket = loop(
-                server_socket, server_conn, client_socket, vr
-            )
-        except KeyboardInterrupt:
-            print("Shutting down...")
-            break
+            app_info = get_app_info()
+            if not app_info:
+                time.sleep(0.2)
+                continue
 
-    for s in (server_conn, server_socket, client_socket):
-        if s:
-            s.close()
+            if app_info["mode"] == "none":
+                for s in (server_conn, client_socket, server_socket):
+                    try:
+                        if s:
+                            s.close()
+                    except OSError:
+                        pass
+
+                server_socket = server_conn = client_socket = None
+                recv_buffer = ""
+                waiting_for_ack = False
+                time.sleep(0.1)
+                continue
+
+            if app_info["mode"] == "server" and not server_socket:
+                server_socket = create_server_socket()
+
+            if app_info["mode"] == "client" and not client_socket:
+                client_socket = create_client_socket(
+                    app_info["targetIP"],
+                    app_info["clientCode"]
+                )
+
+            server_conn, client_socket, recv_buffer, waiting_for_ack = action_loop(
+                app_info,
+                server_socket,
+                server_conn,
+                client_socket,
+                vr,
+                recv_buffer,
+                waiting_for_ack
+            )
+
+            time.sleep(0.05)
+
+        except KeyboardInterrupt:
+            print("\n[SYSTEM] Shutdown")
+            break
+    for s in (server_conn, client_socket, server_socket):
+        try:
+            if s:
+                s.close()
+        except OSError:
+            pass
+
+
+#######################################################################
+# ENTRY
+#######################################################################
 
 if __name__ == "__main__":
     main()
