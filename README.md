@@ -27,23 +27,23 @@ _CrewBridge_ is the app to control and connect to servers and create servers.
 ## Crewbridge
 
 On first launch you will be prompted with a wizzard to install some dependency.
-<img src="public/assets/base.png" alt="guide" height=520/>
+<img src="public/assets/base.png" alt="guide" height=480/>
 <br/> 
 
 You will get a new page, select you MSFS version and insert your path in the field.
-<img src="public/assets/version.png" alt="guide" height=520/>
+<img src="public/assets/version.png" alt="guide" height=480/>
 <br/>
 
 Its going to check if you have already the dependency.<br/>
 
 if you don't have the dependendy you will get a popup to install it .<br/>
 **___« WARNING : CLOSE THE SIM BEFORE THE WIZZARD INSTALLATION »___**
-<img src="public/assets/installer.png" alt="guide" height=520/>
+<img src="public/assets/installer.png" alt="guide" height=320/>
 <br/>
 
 
 After the wizzard completed you can check the __Don't show again__
-<img src="public/assets/dontshowag.png" alt="guide" height=520/>
+<img src="public/assets/dontshowag.png" alt="guide" height=480/>
 <br/>
 
 
@@ -57,11 +57,11 @@ ___« make sure to be in an aircraft before launching »___
 ## Interface
 
 You can activate back the install wizzard by going in _settings_ and clicking _start the wizzard_ 
-<img src="public/assets/wizzard.png" alt="guide" height=520/>
+<img src="public/assets/wizzard.png" alt="guide" height=480/>
 <br/>
 
 On both server and client you have a status bar that give you infos ; to see you ip click on the blur.
-<img src="public/assets/statusbar.png" alt="guide" height=520/>
+<img src="public/assets/statusbar.png" alt="guide" height=480/>
 <br/>
 
 <br/>
@@ -78,7 +78,7 @@ Click Start Server and you will get a random code.
 ## Client
 To be a client (connect to server) go to the client tab<br/>
 Enter the ip ( lan or inet ) in the first field, and enter the code that you friend gave to you.Click on connect.
-<img src="public/assets/clientconn.png" alt="guide" height=520/>
+<img src="public/assets/clientconn.png" alt="guide" height=480/>
 <br/>
 
 
