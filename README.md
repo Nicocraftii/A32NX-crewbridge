@@ -29,12 +29,12 @@ _CrewBridge_ is the app to control and connect to servers and create servers.
 On first launch you will be prompted with a wizzard to install some dependency.
 <br/>
 
-<img src="public/assets/base.png" alt="guide" height=64/>
+<img src="public/assets/base.png" alt="guide" height=164/>
 <br/> 
 
 __Click next__
 
-<img src="public/assets/version.png" alt="guide" height=64/>
+<img src="public/assets/version.png" alt="guide" height=164/>
 <br/>
 You will get a new page, select you MSFS version and insert your path in the field.
 
