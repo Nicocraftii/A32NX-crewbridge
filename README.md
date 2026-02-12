@@ -27,32 +27,28 @@ _CrewBridge_ is the app to control and connect to servers and create servers.
 ## Crewbridge
 
 On first launch you will be prompted with a wizzard to install some dependency.
-<br/>
-
-<img src="public/assets/base.png" alt="guide" height=164/>
+<img src="public/assets/base.png" alt="guide" height=520/>
 <br/> 
 
-__Click next__
-
-<img src="public/assets/version.png" alt="guide" height=164/>
-<br/>
 You will get a new page, select you MSFS version and insert your path in the field.
-
-<img src="" alt="guide" height=64/>
+<img src="public/assets/version.png" alt="guide" height=520/>
 <br/>
+
 Its going to check if you have already the dependency.
-
-<img src="" alt="guide" height=64/>
-<br/>
-if you don't have the dependendy you will get a popup to install it .
+<img src="public/assets/checkingdp.png" alt="guide" height=520/>
 <br/>
 
-___« WARNING : CLOSE THE SIM BEFORE THE WIZZARD INSTALLATION »___
-
-<img src="" alt="guide" height=64/>
+if you don't have the dependendy you will get a popup to install it .<br/>
+**___« WARNING : CLOSE THE SIM BEFORE THE WIZZARD INSTALLATION »___**
+<img src="public/assets/installpython.png" alt="guide" height=520/>
 <br/>
+
 
 After the wizzard completed you can check the __Don't show again__
+<img src="public/assets/dontshowag.png" alt="guide" height=520/>
+<br/>
+
+
 
 ## Crewconnect
 
@@ -60,8 +56,33 @@ _Crewconnect_ work in a console it don't require any dependency.
 To start it just launch __Crewconnect.exe__.<br/>
 ___« make sure to be in an aircraft before launching »___
 
+## Interface
 
+You can activate back the install wizzard by going in _settings_ and clicking _start the wizzard_ 
+<img src="public/assets/wizzard.png" alt="guide" height=520/>
+<br/>
+
+On both server and client you have a status bar that give you infos ; to see you ip click on the blur.
+<img src="public/assets/statusbar.png" alt="guide" height=520/>
+<br/>
+
+<br/>
 <h1 id="usage">Usage</h1>
+
+First make sure you have crewconnect running.<br/>
+
+## Server
+To be a server (party host) go to the server tab<br/>
+Click Start Server and you will get a random code.
+<img src="public/assets/server.png" alt="guide" height=2/>
+<br/>
+
+## Client
+To be a client (connect to server) go to the client tab<br/>
+Enter the ip ( lan or inet ) in the first field, and enter the code that you friend gave to you.Click on connect.
+<img src="public/assets/clientconn.png" alt="guide" height=520/>
+<br/>
+
 
 ###
 ###
