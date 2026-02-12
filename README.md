@@ -4,6 +4,7 @@
   <img src="public/assets/icon.png" alt="Logo" width="100" height="100">
 
   <h3 align="center">A32NX-CrewBridge</h3>
+  <h4 align="center">by Nicocraftii</h4>
 </div>
 
 
@@ -69,13 +70,13 @@ On both server and client you have a status bar that give you infos ; to see you
 
 First make sure you have crewconnect running.<br/>
 
-## Server
+### Server
 To be a server (party host) go to the server tab<br/>
 Click Start Server and you will get a random code.
 <img src="public/assets/server.png" alt="guide" height=2/>
 <br/>
 
-## Client
+### Client
 To be a client (connect to server) go to the client tab<br/>
 Enter the ip ( lan or inet ) in the first field, and enter the code that you friend gave to you.Click on connect.
 <img src="public/assets/clientconn.png" alt="guide" height=480/>
