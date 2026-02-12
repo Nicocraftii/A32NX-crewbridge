@@ -34,13 +34,11 @@ You will get a new page, select you MSFS version and insert your path in the fie
 <img src="public/assets/version.png" alt="guide" height=520/>
 <br/>
 
-Its going to check if you have already the dependency.
-<img src="public/assets/checkingdp.png" alt="guide" height=520/>
-<br/>
+Its going to check if you have already the dependency.<br/>
 
 if you don't have the dependendy you will get a popup to install it .<br/>
 **___« WARNING : CLOSE THE SIM BEFORE THE WIZZARD INSTALLATION »___**
-<img src="public/assets/installpython.png" alt="guide" height=520/>
+<img src="public/assets/installer.png" alt="guide" height=520/>
 <br/>
 
 
