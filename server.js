@@ -311,7 +311,6 @@ app.post('/check-community-folder', async (req, res) => {
   }
 });
 
-// Update the run-installer route
 app.post('/run-installer', async (req, res) => {
   const { path: folderPath } = req.body;
   
@@ -323,15 +322,14 @@ app.post('/run-installer', async (req, res) => {
       });
     }
     
-    // Normalize path
+    // Normaliser le chemin
     let normalizedPath = folderPath.trim();
     if (process.platform === 'win32') {
       normalizedPath = normalizedPath.replace(/\//g, '\\');
     }
     normalizedPath = normalizedPath.replace(/[\/\\]+$/, '');
     
-    
-    // First check if the folder exists
+    // Vérifier que le dossier existe
     try {
       await fs.access(normalizedPath);
     } catch (error) {
@@ -341,48 +339,46 @@ app.post('/run-installer', async (req, res) => {
       });
     }
     
-    // Check for Python script
-    const pythonScript = path.join(BASE_PATH, 'public', 'python', 'installer.py');
-
+    // Chemin vers l'exécutable LVARMonitor.exe
+    const exePath = path.join(BASE_PATH, 'public',"python", 'installer.exe');
     
+    // Vérifier que l'exécutable existe
     try {
-      await fs.access(pythonScript);
+      await fs.access(exePath);
     } catch (error) {
       return res.json({
         success: false,
-        error: `Python script not found at: ${pythonScript}`,
-        suggestion: 'Make sure the installer.py file exists in the python folder'
+        error: `LVARMonitor.exe not found at: ${exePath}`,
+        suggestion: 'Run build-exe.js first to create the executable'
       });
     }
     
-    // Check for venv
-    const venvActivate = path.join(BASE_PATH, '.venv', 'Scripts', 'activate.bat');
-    try {
-      await fs.access(venvActivate);
-    } catch (error) {
-      return res.json({
-        success: false,
-        error: `Virtual environment not found at: ${venvActivate}`,
-        suggestion: 'Make sure the .venv folder exists and is properly set up'
-      });
-    }
+    console.log('🚀 Running LVARMonitor.exe with folder:', normalizedPath);
     
-    // Create command - use .bat extension for Windows
-    const command = `"${path.join(BASE_PATH, '.venv', 'Scripts', 'activate.bat')}" && python "${pythonScript}" "${normalizedPath}"`;
+    // Exécuter le .exe avec le dossier cible en argument
+    const command = `"${exePath}" "${normalizedPath}"`;
     
-    
-    exec(command, { shell: 'cmd.exe', cwd: BASE_PATH }, (error, stdout, stderr) => {
+    exec(command, { 
+      shell: 'cmd.exe', 
+      cwd: BASE_PATH,
+      timeout: 30000, // 30 secondes timeout
+      windowsHide: false // Pour voir la console
+    }, (error, stdout, stderr) => {
+      
+      console.log('📤 stdout:', stdout);
+      console.log('📥 stderr:', stderr);
       
       if (error) {
+        console.error('❌ Execution error:', error);
         return res.json({
           success: false,
-          error: `Python script failed: ${error.message}`,
+          error: `Executable failed: ${error.message}`,
           stderr: stderr || 'No stderr output',
           stdout: stdout || 'No stdout output'
         });
       }
       
-      // Check if installation was successful by verifying the folder was created
+      // Vérifier si l'installation a réussi
       const modulePath = path.join(normalizedPath, 'mobiflight-event-module');
       
       fs.access(modulePath)
@@ -390,27 +386,30 @@ app.post('/run-installer', async (req, res) => {
           res.json({
             success: true,
             output: stdout,
-            message: 'Installation completed successfully',
+            message: '✅ MobiFlight WASM module installed successfully!',
             modulePath: modulePath
           });
         })
-        .catch((checkError) => {
+        .catch(() => {
           res.json({
             success: false,
             output: stdout,
             stderr: stderr,
-            error: 'Installation may have failed - module folder not found after installation',
-            suggestion: 'Check if the Python script has proper permissions to create folders'
+            error: 'Installation may have failed - module folder not found',
+            suggestion: 'Check if the executable has proper permissions'
           });
         });
     });
+    
   } catch (error) {
+    console.error('❌ Server error:', error);
     res.status(500).json({
       success: false,
       error: error.message
     });
   }
 });
+
 
 let lastAck = Date.now();
 let pingToken = '';
